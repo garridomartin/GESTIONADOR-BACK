@@ -45,43 +45,34 @@ let capsEntries = entries.map((entry) => [
 ]);
 sequelize.models = Object.fromEntries(capsEntries);
 
-const { User } = sequelize.models;
+const { User, Sale, Product, SoldProduct } = sequelize.models;
 
-/*
-//!RELACIONES DE VENTAS
-//Sale.belongsTo(User, { as: 'seller', foreignKey: 'seller_id' });
+// Relaciones entre Sale y User
 Sale.belongsTo(User, { as: 'buyer', foreignKey: 'buyer_id' });
+Sale.belongsTo(User, { as: 'seller', foreignKey: 'seller_id' });
 
-SoldService.belongsTo(User, { foreignKey: 'seller_id' });
-User.hasMany(SoldService, { foreignKey: 'seller_id' });
+// Relación entre Sale y Product a través de SoldProduct
+Sale.belongsToMany(Product, {
+  through: SoldProduct,
+  foreignKey: 'sale_id',
+  as: 'products',
+});
+Product.belongsToMany(Sale, {
+  through: SoldProduct,
+  foreignKey: 'product_id',
+  as: 'sales',
+});
 
-Sale.belongsTo(User, { foreignKey: 'buyer_id' });
-User.hasMany(Sale, { as: 'buyer', foreignKey: 'buyer_id' });
-// Relación entre Sale y Service a través de SaleService
-Sale.belongsToMany(Service, { through: SoldService, foreignKey: 'sale_id' });
-Service.belongsToMany(Sale, { through: SoldService, foreignKey: 'service_id' });
+// Relación entre SoldProduct, Sale y Product
+Sale.hasMany(SoldProduct, { foreignKey: 'sale_id' });
+SoldProduct.belongsTo(Sale, { foreignKey: 'sale_id' });
+SoldProduct.belongsTo(Product, { foreignKey: 'product_id' });
+Product.hasMany(SoldProduct, { foreignKey: 'product_id' });
 
-//! REVISAR
-Sale.hasMany(SoldService, { foreignKey: 'sale_id' });
-SoldService.belongsTo(Sale, { foreignKey: 'sale_id' });
-SoldService.belongsTo(Service, { foreignKey: 'service_id' });
-Service.hasMany(SoldService, { foreignKey: 'service_id' });
+// Relación entre User y SoldProduct (Usuarios como Vendedores)
+User.hasMany(SoldProduct, { foreignKey: 'seller_id' });
+SoldProduct.belongsTo(User, { as: 'seller', foreignKey: 'seller_id' });
 
-Service.belongsTo(User, { foreignKey: 'user_id' });
-User.hasMany(Service, { foreignKey: 'user_id' });
-
-Service.belongsToMany(TypeService, { through: 'TypesOfService' });
-TypeService.belongsToMany(Service, { through: 'TypesOfService' });
-
-//Relación uno a muchos entre Review y Servicio
-Service.hasMany(Review, { foreignKey: 'service_id' });
-Review.belongsTo(Service, { foreignKey: 'service_id' });
-
-//Relación uno a muchos entre Review y User
-User.hasMany(Review, { foreignKey: 'user_id' });
-Review.belongsTo(User, { foreignKey: 'user_id' });
-
-*/
 module.exports = {
   ...sequelize.models,
   conn: sequelize,

@@ -20,6 +20,12 @@ module.exports = (sequelize) => {
     cellPhone: {
       type: DataTypes.BIGINT,
     },
+    birthDay: {
+      type: DataTypes.DATE,
+    },
+    cuil: {
+      type: DataTypes.BIGINT,
+    },
     email: {
       type: DataTypes.STRING,
       allowNull: false,
@@ -34,7 +40,7 @@ module.exports = (sequelize) => {
       allowNull: true,
       defaultValue: false,
     },
-    isSuperAdmin: {
+    isSeller: {
       type: DataTypes.BOOLEAN,
       allowNull: true,
       defaultValue: false,
