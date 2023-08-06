@@ -24,7 +24,16 @@ module.exports = (sequelize) => {
       longDescription: {
         type: DataTypes.TEXT,
       },
-      price: {
+      cost: {
+        type: DataTypes.INTEGER,
+      },
+      priceML: {
+        type: DataTypes.INTEGER,
+      },
+      priceEComm: {
+        type: DataTypes.INTEGER,
+      },
+      priceLocal: {
         type: DataTypes.INTEGER,
       },
       quantity: {
