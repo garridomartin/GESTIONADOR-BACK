@@ -1,5 +1,6 @@
 const { Router } = require('express');
 const router = Router();
+const verifyToken = require('../middleware/verifyToken');
 const signUpRouter = require('./signUp.router');
 const signInRouter = require('./signIn.router');
 const resetPassword = require('./resetPassword.router');
@@ -18,7 +19,7 @@ const passport = require('passport');
 router.use('/signUp', signUpRouter);
 router.use('/signIn', signInRouter);
 router.use('/requestPasswordReset', requestPasswordReset);
-router.use('/resetPassword', resetPassword);
+router.use('/resetPassword', verifyToken, resetPassword);
 
 //!REFERIDO A LOGIN GOOGLE
 router.get('/loginGoogle', getLoginHandler);

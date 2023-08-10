@@ -9,13 +9,13 @@ const signInController = async (req) => {
 
     const user = await User.findOne({ where: { email } });
 
-    if (!user) return { error: 'Credenciales invalidas' };
+    if (!user) return { error: 'Usuario invalido o inexistente' };
 
     if (user?.isDeleted)
       return { error: 'Este usuario fue baneado o eliminado' };
 
     const passCompare = await bcrypt.compare(password, user.password);
-    if (!passCompare) return { error: 'Credenciales invalidas' };
+    if (!passCompare) return { error: 'Password erroneo' };
 
     const token = tokenCreated(user, SECRET_KEY);
 

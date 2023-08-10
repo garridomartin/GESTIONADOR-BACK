@@ -33,6 +33,13 @@ const sendEmailNotification = async (
         subject: 'Solicitud de reseteo de password en APP FACTURACION',
         html: compiledTemplate,
       };
+    } else if (typeNotification === 'resetPassword') {
+      message = {
+        from: EMAIL_USER,
+        to: emailToSend,
+        subject: 'Cambio de password en APP FACTURACION',
+        html: compiledTemplate,
+      };
     } else if (typeNotification === 'compra/venta') {
       message = {
         from: EMAIL_USER,

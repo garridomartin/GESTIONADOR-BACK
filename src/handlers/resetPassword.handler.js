@@ -1,18 +1,17 @@
 //const { log } = require('handlebars');
 const resetPassController = require('../controllers/resetPassController.controller');
 const { validationResult } = require('express-validator');
-const { RESET_PASSWORD } = process.env;
 
 const resetPassword = async (req, res) => {
   try {
     const errors = validationResult(req.body);
 
     if (!errors.isEmpty()) throw new Error(errors.array());
-    const { email } = req.body;
+    const { email, newPassword } = req.body;
 
-    const resetPass = await resetPassController(email, RESET_PASSWORD);
+    const resetPass = await resetPassController(email, newPassword);
 
-    if (resetPass?.error) {
+    if (resetPass.error) {
       return res.status(401).json(resetPass);
     }
 
@@ -21,7 +20,7 @@ const resetPassword = async (req, res) => {
 
     return res.status(200).json({
       status: 'Password reseteado con exito',
-      notification: `Correo de recuperación de contraseña enviado con éxito a ${notificationName}`,
+      notification: `El cliente ${notificationName} a cambiado su contraseña`,
     });
   } catch (error) {
     console.error('Error during password recovery:', error);
