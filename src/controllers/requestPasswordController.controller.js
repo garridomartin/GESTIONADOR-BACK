@@ -1,20 +1,17 @@
 const { User } = require('../db.js');
-const hashPassword = require('../utils/hashPassword.js');
 const sendEmailNotification = require('../utils/senderMail.js');
 const fs = require('fs');
 const path = require('path');
-const jwt = require('jsonwebtoken');
+const { tokenCreated } = require('../utils/createToken.js');
 const template = require('../utils/templateCreation.js');
-const { URL_DEPLOY_FRONT } = process.env;
+const { log } = require('handlebars');
+const { URL_DEPLOY_FRONT, SECRET_KEY } = process.env;
 
 const requestPasswordController = async (user) => {
   try {
-    const resetToken = jwt.sign({ userId: user.id }, 'secreto', {
-      //token para rehacer contraseña
-      expiresIn: '30d',
-    });
-
-    user.resetToken = resetToken;
+    const resetToken = tokenCreated(user, SECRET_KEY);
+    console.log('resetToken:', resetToken);
+    user.resetToken = resetToken.token;
     await user.save();
 
     //Enlace para rehacer contraseña, Enok debe implementar esta ruta
