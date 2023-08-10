@@ -1,13 +1,13 @@
 const passport = require('passport');
 require('../middleware/passport');
-const loginController = require('../controllers/getLogInControllerGoogle');
+const loginController = require('../controllers/logInControllerGoogle');
 const dotenv = require('dotenv');
 dotenv.config();
 //const { URL_DEPLOY_FRONT } = process.env;
 const URL_DEPLOY_FRONT = 'http://localhost:3000';
 /*'https://front-5w36mp77c-garridomartin.vercel.app/';*/
 
-const getLoginHandler = (req, res) => {
+const logInGoogleHandler = (req, res) => {
   res.send(
     "<button><a href='/loginGoogle/auth'>Login With Google</a></button>"
   );
@@ -87,7 +87,7 @@ const getLogoutHandler = function (req, res, next) {
 };
 
 module.exports = {
-  getLoginHandler,
+  logInGoogleHandler,
   authenticateHandler,
   authCallbackHandler,
   loginSuccessHandler,

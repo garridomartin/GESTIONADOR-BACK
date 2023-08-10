@@ -10,7 +10,7 @@ const { URL_DEPLOY_FRONT, SECRET_KEY } = process.env;
 const requestPasswordController = async (user) => {
   try {
     const resetToken = tokenCreated(user, SECRET_KEY);
-    console.log('resetToken:', resetToken);
+    //console.log('resetToken:', resetToken);
     user.resetToken = resetToken.token;
     await user.save();
 

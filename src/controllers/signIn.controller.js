@@ -10,7 +10,8 @@ const signInController = async (req) => {
     const user = await User.findOne({ where: { email } });
 
     if (!user) return { error: 'Usuario invalido o inexistente' };
-
+    if (!user.isEmailConfirmed)
+      return { error: 'Email de usuario aun no confirmado' };
     if (user?.isDeleted)
       return { error: 'Este usuario fue baneado o eliminado' };
 

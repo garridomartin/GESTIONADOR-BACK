@@ -3,7 +3,7 @@ const signInController = require('../controllers/signIn.controller');
 const { log } = require('handlebars');
 
 const signInHandler = async (req, res) => {
-  console.log(req.body);
+  // console.log(req.body);
   try {
     const errors = validationResult(req);
     if (!errors.isEmpty()) throw new Error(errors.array());

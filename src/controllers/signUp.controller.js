@@ -5,6 +5,8 @@ const template = require('../utils/templateCreation.js');
 const sendEmailNotification = require('../utils/senderMail.js');
 const fs = require('fs');
 const path = require('path');
+const { tokenCreated } = require('../utils/createToken.js');
+const { SECRET_KEY, URL_DEPLOY_FRONT } = process.env;
 
 const signUpController = async (
   name,
@@ -38,6 +40,11 @@ const signUpController = async (
 
     await newUser.save();
 
+    const user = await User.findOne({ where: { email } });
+    const emailConfirmationToken = await tokenCreated(user, SECRET_KEY);
+    const tokenValue = emailConfirmationToken.token; // Make sure this is the correct property name in the returned object
+    const emailConfirmationLink = `${URL_DEPLOY_FRONT}/email-confirm/${tokenValue}`;
+
     const filePath = path.join(
       __dirname,
       '..',
@@ -47,7 +54,10 @@ const signUpController = async (
 
     const templateUserCreation = fs.readFileSync(filePath, 'utf-8');
 
-    const compiledTemplate = template(templateUserCreation, { name: name });
+    const compiledTemplate = template(templateUserCreation, {
+      name: name,
+      emailConfirmationLink: emailConfirmationLink,
+    });
 
     const emailResult = await sendEmailNotification(
       typeNotification,
