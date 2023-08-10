@@ -1,4 +1,3 @@
-const { log } = require('handlebars');
 const { User } = require('../db');
 const { tokenCreated } = require('../utils/createToken.js');
 const { SECRET_KEY } = process.env;
@@ -15,7 +14,7 @@ const loginController = async (dataUser) => {
         ...dataUser,
         User_id: existingUser.id,
         isAdmin: existingUser.isAdmin,
-        isSuperAdmin: existingUser.isSuperAdmin,
+        isSeller: existingUser.isSeller,
       };
 
       const token = tokenCreated(existingUser, SECRET_KEY);

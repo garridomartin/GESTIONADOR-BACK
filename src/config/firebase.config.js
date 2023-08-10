@@ -1,5 +1,6 @@
-const { initializeApp } = require("firebase/app");
-const { getStorage } = require("firebase/storage");
+const { initializeApp } = require('firebase/app');
+const { getStorage } = require('firebase/storage');
+
 const {
   API_KEY_FB,
   AUTH_DOMAIN_FB,
@@ -7,6 +8,7 @@ const {
   STORAGE_BUCKET_FB,
   MESSAGING_SENDER_ID_FB,
   APP_ID_FB,
+  MEASUREMENT_ID,
 } = process.env;
 
 //Se incializa Firebase
@@ -17,11 +19,13 @@ const firebaseConfig = {
   storageBucket: STORAGE_BUCKET_FB,
   messagingSenderId: MESSAGING_SENDER_ID_FB,
   appId: APP_ID_FB,
+  measurementId: MEASUREMENT_ID,
 };
 
+// Initialize Firebase
 const app = initializeApp(firebaseConfig);
-const storage = getStorage();
+const storage = getStorage(app);
 
 //const storageBucket = app.storage().bucket();
 
-module.exports = { app };
+module.exports = { app, storage };

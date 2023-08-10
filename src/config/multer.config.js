@@ -5,8 +5,8 @@ const upLoadSignUp = multer({ storage: multer.memoryStorage() }).single(
   'profilePict'
 );
 
-const uploadCreateService = multer({ storage: multer.memoryStorage() }).single(
+const uploadCreateProduct = multer({ storage: multer.memoryStorage() }).single(
   'files'
 );
 
-module.exports = { upLoadSignUp, uploadCreateService };
+module.exports = { upLoadSignUp, uploadCreateProduct };

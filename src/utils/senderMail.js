@@ -1,5 +1,5 @@
 const nodemailer = require('nodemailer');
-let { EMAIL_HOST, EMAIL_PORT, EMAIL_USER, EMAIL_PASS } = process.env;
+const { EMAIL_HOST, EMAIL_PORT, EMAIL_USER, EMAIL_PASS } = process.env;
 
 const sendEmailNotification = async (
   typeNotification,
@@ -7,7 +7,6 @@ const sendEmailNotification = async (
   compiledTemplate
 ) => {
   try {
-
     const config = {
       host: EMAIL_HOST,
       port: EMAIL_PORT,
@@ -20,19 +19,19 @@ const sendEmailNotification = async (
     let message = {};
 
     if (typeNotification === 'userCreation') {
-      console.log(emailToSend);
+      //console.log(emailToSend);
       message = {
         from: EMAIL_USER,
         to: emailToSend,
-        subject: 'correo de prueba',
+        subject: 'Usuario Creado en APP FACTURACION',
         html: compiledTemplate,
       };
-    } else if (typeNotification === 'serviceCreation') {
+    } else if (typeNotification === 'passwordResetRequest') {
       message = {
         from: EMAIL_USER,
         to: emailToSend,
-        subject: 'correo de prueba',
-        text: 'envio de creacion de servicio',
+        subject: 'Solicitud de reseteo de password en APP FACTURACION',
+        html: compiledTemplate,
       };
     } else if (typeNotification === 'compra/venta') {
       message = {
@@ -47,18 +46,17 @@ const sendEmailNotification = async (
         from: EMAIL_USER,
         to: emailToSend,
         subject: 'Notificación de Venta',
-        html: compiledTemplate,
+        text: 'envio de creacion de servicio',
       };
     } else if (!typeNotification) {
-      
-       message = {
-         from: EMAIL_USER,
-         to: EMAIL_USER,
-         subject: "Contacto",
-         text:compiledTemplate ,
-       };
+      message = {
+        from: EMAIL_USER,
+        to: EMAIL_USER,
+        subject: 'Contacto',
+        text: compiledTemplate,
+      };
     } else {
-      throw new Error("Tipo de notificación no válido");
+      throw new Error('Tipo de notificación no válido');
     }
 
     const transport = nodemailer.createTransport(config);

@@ -8,7 +8,9 @@ const URL_DEPLOY_FRONT = 'http://localhost:3000';
 /*'https://front-5w36mp77c-garridomartin.vercel.app/';*/
 
 const getLoginHandler = (req, res) => {
-  res.send("<button><a href='/auth'>Login With Google</a></button>");
+  res.send(
+    "<button><a href='/loginGoogle/auth'>Login With Google</a></button>"
+  );
 };
 
 const authenticateHandler = passport.authenticate('google', {
@@ -16,24 +18,24 @@ const authenticateHandler = passport.authenticate('google', {
 });
 
 const authCallbackHandler = passport.authenticate('google', {
-  successRedirect: '/auth/callback/success',
-  failureRedirect: '/auth/callback/failure',
+  successRedirect: '/loginGoogle/auth/callback/success',
+  failureRedirect: '/loginGoogle/auth/callback/failure',
 });
 
-const loginSuccessHandler = async (req, res, next) => {
+const loginSuccessHandler = async (req, res) => {
   try {
     if (!req.user) {
-      res.redirect('/auth/callback/failure');
+      res.redirect('/loginGoogle/auth/callback/failure');
       return;
     }
 
     const dataUser = req.user;
-    const { id, User_id, displayName, email, photos, isAdmin, isSuperAdmin } =
-      req.user;
+    //console.log('dataUser:', dataUser);
+    const { id, User_id, displayName, email, photos } = req.user;
     const newUser = await loginController.loginController(dataUser);
 
     //console.log('datauser linea 42 google handler:', dataUser);
-    console.log('Nuevo usuario agregado 44:', newUser);
+    //console.log('Nuevo usuario agregado 35:', newUser);
     const updatedFrontUser = {
       User_id: newUser.updatedDataUser.User_id,
       idGoogle: newUser.updatedDataUser.id,
@@ -41,7 +43,7 @@ const loginSuccessHandler = async (req, res, next) => {
       email: newUser.updatedDataUser.email,
       profilePict: newUser.updatedDataUser.picture,
       isAdmin: newUser.updatedDataUser.isAdmin,
-      isSuperAdmin: newUser.updatedDataUser.isSuperAdmin,
+      isSeller: newUser.updatedDataUser.isSeller,
       token: newUser.token.token,
     };
 
@@ -79,7 +81,7 @@ const getLogoutHandler = function (req, res, next) {
         return next(err);
       }
       // redirect to the root URL after logout
-      res.redirect('/loginGoogle');
+      res.redirect('https://mail.google.com/mail/u/0/?logout&hl=en');
     });
   });
 };

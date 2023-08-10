@@ -1,27 +1,39 @@
 const { User } = require('../db.js');
+const firebaseUploader = require('../utils/firebaseUploader');
 const hashPassword = require('../utils/hashPassword.js');
 const template = require('../utils/templateCreation.js');
 const sendEmailNotification = require('../utils/senderMail.js');
 const fs = require('fs');
 const path = require('path');
 
-const signUpController = async (req, typeNotification) => {
+const signUpController = async (
+  name,
+  password,
+  cellPhone,
+  birthDay,
+  cuil,
+  email,
+  files,
+  typeNotification
+) => {
   try {
-    const { name, password, email, profilePict } = req;
+    const uploadPicture = await firebaseUploader(files);
 
     const existingUser = await User.findOne({ where: { email } });
 
     if (existingUser) {
       return { error: 'El email ya está registrado' };
     }
-
-    let passwordSinUp = await hashPassword(password);
-
+    const passwordSignUp = await hashPassword(password);
+    //console.log('previo a crear el usuario:', name, cellPhone, birthDay);
     const newUser = await User.create({
-      name,
-      password: passwordSinUp,
-      email,
-      profilePict,
+      name: name,
+      password: passwordSignUp,
+      cellPhone: cellPhone,
+      birthDay: birthDay,
+      cuil: cuil,
+      email: email,
+      profilePict: uploadPicture,
     });
 
     await newUser.save();
@@ -37,11 +49,16 @@ const signUpController = async (req, typeNotification) => {
 
     const compiledTemplate = template(templateUserCreation, { name: name });
 
-    return sendEmailNotification(
+    const emailResult = await sendEmailNotification(
       typeNotification,
       newUser.email,
       compiledTemplate
     );
+    return {
+      name: newUser.name,
+      email: newUser.email,
+      emailResult: emailResult,
+    };
   } catch (error) {
     console.error('Error during user registration:', error);
     return { error: 'Ocurrió un error durante el proceso de registro' };

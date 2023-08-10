@@ -17,6 +17,10 @@ module.exports = (sequelize) => {
       type: DataTypes.STRING,
       allowNull: true,
     },
+    resetToken: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
     cellPhone: {
       type: DataTypes.BIGINT,
     },

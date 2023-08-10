@@ -8,6 +8,6 @@ conn.sync({ force: true }).then(async () => {
   //bdd se reinicia con el server↑↑↑
 
   server.listen(PORT, () => {
-    console.log(`Server listening at ${PORT}`);
+    console.log(`Server listening at http://localhost:${PORT}`);
   });
 });
