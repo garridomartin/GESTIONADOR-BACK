@@ -1,78 +1,95 @@
 const { User } = require('../db.js');
-const firebaseUploader = require('../utils/firebaseUploader');
-const hashPassword = require('../utils/hashPassword.js');
-const template = require('../utils/templateCreation.js');
-const sendEmailNotification = require('../utils/senderMail.js');
+const subirAFirebase = require('../utils/firebaseUploader');
+const encriptarContraseña = require('../utils/hashPassword.js');
+const crearPlantilla = require('../utils/templateCreation.js');
+const enviarNotificacionEmail = require('../utils/senderMail.js');
 const fs = require('fs');
 const path = require('path');
 const { tokenCreated } = require('../utils/createToken.js');
 const { SECRET_KEY, URL_DEPLOY_FRONT } = process.env;
 
-const signUpController = async (
-  name,
-  password,
-  cellPhone,
-  birthDay,
+const controladorRegistro = async (
+  nombre,
+  contraseña,
+  celular,
+  fechaNacimiento,
   cuil,
-  email,
-  files,
-  typeNotification
+  correoElectronico,
+  archivos,
+  tipoNotificacion
 ) => {
   try {
-    const uploadPicture = await firebaseUploader(files);
+    const archivoSubido = await subirAFirebase(archivos);
 
-    const existingUser = await User.findOne({ where: { email } });
+    const usuarioExistente = await User.findOne({
+      where: { email: correoElectronico },
+    });
 
-    if (existingUser) {
-      return { error: 'El email ya está registrado' };
+    if (usuarioExistente) {
+      return { error: 'El correo electrónico ya está registrado' };
     }
-    const passwordSignUp = await hashPassword(password);
-    //console.log('previo a crear el usuario:', name, cellPhone, birthDay);
-    const newUser = await User.create({
-      name: name,
-      password: passwordSignUp,
-      cellPhone: cellPhone,
-      birthDay: birthDay,
+
+    const contraseñaEncriptada = await encriptarContraseña(contraseña);
+
+    const nuevoUsuario = await User.create({
+      name: nombre,
+      password: contraseñaEncriptada,
+      cellPhone: celular,
+      birthDay: fechaNacimiento,
       cuil: cuil,
-      email: email,
-      profilePict: uploadPicture,
+      email: correoElectronico,
+      profilePict: archivoSubido,
     });
 
-    await newUser.save();
+    await nuevoUsuario.save();
 
-    const user = await User.findOne({ where: { email } });
-    const emailConfirmationToken = await tokenCreated(user, SECRET_KEY);
-    const tokenValue = emailConfirmationToken.token; // Make sure this is the correct property name in the returned object
-    const emailConfirmationLink = `${URL_DEPLOY_FRONT}/email-confirm/${tokenValue}`;
+    try {
+      const usuario = await User.findOne({
+        where: { email: correoElectronico },
+      });
+      const tokenConfirmacionEmail = await tokenCreated(usuario, SECRET_KEY);
+      const valorToken = tokenConfirmacionEmail.token;
+      const enlaceConfirmacionEmail = `${URL_DEPLOY_FRONT}/email-confirm/${valorToken}`;
 
-    const filePath = path.join(
-      __dirname,
-      '..',
-      'views',
-      'creationUserNotification.hbs'
-    );
+      const rutaArchivoPlantilla = path.join(
+        __dirname,
+        '..',
+        'views',
+        'creationUserNotification.hbs'
+      );
+      const plantillaCreacionUsuario = fs.readFileSync(
+        rutaArchivoPlantilla,
+        'utf-8'
+      );
+      const plantillaCompilada = crearPlantilla(plantillaCreacionUsuario, {
+        name: nombre,
+        emailConfirmationLink: enlaceConfirmacionEmail,
+      });
 
-    const templateUserCreation = fs.readFileSync(filePath, 'utf-8');
+      try {
+        const resultadoEmail = await enviarNotificacionEmail(
+          tipoNotificacion,
+          nuevoUsuario.email,
+          plantillaCompilada
+        );
 
-    const compiledTemplate = template(templateUserCreation, {
-      name: name,
-      emailConfirmationLink: emailConfirmationLink,
-    });
-
-    const emailResult = await sendEmailNotification(
-      typeNotification,
-      newUser.email,
-      compiledTemplate
-    );
-    return {
-      name: newUser.name,
-      email: newUser.email,
-      emailResult: emailResult,
-    };
+        return {
+          name: nuevoUsuario.name,
+          email: nuevoUsuario.email,
+          emailResult: resultadoEmail,
+        };
+      } catch (error) {
+        console.error('Error durante el registro del usuario:', error);
+        return { error: 'Ocurrió un error durante el proceso de registro' };
+      }
+    } catch (error) {
+      console.error('Error al crear el token de confirmación:', error);
+      return { error: 'Ocurrió un error durante el proceso de registro' };
+    }
   } catch (error) {
-    console.error('Error during user registration:', error);
+    console.error('Error durante el registro del usuario:', error);
     return { error: 'Ocurrió un error durante el proceso de registro' };
   }
 };
 
-module.exports = signUpController;
+module.exports = controladorRegistro;

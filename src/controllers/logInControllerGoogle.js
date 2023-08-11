@@ -1,6 +1,10 @@
 const { User } = require('../db');
 const { tokenCreated } = require('../utils/createToken.js');
-const { SECRET_KEY } = process.env;
+const { SECRET_KEY, URL_DEPLOY_FRONT } = process.env;
+const crearPlantilla = require('../utils/templateCreation.js');
+const enviarNotificacionEmail = require('../utils/senderMail.js');
+const fs = require('fs');
+const path = require('path');
 
 const loginController = async (dataUser) => {
   const { displayName, email, photos } = dataUser;
@@ -18,8 +22,14 @@ const loginController = async (dataUser) => {
       };
 
       const token = tokenCreated(existingUser, SECRET_KEY);
-      //console.log('updatedDataUser:', updatedDataUser);
-      return { updatedDataUser, token };
+      // console.log('updatedDataUser:', updatedDataUser);
+
+      return {
+        name: existingUser.name,
+        email: existingUser.email,
+        token: token,
+        updatedDataUser: updatedDataUser,
+      };
     } else {
       const newUser = await User.create({
         name: displayName,
@@ -31,9 +41,40 @@ const loginController = async (dataUser) => {
         ...dataUser,
         User_id: newUser.id,
       };
+
       const token = tokenCreated(newUser, SECRET_KEY);
 
-      return { updatedDataUser, token };
+      const enlaceSugerenciaUser = `${URL_DEPLOY_FRONT}/editUser`;
+      const rutaArchivoPlantilla = path.join(
+        __dirname,
+        '..',
+        'views',
+        'signUpGoogle.hbs'
+      );
+
+      const plantillaCreacionUsuario = fs.readFileSync(
+        rutaArchivoPlantilla,
+        'utf-8'
+      );
+
+      const plantillaCompilada = crearPlantilla(plantillaCreacionUsuario, {
+        name: newUser.name,
+        enlaceSugerenciaUser: enlaceSugerenciaUser,
+      });
+
+      const resultadoEmail = await enviarNotificacionEmail(
+        'signUpGoogle',
+        newUser.email,
+        plantillaCompilada
+      );
+
+      return {
+        name: newUser.name,
+        email: newUser.email,
+        emailResult: resultadoEmail,
+        updatedDataUser: updatedDataUser,
+        token: token,
+      };
     }
   } catch (error) {
     throw error;

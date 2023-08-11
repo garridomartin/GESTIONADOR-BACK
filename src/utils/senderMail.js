@@ -40,6 +40,15 @@ const sendEmailNotification = async (
         subject: 'Cambio de password en APP FACTURACION',
         html: compiledTemplate,
       };
+    }
+    if (typeNotification === 'signUpGoogle') {
+      //console.log(emailToSend);
+      message = {
+        from: EMAIL_USER,
+        to: emailToSend,
+        subject: 'Usuario Creado en APP FACTURACION',
+        html: compiledTemplate,
+      };
     } else if (typeNotification === 'compra/venta') {
       message = {
         from: EMAIL_USER,

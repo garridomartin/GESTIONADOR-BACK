@@ -13,9 +13,10 @@ const requestPasswordController = async (user) => {
     //console.log('resetToken:', resetToken);
     user.resetToken = resetToken.token;
     await user.save();
+    const valorToken = resetToken.token;
 
     //Enlace para rehacer contraseña, Enok debe implementar esta ruta
-    const resetLink = `${URL_DEPLOY_FRONT}/reset-password/${resetToken}`;
+    const resetLink = `${URL_DEPLOY_FRONT}/reset-password/${valorToken}`;
 
     const filePath = path.join(
       __dirname,

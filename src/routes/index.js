@@ -15,7 +15,14 @@ const {
   getLogoutHandler,
 } = require('../handlers/logInGoogleHandler');
 require('../middleware/passport');
-
+/*
+//!REFERIDO A USUARIOS
+router.use('/deleteUser', manageLogicalDeleteUserRouter);
+router.use('/allUsers', getAllUsersInfoRouter);
+router.use('/getUserById', getUserByIdRouter);
+router.use('/editUser', editUserRouter);
+router.use('/editUserByAdmin', editUserRouter);
+*/
 //!REFERIDO A LOGIN PROPIO
 router.use('/signUp', signUpRouter);
 router.get('/confirmEmail/:userId', verifyToken, emailConfirmation);
