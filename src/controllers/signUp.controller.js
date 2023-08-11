@@ -15,8 +15,7 @@ const controladorRegistro = async (
   fechaNacimiento,
   cuil,
   correoElectronico,
-  archivos,
-  tipoNotificacion
+  archivos
 ) => {
   try {
     const archivoSubido = await subirAFirebase(archivos);
@@ -68,7 +67,7 @@ const controladorRegistro = async (
 
       try {
         const resultadoEmail = await enviarNotificacionEmail(
-          tipoNotificacion,
+          'userCreation',
           nuevoUsuario.email,
           plantillaCompilada
         );

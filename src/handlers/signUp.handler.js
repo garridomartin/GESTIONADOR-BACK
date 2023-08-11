@@ -1,6 +1,6 @@
 const signUpController = require('../controllers/signUp.controller');
 const { validationResult } = require('express-validator');
-const { USER_CREATION } = process.env;
+//const { USER_CREATION } = process.env;
 
 const signUp = async (req, res) => {
   try {
@@ -16,8 +16,7 @@ const signUp = async (req, res) => {
       birthDay,
       cuil,
       email,
-      req.file,
-      USER_CREATION
+      req.file
     );
 
     if (signInUp?.error) {
