@@ -17,6 +17,10 @@ module.exports = (sequelize) => {
       type: DataTypes.STRING,
       allowNull: true,
     },
+    resetToken: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
     cellPhone: {
       type: DataTypes.BIGINT,
     },
@@ -34,6 +38,10 @@ module.exports = (sequelize) => {
     profilePict: {
       type: DataTypes.STRING,
       allowNull: true,
+    },
+    isEmailConfirmed: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false,
     },
     isAdmin: {
       type: DataTypes.BOOLEAN,
