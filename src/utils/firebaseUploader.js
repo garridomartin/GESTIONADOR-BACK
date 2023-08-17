@@ -14,10 +14,7 @@ const firebaseUploader = async (file) => {
     const storage = getStorage();
     const { originalname, buffer, mimetype } = file;
 
-    const storageRef = ref(
-      storage,
-      /*`${STORAGE_BUCKET_FB}*/ `pfhenry-f1185.appspot.com/${originalname}`
-    );
+    const storageRef = ref(storage, `${STORAGE_BUCKET_FB}${originalname}`);
 
     // Creamos el archivo meta-data incluyendo el content type
     const metadata = {

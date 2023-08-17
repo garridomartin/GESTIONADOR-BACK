@@ -1,4 +1,4 @@
-const { User } = require('../db.js');
+const { User } = require('../db');
 const bcrypt = require('bcrypt');
 const { tokenCreated } = require('../utils/createToken.js');
 const { SECRET_KEY } = process.env;
