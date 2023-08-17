@@ -8,8 +8,9 @@ const tokenCreated = (user, shhh) => {
     const token = jwt.sign(
       {
         id: user.id,
-        email: user.email /*,
-        password: user.password,*/,
+        email: user.email,
+        username: user.username  //-----> added by Enok Lima
+        /*passsword: user.password,*/,
       },
       shhh,
       { expiresIn }
@@ -17,7 +18,7 @@ const tokenCreated = (user, shhh) => {
     return { token, expiresIn };
   } catch (error) {
     console.error('Error creating token:', error);
-    throw new Error('Unable to create token: ' + error.message);
+    throw new Error('Unable to create token: ' + error.message); 
   }
 };
 

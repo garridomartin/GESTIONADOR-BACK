@@ -5,7 +5,6 @@ const { validationResult } = require('express-validator');
 const signUp = async (req, res) => {
   try {
     const errors = validationResult(req.body);
-    console.log('req en singUp', req.body);
     if (!errors.isEmpty()) throw new Error(errors.array());
     const { name, password, cellPhone, birthDay, cuil, email } = req.body;
 

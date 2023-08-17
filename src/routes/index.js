@@ -6,6 +6,9 @@ const emailConfirmation = require('../handlers/emailConfirmation.handler');
 const signInRouter = require('./signIn.router');
 const resetPassword = require('./resetPassword.router');
 const requestPasswordReset = require('./requestPasswordReset.router');
+const logoutRouter = require('./logout.router');// ------> added by Enok Lima
+const currentUserRouter = require('./currentUser.router'); // ------> added by Enok Lima
+
 const {
   logInGoogleHandler,
   authenticateHandler,
@@ -24,11 +27,13 @@ router.use('/editUser', editUserRouter);
 router.use('/editUserByAdmin', editUserRouter);
 */
 //!REFERIDO A LOGIN PROPIO
+router.use('/currentUser', verifyToken, currentUserRouter); // ------> added by Enok Lima
 router.use('/signUp', signUpRouter);
 router.get('/confirmEmail/:userId', verifyToken, emailConfirmation);
 router.use('/signIn', signInRouter);
 router.use('/requestPasswordReset', requestPasswordReset);
 router.use('/resetPassword', verifyToken, resetPassword);
+router.use('/logout', verifyToken, logoutRouter); // ------> added by Enok Lima
 
 //!REFERIDO A LOGIN GOOGLE
 router.get('/loginGoogle', logInGoogleHandler);

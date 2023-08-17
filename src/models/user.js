@@ -8,6 +8,11 @@ module.exports = (sequelize) => {
       autoIncrement: true,
       primaryKey: true,
     },
+    username: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      unique: true,
+    },
     name: {
       type: DataTypes.STRING,
       allowNull: false,
@@ -57,5 +62,14 @@ module.exports = (sequelize) => {
       type: DataTypes.BOOLEAN,
       defaultValue: false,
     },
+  }, {
+    // -------------------> start added by Enok Lima for add indexes
+    indexes: [
+      {
+        unique: true,
+        fields: ['username', 'email'],
+      },
+    ],
+    // ------------------->  end added by Enok Lima for add indexes
   });
 };

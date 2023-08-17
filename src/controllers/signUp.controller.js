@@ -29,8 +29,10 @@ const controladorRegistro = async (
     }
 
     const contraseñaEncriptada = await encriptarContraseña(contraseña);
+    const generateUsername = (email, cuil) => `@${email.split('@')[0]}-${cuil}`; //-----> added by Enok Lima for generate username
 
     const nuevoUsuario = await User.create({
+      username: generateUsername(correoElectronico, cuil), //-----> added by Enok Lima for set username
       name: nombre,
       password: contraseñaEncriptada,
       cellPhone: celular,
