@@ -1,0 +1,34 @@
+\dt
+\c
+\all
+\c negocio
+\copy "SoldServices" FROM 'C:\Users\elgra\Desktop\HENRY\PROYECTO FINAL\SoldServices.csv' DELIMITER ',' CSV HEADER;
+\copy "Sales" FROM 'C:\Users\elgra\Desktop\HENRY\PROYECTO FINAL\Sales.csv' DELIMITER ',' CSV HEADER;
+\copy "TypesOfService" FROM 'C:\Users\elgra\Desktop\HENRY\PROYECTO FINAL\TypesOfService.csv' DELIMITER ',' CSV HEADER;
+\copy "Services" FROM 'C:\Users\elgra\Desktop\HENRY\PROYECTO FINAL\Services.csv' DELIMITER ',' CSV HEADER;
+ \copy "Users" FROM 'C:\Users\elgra\Documents\01-PROYECTO-GESTIONADOR\Users.csv' DELIMITER ',' CSV HEADER;
+
+asesoria=# SELECT MAX("id") FROM "Users";
+
+SELECT c.relname FROM pg_class c WHERE c.relkind = 'S';
+Esto mostrará una lista de todas las secuencias existentes en la base de datos.
+
+
+ Users_id_seq
+ SoldServices_id_seq
+ Services_id_seq
+ Reviews_id_seq
+ Sales_id_seq
+ TypeServices_id_seq
+(6 filas)
+
+ALTER SEQUENCE "Users_id_seq" RESTART WITH 7;
+ALTER SEQUENCE "Services_id_seq" RESTART WITH 41;
+ALTER SEQUENCE "TypeServices_id_seq" RESTART WITH 41;
+ALTER SEQUENCE "SoldServices_id_seq" RESTART WITH 9;
+ALTER SEQUENCE "Sales_id_seq" RESTART WITH 4;
+
+<img src="https://gcdn.emol.cl/humor/files/2016/11/memes-de-perros-1.jpg" alt="Imagen de usuario creado">
+
+
+		
