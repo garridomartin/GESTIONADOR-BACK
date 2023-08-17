@@ -18,7 +18,7 @@ const tokenCreated = (user, shhh) => {
     return { token, expiresIn };
   } catch (error) {
     console.error('Error creating token:', error);
-    throw new Error('Unable to create token: ' + error.message);
+    throw new Error('Unable to create token: ' + error.message); 
   }
 };
 
