@@ -8,12 +8,19 @@ require('dotenv').config();
 require('./middleware/passport.js');
 const passport = require('passport');
 const session = require('express-session');
+const cookieParser = require('cookie-parser'); //------------------ added for Enok Lima
 const server = express();
 
 server.name = 'API';
 server.use(express.json());
 server.use(morgan('dev'));
-server.use(cors());
+
+/******** modified for Enok Lima ********/
+server.use(cookieParser()); //------------------ added for Enok Lima
+server.use(cors({origin: 'http://localhost:3000', credentials: true}));
+/****************************************/
+//    👇👇👇👇👇👇
+//server.use(cors());
 /*
 server.use((req, res, next) => {
   res.header('Access-Control-Allow-Origin', '*'); // update to match the domain you will make the request from

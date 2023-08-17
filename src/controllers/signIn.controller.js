@@ -7,7 +7,7 @@ const signInController = async (req) => {
   try {
     const { email, password } = req;
 
-    const user = await User.findOne({ where: { email } });
+    const user = await User.findOne({ where: { email } }); // query user by email
 
     if (!user) return { error: 'Usuario invalido o inexistente' };
     if (!user.isEmailConfirmed)
@@ -27,6 +27,7 @@ const signInController = async (req) => {
 
     return {
       token: token.token,
+      userName: user.username, //--------> added by Enok Lima
       nameUser,
       profilePict,
       isAdmin,
