@@ -44,19 +44,19 @@ const loginSuccessHandler = async (req, res) => {
       profilePict: newUser.updatedDataUser.picture,
       isAdmin: newUser.updatedDataUser.isAdmin,
       isSeller: newUser.updatedDataUser.isSeller,
-      token: newUser.token.token,
+      // token: newUser.token.token,
     };
 
     //res.cookie('user', JSON.stringify(updatedFrontUser));
-    //res.cookie('token', newUser.token.token);
-    // res.json(updatedFrontUser);
-    res.status(200).send(`
+    res.cookie('token', newUser.token.token);
+    res.json(updatedFrontUser);
+    /*res.status(200).send(`
       <script>
         window.opener.postMessage(${JSON.stringify(updatedFrontUser)}, 
         '${URL_DEPLOY_FRONT}');
         window.close();
       </script>
-    `);
+    `);*/
   } catch (error) {
     console.error('ALERTA:', error);
     // Respondo si el usuario existe.
