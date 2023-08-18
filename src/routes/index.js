@@ -29,7 +29,7 @@ router.use('/editUserByAdmin', editUserRouter);
 //!REFERIDO A LOGIN PROPIO
 router.use('/currentUser', verifyToken, currentUserRouter); // ------> added by Enok Lima
 router.use('/signUp', signUpRouter);
-router.get('/confirmEmail/:userId', verifyToken, emailConfirmation);
+router.get('/confirmEmail/:token', verifyToken, emailConfirmation);
 router.use('/signIn', signInRouter);
 router.use('/requestPasswordReset', requestPasswordReset);
 router.use('/resetPassword', verifyToken, resetPassword);
