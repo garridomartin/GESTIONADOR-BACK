@@ -14,18 +14,21 @@ const signInHandler = async (req, res) => {
     if (tokenReceived.error) return res.status(401).json(tokenReceived);
 
     /********** modified by 🥑🌌🔥 Enok Lima ************/
-    return res.status(200).cookie('token', tokenReceived.token, {
-      expires: new Date(Date.now() + tokenReceived.expireIn * 1000),
-      httpOnly: true,
-      sameSite: 'strict'
-    }).json({
-      isAuthenticated: true,
-      username: tokenReceived.userName,
-      name: tokenReceived.nameUser,
-      profilePict: tokenReceived.profilePict,
-      isAdmin: tokenReceived.isAdmin,
-      isSeller: tokenReceived.isSeller,
-    });
+    return res
+      .status(200)
+      .cookie('token', tokenReceived.token, {
+        expires: new Date(Date.now() + tokenReceived.expireIn * 1000),
+        httpOnly: true,
+        sameSite: 'strict',
+      })
+      .json({
+        isAuthenticated: true,
+        username: tokenReceived.userName,
+        name: tokenReceived.nameUser,
+        profilePict: tokenReceived.profilePict,
+        isAdmin: tokenReceived.isAdmin,
+        isSeller: tokenReceived.isSeller,
+      });
     /********************** 🥑🌌🔥 ************************/
 
     /**return res.status(200).json({
@@ -37,7 +40,6 @@ const signInHandler = async (req, res) => {
       isAdmin: tokenReceived.isAdmin,
       isSeller: tokenReceived.isSeller,
     });*/
-
   } catch (error) {
     return res.status(401).json({
       error: 'Error en la autenticación',
