@@ -1,6 +1,7 @@
 const { User } = require('../db.js');
 const subirAFirebase = require('../utils/firebaseUploader');
 const encriptarContraseña = require('../utils/hashPassword.js');
+const createUser = require('../utils/createUser.js');
 const crearPlantilla = require('../utils/templateCreation.js');
 const enviarNotificacionEmail = require('../utils/senderMail.js');
 const fs = require('fs');
@@ -30,10 +31,11 @@ const controladorRegistro = async (
     }
 
     const contraseñaEncriptada = await encriptarContraseña(contraseña);
-    const generateUsername = (email, cuil) => `@${email.split('@')[0]}-${cuil}`; //-----> added by Enok Lima for generate username
+    const userName = await createUser(correoElectronico);
+    //const generateUsername = (email, cuil) => `@${email.split('@')[0]}-${cuil}`; //-----> added by Enok Lima for generate username
 
     const nuevoUsuario = await User.create({
-      username: generateUsername(correoElectronico, cuil), //-----> added by Enok Lima for set username
+      username: userName, //-----> added by Enok Lima for set username
       name: nombre,
       password: contraseñaEncriptada,
       cellPhone: celular,

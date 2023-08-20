@@ -1,6 +1,5 @@
 const bcrypt = require('bcrypt');
 const dotenv = require('dotenv');
-const { log } = require('handlebars');
 dotenv.config();
 const { AUTH_ROUNDS } = process.env;
 

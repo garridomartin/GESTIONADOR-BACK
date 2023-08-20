@@ -1,6 +1,7 @@
 const { User } = require('../db');
 const { tokenCreated } = require('../utils/createToken.js');
 const { SECRET_KEY, URL_DEPLOY_FRONT } = process.env;
+const createUser = require('../utils/createUser.js');
 const crearPlantilla = require('../utils/templateCreation.js');
 const enviarNotificacionEmail = require('../utils/senderMail.js');
 const fs = require('fs');
@@ -31,11 +32,9 @@ const loginController = async (dataUser) => {
         updatedDataUser: updatedDataUser,
       };
     } else {
-      const generateUsername = (email, displayName) =>
-        `@${email.split('@')[0]}-${displayName}`; //-----> added by Enok Lima for generate username
-
+      const Username = await createUser(email);
       const newUser = await User.create({
-        username: generateUsername(email, displayName), //-----> added by Enok Lima for set username
+        username: Username, //-----> added by Enok Lima for set username
         name: displayName,
         email: email,
         profilePict: photoUrl,
