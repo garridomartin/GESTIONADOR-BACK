@@ -11,12 +11,12 @@ const signInController = async (req) => {
 
     if (!user) return { error: 'Usuario invalido o inexistente' };
     if (!user.isEmailConfirmed)
-      return { error: 'Email de usuario aun no confirmado' };
+      return { warn: 'Email de usuario aun no confirmado' };
     if (user?.isDeleted)
       return { error: 'Este usuario fue baneado o eliminado' };
 
     const passCompare = await bcrypt.compare(password, user.password);
-    if (!passCompare) return { error: 'Password erroneo' };
+    if (!passCompare) return { warn: 'Password erroneo' };
 
     const token = tokenCreated(user, SECRET_KEY);
 

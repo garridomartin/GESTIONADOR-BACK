@@ -11,7 +11,7 @@ const signInHandler = async (req, res) => {
 
     const tokenReceived = await signInController(req.body);
 
-    if (tokenReceived.error) return res.status(401).json(tokenReceived);
+    if (tokenReceived.error || tokenReceived.warn) return res.status(200).json(tokenReceived);
 
     /********** modified by 🥑🌌🔥 Enok Lima ************/
     return res.status(200).cookie('token', tokenReceived.token, {
