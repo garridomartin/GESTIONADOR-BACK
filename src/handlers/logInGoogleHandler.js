@@ -42,7 +42,7 @@ const loginSuccessHandler = async (req, res) => {
       isAuthenticated: true,
       username: newUser.userName,
       name: newUser.updatedDataUser.displayName,
-      //email: newUser.updatedDataUser.email,
+      email: newUser.updatedDataUser.email,
       profilePict: newUser.updatedDataUser.picture,
       isAdmin: newUser.updatedDataUser.isAdmin,
       isSeller: newUser.updatedDataUser.isSeller,
