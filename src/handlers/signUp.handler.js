@@ -6,16 +6,16 @@ const signUp = async (req, res) => {
   try {
     const errors = validationResult(req.body);
     if (!errors.isEmpty()) throw new Error(errors.array());
-    const { name, password, cellPhone, birthDay, cuil, email } = req.body;
+    const { name, password, cellPhone, /* birthDay, cuil,*/ email } = req.body;
 
     const signInUp = await signUpController(
       name,
       password,
       cellPhone,
-      birthDay,
-      cuil,
-      email,
-      req.file
+      // birthDay,
+      //  cuil,
+      email
+      //  req.file
     );
 
     if (signInUp?.error) {
