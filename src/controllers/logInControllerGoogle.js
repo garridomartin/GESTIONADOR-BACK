@@ -15,6 +15,8 @@ const loginController = async (dataUser) => {
     const existingUser = await User.findOne({ where: { email: email } });
 
     if (existingUser) {
+      await existingUser.update({ isEmailConfirmed: true });
+
       const updatedDataUser = {
         ...dataUser,
         User_id: existingUser.id,
@@ -38,6 +40,7 @@ const loginController = async (dataUser) => {
         name: displayName,
         email: email,
         profilePict: photoUrl,
+        isEmailConfirmed: true,
       });
 
       const updatedDataUser = {

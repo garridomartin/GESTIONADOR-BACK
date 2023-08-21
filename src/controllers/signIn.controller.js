@@ -22,6 +22,7 @@ const signInController = async (req) => {
 
     const nameUser = user.name;
     const profilePict = user.profilePict;
+    const Email = user.email;
     const isAdmin = user.isAdmin;
     const isSeller = user.isSeller;
 
@@ -29,6 +30,7 @@ const signInController = async (req) => {
       token: token.token,
       userName: user.username, //--------> added by Enok Lima
       nameUser,
+      Email,
       profilePict,
       isAdmin,
       isSeller,
