@@ -6,7 +6,7 @@ const emailConfirmation = require('../handlers/emailConfirmation.handler');
 const signInRouter = require('./signIn.router');
 const resetPassword = require('./resetPassword.router');
 const requestPasswordReset = require('./requestPasswordReset.router');
-const logoutRouter = require('./logout.router');// ------> added by Enok Lima
+const logoutRouter = require('./logout.router'); // ------> added by Enok Lima
 const currentUserRouter = require('./currentUser.router'); // ------> added by Enok Lima
 
 const {

@@ -1,11 +1,16 @@
 const { Router } = require('express');
 const router = Router();
+const jwt = require('jsonwebtoken');
+const { SECRET_KEY } = process.env;
 const confirmEmailController = require('../controllers/emailConfirmationController.js');
 
 const emailConfirmation = async (req, res) => {
+  // const token = req.params.token;
   try {
-    const { userId } = req.params;
-    const result = await confirmEmailController(userId);
+    //const decodedToken = jwt.verify(token, SECRET_KEY);
+    //const userId = decodedToken.user.id;
+
+    const result = await confirmEmailController(req.id);
     res.status(200).json(result);
   } catch (error) {
     console.error('Error during email confirmation:', error);

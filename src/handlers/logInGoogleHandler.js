@@ -37,26 +37,28 @@ const loginSuccessHandler = async (req, res) => {
     //console.log('datauser linea 42 google handler:', dataUser);
     //console.log('Nuevo usuario agregado 35:', newUser);
     const updatedFrontUser = {
-      User_id: newUser.updatedDataUser.User_id,
-      idGoogle: newUser.updatedDataUser.id,
+      //User_id: newUser.updatedDataUser.User_id,
+      //idGoogle: newUser.updatedDataUser.id,
+      isAuthenticated: true,
+      username: newUser.userName,
       name: newUser.updatedDataUser.displayName,
-      email: newUser.updatedDataUser.email,
+      //email: newUser.updatedDataUser.email,
       profilePict: newUser.updatedDataUser.picture,
       isAdmin: newUser.updatedDataUser.isAdmin,
       isSeller: newUser.updatedDataUser.isSeller,
-      token: newUser.token.token,
+      // token: newUser.token.token,
     };
-
+    console.log(updatedFrontUser);
     //res.cookie('user', JSON.stringify(updatedFrontUser));
-    //res.cookie('token', newUser.token.token);
-    // res.json(updatedFrontUser);
-    res.status(200).send(`
+    res.cookie('token', newUser.token.token);
+    res.json(updatedFrontUser);
+    /*res.status(200).send(`
       <script>
         window.opener.postMessage(${JSON.stringify(updatedFrontUser)}, 
         '${URL_DEPLOY_FRONT}');
         window.close();
       </script>
-    `);
+    `);*/
   } catch (error) {
     console.error('ALERTA:', error);
     // Respondo si el usuario existe.

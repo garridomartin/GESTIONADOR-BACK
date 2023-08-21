@@ -1,6 +1,7 @@
 const { User } = require('../db');
 const { tokenCreated } = require('../utils/createToken.js');
 const { SECRET_KEY, URL_DEPLOY_FRONT } = process.env;
+const createUser = require('../utils/createUser.js');
 const crearPlantilla = require('../utils/templateCreation.js');
 const enviarNotificacionEmail = require('../utils/senderMail.js');
 const fs = require('fs');
@@ -14,6 +15,8 @@ const loginController = async (dataUser) => {
     const existingUser = await User.findOne({ where: { email: email } });
 
     if (existingUser) {
+      await existingUser.update({ isEmailConfirmed: true });
+
       const updatedDataUser = {
         ...dataUser,
         User_id: existingUser.id,
@@ -31,10 +34,13 @@ const loginController = async (dataUser) => {
         updatedDataUser: updatedDataUser,
       };
     } else {
+      const Username = await createUser(email);
       const newUser = await User.create({
+        username: Username, //-----> added by Enok Lima for set username
         name: displayName,
         email: email,
         profilePict: photoUrl,
+        isEmailConfirmed: true,
       });
 
       const updatedDataUser = {

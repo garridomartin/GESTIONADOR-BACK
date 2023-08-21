@@ -2,14 +2,16 @@ const { SECRET_KEY } = process.env;
 const jwt = require('jsonwebtoken');
 
 const verifyToken = (req, res, next) => {
-  const { token } = req.cookies; // ------> added by Enok Lima for get token from cookies
+  const isEmailConfirmed = req.url.startsWith('/confirmEmail/');
+
+  const { token } = isEmailConfirmed ? req.cookies : req.params; // ------> added by Enok Lima for get token from cookies
+
   !token && res.status(200).json({ isAuthenticated: false }); // ------> added by Enok Lima for verify if token exist
 
   try {
-    //let token = req.headers.authorization; // ------> commented by Enok Lima 
+    //let token = req.headers.authorization; // ------> commented by Enok Lima
 
-    //token = token.split('Bearer').pop().trim(); // ------> commented by Enok Lima 
-
+    //token = token.split('Bearer').pop().trim(); // ------> commented by Enok Lima
 
     const tokenized = jwt.verify(token, SECRET_KEY);
     req.id = tokenized.id;
