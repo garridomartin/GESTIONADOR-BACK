@@ -25,6 +25,7 @@ const signInHandler = async (req, res) => {
         isAuthenticated: true,
         username: tokenReceived.userName,
         name: tokenReceived.nameUser,
+        email: tokenReceived.Email,
         profilePict: tokenReceived.profilePict,
         isAdmin: tokenReceived.isAdmin,
         isSeller: tokenReceived.isSeller,
