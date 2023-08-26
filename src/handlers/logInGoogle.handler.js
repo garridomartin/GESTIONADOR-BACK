@@ -1,6 +1,6 @@
 const passport = require('passport');
 require('../middleware/passport');
-const loginController = require('../controllers/logInControllerGoogle');
+const loginController = require('../controllers/logInGoogle.controller');
 const dotenv = require('dotenv');
 dotenv.config();
 //const { URL_DEPLOY_FRONT } = process.env;
