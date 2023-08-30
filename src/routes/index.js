@@ -10,8 +10,8 @@ const logoutRouter = require('./logout.router'); // ------> added by Enok Lima
 const currentUserRouter = require('./currentUser.router'); //------> added by Enok Lima
 const editUserRouter = require('./editUser.router');
 const getUserById = require('../handlers/getUserById.handler');
+const getAllUsersInfo = require('../handlers/getAllUsersInfo.handler');
 /*const currentUserRouter = require('./currentUser.router');
-const currentUserRouter = require('./currentUser.router');
 const currentUserRouter = require('./currentUser.router');
 const currentUserRouter = require('./currentUser.router');
 const currentUserRouter = require('./currentUser.router');
@@ -31,7 +31,7 @@ require('../middleware/passport');
 //!REFERIDO A USUARIOS
 router.use('/editUser', verifyToken, editUserRouter);
 router.use('/getUserById', verifyToken, getUserById);
-//router.use('/allUsers', verifyToken, getAllUsersInfo);
+router.use('/allUsers', verifyToken, getAllUsersInfo);
 //router.use('/deleteUser', verifyToken, manageLogicalDeleteUser);
 //router.use('/changeUserToSeller', verifyToken, changeSellerPrivileges);
 //router.use('/editUserByAdmin', verifyToken, editUser);

@@ -11,6 +11,14 @@ const getUserById = async (req, res) => {
     const response = {
       name: existUser.name,
       profilePict: existUser.profilePict,
+      cellPhone: existUser.cellPhone,
+      birthDay: existUser.birthDay,
+      cuil: existUser.cuil,
+      email: existUser.email,
+      username: existUser.username,
+      isDeleted: existUser.isDeleted,
+      isSeller: existUser.isSeller,
+      isAdmin: existUser.isAdmin,
     };
 
     return res.status(200).json(response);

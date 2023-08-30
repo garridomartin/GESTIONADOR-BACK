@@ -23,7 +23,8 @@ const verifyToken = (req, res, next) => {
     const tokenized = jwt.verify(token, SECRET_KEY);
     req.id = tokenized.id;
     req.email = tokenized.email;
-
+    req.user = tokenized.user;
+    console.log(tokenized);
     next();
   } catch (error) {
     return res.status(401).json({ error: 'Unauthorized access' });
