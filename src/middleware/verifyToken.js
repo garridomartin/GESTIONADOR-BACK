@@ -24,7 +24,7 @@ const verifyToken = (req, res, next) => {
     req.id = tokenized.id;
     req.email = tokenized.email;
     req.user = tokenized.user;
-    console.log(tokenized);
+    //console.log('este log es de la verificacion del token:', tokenized);
     next();
   } catch (error) {
     return res.status(401).json({ error: 'Unauthorized access' });
