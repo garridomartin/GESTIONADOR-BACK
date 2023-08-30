@@ -1,5 +1,5 @@
 //const { log } = require('handlebars');
-const resetPassController = require('../controllers/resetPassController.controller');
+const resetPassController = require('../controllers/resetPass.controller');
 const { validationResult } = require('express-validator');
 
 const resetPassword = async (req, res) => {
