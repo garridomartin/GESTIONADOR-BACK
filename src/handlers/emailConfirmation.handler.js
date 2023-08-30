@@ -2,7 +2,7 @@ const { Router } = require('express');
 const router = Router();
 const jwt = require('jsonwebtoken');
 const { SECRET_KEY } = process.env;
-const confirmEmailController = require('../controllers/emailConfirmationController.js');
+const confirmEmailController = require('../controllers/emailConfirmation.controller.js');
 
 const emailConfirmation = async (req, res) => {
   // const token = req.params.token;

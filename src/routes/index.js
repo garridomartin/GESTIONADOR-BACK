@@ -7,27 +7,37 @@ const signInRouter = require('./signIn.router');
 const resetPassword = require('./resetPassword.router');
 const requestPasswordReset = require('./requestPasswordReset.router');
 const logoutRouter = require('./logout.router'); // ------> added by Enok Lima
-const currentUserRouter = require('./currentUser.router'); // ------> added by Enok Lima
+const currentUserRouter = require('./currentUser.router'); //------> added by Enok Lima
+const editUserRouter = require('./editUser.router');
+const getUserById = require('../handlers/getUserById.handler');
+const getAllUsersInfo = require('../handlers/getAllUsersInfo.handler');
+/*const currentUserRouter = require('./currentUser.router');
+const currentUserRouter = require('./currentUser.router');
+const currentUserRouter = require('./currentUser.router');
+const currentUserRouter = require('./currentUser.router');
 
-const { getGoogleOAuth, postGoogleOAuth } = require('../handlers/googleOAuthHandler');
-
-/*const {
+const currentUserRouter = require('./currentUser.router');
+const currentUserRouter = require('./currentUser.router');*/
+const {
   logInGoogleHandler,
   authenticateHandler,
   authCallbackHandler,
   loginFailureHandler,
   loginSuccessHandler,
   getLogoutHandler,
-} = require('../handlers/logInGoogleHandler');
-require('../middleware/passport');*/
-/*
+} = require('../handlers/logInGoogle.handler');
+require('../middleware/passport');
+
 //!REFERIDO A USUARIOS
-router.use('/deleteUser', manageLogicalDeleteUserRouter);
-router.use('/allUsers', getAllUsersInfoRouter);
-router.use('/getUserById', getUserByIdRouter);
-router.use('/editUser', editUserRouter);
-router.use('/editUserByAdmin', editUserRouter);
-*/
+router.use('/editUser', verifyToken, editUserRouter);
+router.use('/getUserById', verifyToken, getUserById);
+router.use('/allUsers', verifyToken, getAllUsersInfo);
+//router.use('/deleteUser', verifyToken, manageLogicalDeleteUser);
+//router.use('/changeUserToSeller', verifyToken, changeSellerPrivileges);
+//router.use('/editUserByAdmin', verifyToken, editUser);
+//router.use('/getSellsBySeller', verifyToken, manageLogicalSellBySeller);
+//router.use('/getSellers', verifyToken, getAllSellers);
+
 //!REFERIDO A LOGIN PROPIO
 router.use('/currentUser', verifyToken, currentUserRouter); // ------> added by Enok Lima
 router.use('/signUp', signUpRouter);

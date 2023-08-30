@@ -1,5 +1,5 @@
 const { User } = require('../db.js');
-const requestPasswordController = require('../controllers/requestPasswordController.controller');
+const requestPasswordController = require('../controllers/requestPassword.controller.js');
 const { validationResult } = require('express-validator');
 
 const requestPasswordReset = async (req, res) => {

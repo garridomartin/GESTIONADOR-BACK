@@ -1,6 +1,6 @@
-//const passport = require('passport');
-const passport = require('../middleware/passport');
-const loginController = require('../controllers/logInControllerGoogle');
+const passport = require('passport');
+require('../middleware/passport');
+const loginController = require('../controllers/logInGoogle.controller');
 const dotenv = require('dotenv');
 dotenv.config();
 //const { URL_DEPLOY_FRONT } = process.env;
@@ -42,7 +42,7 @@ const loginSuccessHandler = async (req, res) => {
       isAuthenticated: true,
       username: newUser.userName,
       name: newUser.updatedDataUser.displayName,
-      //email: newUser.updatedDataUser.email,
+      email: newUser.updatedDataUser.email,
       profilePict: newUser.updatedDataUser.picture,
       isAdmin: newUser.updatedDataUser.isAdmin,
       isSeller: newUser.updatedDataUser.isSeller,
