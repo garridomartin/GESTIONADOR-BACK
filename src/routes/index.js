@@ -11,8 +11,8 @@ const currentUserRouter = require('./currentUser.router'); //------> added by En
 const editUserRouter = require('./editUser.router');
 const getUserById = require('../handlers/getUserById.handler');
 const getAllUsersInfo = require('../handlers/getAllUsersInfo.handler');
+const getAllSellers = require('../handlers/getAllSellers.handler');
 /*const currentUserRouter = require('./currentUser.router');
-const currentUserRouter = require('./currentUser.router');
 const currentUserRouter = require('./currentUser.router');
 const currentUserRouter = require('./currentUser.router');
 
@@ -28,15 +28,23 @@ const {
 } = require('../handlers/logInGoogle.handler');
 require('../middleware/passport');
 
+//!REFERIDO A PAQAR
+
+//!REFERIDO A MERCADOLIBRE
+
+//!REFERIDO A FACTURACION
+
+//!REFERIDO A PRODUCTOS, COMPRAS Y VENTAS
+
 //!REFERIDO A USUARIOS
 router.use('/editUser', verifyToken, editUserRouter);
 router.use('/getUserById', verifyToken, getUserById);
 router.use('/allUsers', verifyToken, getAllUsersInfo);
+router.use('/getSellers', verifyToken, getAllSellers);
 //router.use('/deleteUser', verifyToken, manageLogicalDeleteUser);
 //router.use('/changeUserToSeller', verifyToken, changeSellerPrivileges);
 //router.use('/editUserByAdmin', verifyToken, editUser);
 //router.use('/getSellsBySeller', verifyToken, manageLogicalSellBySeller);
-//router.use('/getSellers', verifyToken, getAllSellers);
 
 //!REFERIDO A LOGIN PROPIO
 router.use('/currentUser', verifyToken, currentUserRouter); // ------> added by Enok Lima
