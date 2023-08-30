@@ -9,7 +9,9 @@ const requestPasswordReset = require('./requestPasswordReset.router');
 const logoutRouter = require('./logout.router'); // ------> added by Enok Lima
 const currentUserRouter = require('./currentUser.router'); // ------> added by Enok Lima
 
-const {
+const { getGoogleOAuth, postGoogleOAuth } = require('../handlers/googleOAuthHandler');
+
+/*const {
   logInGoogleHandler,
   authenticateHandler,
   authCallbackHandler,
@@ -17,7 +19,7 @@ const {
   loginSuccessHandler,
   getLogoutHandler,
 } = require('../handlers/logInGoogleHandler');
-require('../middleware/passport');
+require('../middleware/passport');*/
 /*
 //!REFERIDO A USUARIOS
 router.use('/deleteUser', manageLogicalDeleteUserRouter);
@@ -36,11 +38,13 @@ router.use('/resetPassword', verifyToken, resetPassword);
 router.use('/logout', verifyToken, logoutRouter); // ------> added by Enok Lima
 
 //!REFERIDO A LOGIN GOOGLE
-router.get('/loginGoogle', logInGoogleHandler);
-router.get('/loginGoogle/auth', authenticateHandler);
-router.get('/loginGoogle/auth/callback', authCallbackHandler);
-router.get('/loginGoogle/auth/callback/success', loginSuccessHandler);
-router.get('/loginGoogle/auth/callback/failure', loginFailureHandler);
-router.get('/loginGoogle/logoutGoogle', getLogoutHandler);
+router.get('/', postGoogleOAuth);
+router.post('/', getGoogleOAuth);
+//router.get('/loginGoogle', logInGoogleHandler);
+//router.get('/loginGoogle/auth', authenticateHandler);
+//router.get('/loginGoogle/auth/callback', authCallbackHandler);
+//router.get('/loginGoogle/auth/callback/success', loginSuccessHandler);
+//router.get('/loginGoogle/auth/callback/failure', loginFailureHandler);
+//router.get('/loginGoogle/logoutGoogle', getLogoutHandler);
 
 module.exports = router;

@@ -1,4 +1,4 @@
-const passport = require('passport');
+/*const passport = require('passport');
 require('dotenv').config();
 const GoogleStrategy = require('passport-google-oauth2').Strategy;
 
@@ -28,3 +28,4 @@ passport.use(
 );
 
 module.exports = passport;
+*/

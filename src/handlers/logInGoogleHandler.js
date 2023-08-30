@@ -1,5 +1,5 @@
-const passport = require('passport');
-require('../middleware/passport');
+//const passport = require('passport');
+const passport = require('../middleware/passport');
 const loginController = require('../controllers/logInControllerGoogle');
 const dotenv = require('dotenv');
 dotenv.config();

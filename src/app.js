@@ -5,8 +5,8 @@ const mainRouter = require('./routes/index');
 const cors = require('cors');
 require('./db.js');
 require('dotenv').config();
-require('./middleware/passport.js');
-const passport = require('passport');
+//require('./middleware/passport.js'); // ---------------------> comment for enok Lima. date: 21 08 2023
+//const passport = require('passport'); // ---------------------> comment for enok Lima. date: 21 08 2023
 const session = require('express-session');
 const cookieParser = require('cookie-parser'); //------------------ added for Enok Lima
 const server = express();
@@ -42,8 +42,8 @@ server.use(
     name: process.env.COOKIE_NAME,
   })
 );
-server.use(passport.initialize());
-server.use(passport.session());
+//server.use(passport.initialize()); //----------------------> comment for enok Lima. date: 21 08 2023
+//server.use(passport.session());   //----------------------> comment for enok Lima. date: 21 08 2023
 
 server.use((err, req, res, next) => {
   // eslint-disable-line no-unused-vars
