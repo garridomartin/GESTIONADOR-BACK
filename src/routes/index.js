@@ -12,9 +12,9 @@ const editUserRouter = require('./editUser.router');
 const getUserById = require('../handlers/getUserById.handler');
 const getAllUsersInfo = require('../handlers/getAllUsersInfo.handler');
 const getAllSellers = require('../handlers/getAllSellers.handler');
+const manageLogicalDeleteUser = require('../handlers/manageLogicalDeleteUser.handler');
+const changeSellerPrivileges = require('../handlers/changeSellerPrivileges.handler');
 /*const currentUserRouter = require('./currentUser.router');
-const currentUserRouter = require('./currentUser.router');
-const currentUserRouter = require('./currentUser.router');
 
 const currentUserRouter = require('./currentUser.router');
 const currentUserRouter = require('./currentUser.router');*/
@@ -41,10 +41,8 @@ router.use('/editUser', verifyToken, editUserRouter);
 router.use('/getUserById', verifyToken, getUserById);
 router.use('/allUsers', verifyToken, getAllUsersInfo);
 router.use('/getSellers', verifyToken, getAllSellers);
-//router.use('/deleteUser', verifyToken, manageLogicalDeleteUser);
-//router.use('/changeUserToSeller', verifyToken, changeSellerPrivileges);
-//router.use('/editUserByAdmin', verifyToken, editUser);
-//router.use('/getSellsBySeller', verifyToken, manageLogicalSellBySeller);
+router.use('/deleteUser', verifyToken, manageLogicalDeleteUser);
+router.use('/changeUserToSeller', verifyToken, changeSellerPrivileges);
 
 //!REFERIDO A LOGIN PROPIO
 router.use('/currentUser', verifyToken, currentUserRouter); // ------> added by Enok Lima
