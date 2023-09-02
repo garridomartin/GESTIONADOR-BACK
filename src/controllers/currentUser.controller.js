@@ -9,7 +9,7 @@ const { User } = require('../db.js');
 const currentUserController = async (tokenUser) => {
   try {
     const { username, email } = tokenUser;
-
+    // console.log('tokenUser:', tokenUser);
     const user = await User.findOne({ where: { username, email } });
 
     if (!user) return { isAuthenticated: false };

@@ -19,6 +19,9 @@ module.exports = (sequelize) => {
     totalAmount: {
       type: DataTypes.INTEGER,
       allowNull: false,
+      validate: {
+        min: 0,
+      },
     },
     invoice: {
       type: DataTypes.BOOLEAN,

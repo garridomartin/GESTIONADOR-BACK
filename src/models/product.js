@@ -26,25 +26,41 @@ module.exports = (sequelize) => {
       },
       cost: {
         type: DataTypes.INTEGER,
+        allowNull: true,
+        validate: {
+          min: 0,
+        },
       },
       priceML: {
         type: DataTypes.INTEGER,
+        allowNull: true,
+        validate: {
+          min: 0,
+        },
       },
       priceEComm: {
         type: DataTypes.INTEGER,
+        allowNull: true,
+        validate: {
+          min: 0,
+        },
       },
       priceLocal: {
         type: DataTypes.INTEGER,
       },
       quantity: {
         type: DataTypes.INTEGER,
+        allowNull: true,
+        validate: {
+          min: 0,
+        },
       },
       soldToDistribute: {
         type: DataTypes.INTEGER,
       },
       isDeleted: {
         type: DataTypes.BOOLEAN,
-        defaultValue: false,
+        defaultValue: true,
       },
     },
     { timestamps: false }

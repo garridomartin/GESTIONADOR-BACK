@@ -14,10 +14,7 @@ const getAllUsersInfo = require('../handlers/getAllUsersInfo.handler');
 const getAllSellers = require('../handlers/getAllSellers.handler');
 const manageLogicalDeleteUser = require('../handlers/manageLogicalDeleteUser.handler');
 const changeSellerPrivileges = require('../handlers/changeSellerPrivileges.handler');
-/*const currentUserRouter = require('./currentUser.router');
-
-const currentUserRouter = require('./currentUser.router');
-const currentUserRouter = require('./currentUser.router');*/
+const newProductrouter = require('./newProduct.router');
 const {
   logInGoogleHandler,
   authenticateHandler,
@@ -34,7 +31,23 @@ require('../middleware/passport');
 
 //!REFERIDO A FACTURACION
 
-//!REFERIDO A PRODUCTOS, COMPRAS Y VENTAS
+//!REFERIDO A VENTAS
+/*
+router.use('/getSellsBySeller', verifyToken, SellsBySeller); */
+
+//!REFERIDO A PRODUCTOS Y COMPRAS
+router.use('/newProduct', verifyToken, newProductrouter);
+
+/*router.use('/editProduct', verifyToken, editProduct);
+router.use('/batchNewProducts', verifyToken, batchNewProducts);
+router.use('/batchNewCost', verifyToken, batchNewCost);
+router.use('/getProductById', verifyToken, getProductById);
+router.use('/getAllProducts', verifyToken, getAllProducts);
+router.use('/deleteProduct', verifyToken, deleteProduct);
+router.use('/createCategory', verifyToken, createCategory);
+router.use('/editCategory', verifyToken, editCategory)
+router.use('/createSupplier', verifyToken, createSupplier);
+router.use('/editSupplier', verifyToken, editSupplier)*/
 
 //!REFERIDO A USUARIOS
 router.use('/editUser', verifyToken, editUserRouter);

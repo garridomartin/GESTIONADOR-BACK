@@ -1,22 +1,54 @@
+COMANDOS:
+
 \dt
 \c
 \all
 \c negocio
-\copy "SoldServices" FROM 'C:\Users\elgra\Desktop\HENRY\PROYECTO FINAL\SoldServices.csv' DELIMITER ',' CSV HEADER;
-\copy "Sales" FROM 'C:\Users\elgra\Desktop\HENRY\PROYECTO FINAL\Sales.csv' DELIMITER ',' CSV HEADER;
-\copy "TypesOfService" FROM 'C:\Users\elgra\Desktop\HENRY\PROYECTO FINAL\TypesOfService.csv' DELIMITER ',' CSV HEADER;
-\copy "Services" FROM 'C:\Users\elgra\Desktop\HENRY\PROYECTO FINAL\Services.csv' DELIMITER ',' CSV HEADER;
- \copy "Users" FROM 'C:\Users\elgra\Documents\01-PROYECTO-GESTIONADOR\Users.csv' DELIMITER ',' CSV HEADER;
 
-asesoria=# SELECT MAX("id") FROM "Users";
+SELECT table_name FROM information_schema.tables WHERE table_schema = 'public' AND table_name = 'CategorySupplier'; //BUSCO SI EXISTE UNA RELACION O TABLA
+
+\copy "Users" FROM 'C:\Users\elgra\Documents\01-PROYECTO-GESTIONADOR\Users.csv' DELIMITER ',' CSV HEADER;
+\copy "Suppliers" FROM 'C:\Users\elgra\Documents\01-PROYECTO-GESTIONADOR\Suppliers.csv' DELIMITER ',' CSV HEADER;
+\copy "Categories" FROM 'C:\Users\elgra\Documents\01-PROYECTO-GESTIONADOR\Categories.csv' DELIMITER ',' CSV HEADER;
+\copy "Products" FROM 'C:\Users\elgra\Documents\01-PROYECTO-GESTIONADOR\Products.csv' DELIMITER ',' CSV HEADER;
+
+//para cargar la relacion entre el proveedor y su categoria
+SELECT * FROM public."CategorySupplier";
+INSERT INTO public."CategorySupplier" ("CategoryId", "SupplierId", "createdAt", "updatedAt")
+VALUES (1, 1, now(), now());
+
+
+//para cargar la relacion entre el producto y su categoria
+SELECT * FROM public."CategoryProduct";
+INSERT INTO public."CategoryProduct" ("CategoryId", "ProductId", "createdAt", "updatedAt")
+VALUES (1, 1, now(), now());
+
+//para cargar la relacion entre el producto y su proveedor
+SELECT * FROM public."ProductSupplier";
+INSERT INTO public."ProductSupplier" ("ProductId", "SupplierId", "createdAt", "updatedAt")
+VALUES (1, 1, now(), now());
+
+
+
+
+
+
+//Esto debe hacerse, una vez que se forzaron las tablas
+negocio=# SELECT MAX("id") FROM "Users";
 
 SELECT c.relname FROM pg_class c WHERE c.relkind = 'S';
 Esto mostrará una lista de todas las secuencias existentes en la base de datos.
 
 
+-- Agregar una relación entre una categoría y un proveedor
+INSERT INTO CategorySupplier (CategoryId, SupplierId)
+VALUES (1, 1);
+
+
+
  Users_id_seq
  SoldServices_id_seq
- Services_id_seq
+ Services_id_seq	
  Reviews_id_seq
  Sales_id_seq
  TypeServices_id_seq

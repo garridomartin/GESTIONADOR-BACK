@@ -23,7 +23,7 @@ const verifyToken = (req, res, next) => {
     const tokenized = jwt.verify(token, SECRET_KEY);
     req.id = tokenized.id;
     req.email = tokenized.email;
-    req.user = tokenized.user;
+    req.username = tokenized.username;
     //console.log('este log es de la verificacion del token:', tokenized);
     next();
   } catch (error) {
