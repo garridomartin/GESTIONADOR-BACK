@@ -27,6 +27,7 @@ module.exports = (sequelize) => {
       cost: {
         type: DataTypes.INTEGER,
         allowNull: true,
+        defaultValue: 0,
         validate: {
           min: 0,
         },
@@ -34,6 +35,7 @@ module.exports = (sequelize) => {
       priceML: {
         type: DataTypes.INTEGER,
         allowNull: true,
+        defaultValue: 0,
         validate: {
           min: 0,
         },
@@ -41,16 +43,19 @@ module.exports = (sequelize) => {
       priceEComm: {
         type: DataTypes.INTEGER,
         allowNull: true,
+        defaultValue: 0,
         validate: {
           min: 0,
         },
       },
       priceLocal: {
         type: DataTypes.INTEGER,
+        defaultValue: 0,
       },
       quantity: {
         type: DataTypes.INTEGER,
         allowNull: true,
+        defaultValue: 0,
         validate: {
           min: 0,
         },

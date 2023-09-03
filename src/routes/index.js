@@ -36,7 +36,7 @@ require('../middleware/passport');
 router.use('/getSellsBySeller', verifyToken, SellsBySeller); */
 
 //!REFERIDO A PRODUCTOS Y COMPRAS
-router.use('/newProduct', verifyToken, newProductrouter);
+router.use('/newProduct'/*, verifyToken*/, newProductrouter);
 
 /*router.use('/editProduct', verifyToken, editProduct);
 router.use('/batchNewProducts', verifyToken, batchNewProducts);

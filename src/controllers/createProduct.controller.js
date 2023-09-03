@@ -10,21 +10,21 @@ const createProductController = async (
   priceEComm,
   priceLocal,
   quantity,
-  supplier,
-  category,
-  files
+ // supplier,
+ // category,
+ // files
 ) => {
-  const uploadPicture = await firebaseUploader(files);
+ /* const uploadPicture = await firebaseUploader(files);
   const findCategory = await Category.findAll({
     where: { name: category },
   });
   const findSupplier = await Supplier.findAll({
     where: { name: supplier },
-  });
+  });*/
   const newProduct = await Product.create({
     name: name,
     shortDescription: shortDescription,
-    files: uploadPicture,
+    //files: uploadPicture,
     longDescription: longDescription,
     cost: cost,
     priceML: priceML,
@@ -33,8 +33,8 @@ const createProductController = async (
     quantity: quantity,
   });
 
-  await newProduct.add(findSupplier);
-  await newProduct.add(findCategory);
+ // await newProduct.add(findSupplier);
+//  await newProduct.add(findCategory);
 
   return newProduct;
 };
