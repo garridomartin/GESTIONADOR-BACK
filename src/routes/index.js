@@ -36,12 +36,11 @@ require('../middleware/passport');
 router.use('/getSellsBySeller', verifyToken, SellsBySeller); */
 
 //!REFERIDO A PRODUCTOS Y COMPRAS
-router.use('/newProduct'/*, verifyToken*/, newProductrouter);
-
+router.use('/newProduct', verifyToken, newProductrouter);
+//router.use('/getProductById', verifyToken, getProductById);
 /*router.use('/editProduct', verifyToken, editProduct);
-router.use('/batchNewProducts', verifyToken, batchNewProducts);
 router.use('/batchNewCost', verifyToken, batchNewCost);
-router.use('/getProductById', verifyToken, getProductById);
+
 router.use('/getAllProducts', verifyToken, getAllProducts);
 router.use('/deleteProduct', verifyToken, deleteProduct);
 router.use('/createCategory', verifyToken, createCategory);

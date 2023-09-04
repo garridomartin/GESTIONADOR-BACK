@@ -7,7 +7,6 @@ const enviarNotificacionEmail = require('../utils/senderMail.js');
 const fs = require('fs');
 const path = require('path');
 const { tokenCreated } = require('../utils/createToken.js');
-const { log } = require('console');
 const { SECRET_KEY, URL_DEPLOY_FRONT } = process.env;
 
 const controladorRegistro = async (
@@ -54,7 +53,7 @@ const controladorRegistro = async (
       const tokenConfirmacionEmail = await tokenCreated(usuario, SECRET_KEY);
       const valorToken = tokenConfirmacionEmail.token;
       const enlaceConfirmacionEmail = `${URL_DEPLOY_FRONT}/email-confirm/${valorToken}`;
-      console.log('valorToken:', valorToken);
+      //console.log('valorToken:', valorToken);
       const rutaArchivoPlantilla = path.join(
         __dirname,
         '..',

@@ -1,4 +1,4 @@
-const { Product, Category } = require('../db');
+const { Product, Category, Supplier } = require('../db');
 const firebaseUploader = require('../utils/firebaseUploader');
 
 const createProductController = async (
@@ -10,21 +10,21 @@ const createProductController = async (
   priceEComm,
   priceLocal,
   quantity,
- // supplier,
- // category,
- // files
+  supplier,
+  category,
+  files
 ) => {
- /* const uploadPicture = await firebaseUploader(files);
+  const uploadPicture = await firebaseUploader(files);
   const findCategory = await Category.findAll({
     where: { name: category },
   });
   const findSupplier = await Supplier.findAll({
     where: { name: supplier },
-  });*/
+  });
   const newProduct = await Product.create({
     name: name,
     shortDescription: shortDescription,
-    //files: uploadPicture,
+    files: uploadPicture,
     longDescription: longDescription,
     cost: cost,
     priceML: priceML,
@@ -33,8 +33,15 @@ const createProductController = async (
     quantity: quantity,
   });
 
- // await newProduct.add(findSupplier);
-//  await newProduct.add(findCategory);
+  await newProduct.save();
+
+  const linkProductSupplier = (supplier, newProduct) =>
+    newProduct.addSupplier(supplier);
+  const linkProductCategory = (category, newProduct) =>
+    newProduct.addCategory(category);
+
+  await linkProductSupplier(findSupplier, newProduct);
+  await linkProductCategory(findCategory, newProduct);
 
   return newProduct;
 };

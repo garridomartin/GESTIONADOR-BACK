@@ -1,10 +1,12 @@
 const createProductController = require('../controllers/createProduct.controller');
+const findUserById = require('../controllers/findUserById.controller');
+const findProductById = require('../controllers/findProductById.controller');
 const { validationResult } = require('express-validator');
 
 const createProduct = async (req, res) => {
-  try {/*
+  try {
     const admincheck = await findUserById(req.id);
-    console.log('existUser:', admincheck);
+    // console.log('existUser:', admincheck);
 
     if (!admincheck)
       return res.status(404).json({ message: 'El usuario no existe' });
@@ -14,10 +16,10 @@ const createProduct = async (req, res) => {
         message: 'No tenes la autoridad para acceder a esta informacion',
       });
 
-    const errors = validationResult(req);
+    const errors = validationResult(req.body);
 
-    if (!errors.isEmpty()) throw new Error(errors.throw());
-*/
+    if (!errors.isEmpty()) throw new Error(errors.array());
+
     const {
       name,
       shortDescription,
@@ -30,7 +32,9 @@ const createProduct = async (req, res) => {
       supplier,
       category,
     } = req.body;
-    console.log('a ver que viene por body', req.body);
+    //  console.log('a ver que viene por body', req.body);
+    const archivo = req.file;
+    //  console.log('req.files:', req.file);
     const newProduct = await createProductController(
       name,
       shortDescription,
@@ -42,26 +46,33 @@ const createProduct = async (req, res) => {
       quantity,
       supplier,
       category,
-     // req.file
+      archivo
     );
 
-    const info = await findProductById(newProduct?.id);
-   // const { supplierAdded } = info?.supplier;
-   // const { categoryAdded } = info?.category;
+    const info = await findProductById(newProduct.id);
+
+    //console.log('info:', info);
 
     const response = {
       id: info?.id,
       name: info?.name,
-      price: info?.price,
-      description: info?.description,
-      //files: info?.files,
-      user_id: info?.user_id,
-      
+      files: info?.files,
+      shortDescription: info?.shortDescription,
+      longDescription: info?.longDescription,
+      cost: info?.cost,
+      priceML: info?.priceML,
+      priceEComm: info?.priceEComm,
+      priceLocal: info?.priceLocal,
+      quantity: info?.quantity,
+      supplier: info?.Suppliers[0].name,
+      category: info?.Categories[0].name,
     };
-
-    return res.status(200).json(response);
+    console.log('response:', response);
+    return res.status(201).json(response);
   } catch (error) {
-    res.status(422).json(error);
+    res
+      .status(400)
+      .json({ error: 'Hubo un error en la solicitud', details: error.message });
   }
 };
 

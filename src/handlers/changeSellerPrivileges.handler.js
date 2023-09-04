@@ -4,7 +4,7 @@ const updateIsSellerController = require('../controllers/changeSellerPrivileges.
 const changeSellerPrivileges = async (req, res) => {
   try {
     const admincheck = await findUserById(req.id);
-    console.log('existUser:', admincheck);
+    //console.log('existUser:', admincheck);
 
     if (!admincheck)
       return res.status(404).json({ message: 'El usuario no existe' });
