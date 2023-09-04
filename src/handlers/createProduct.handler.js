@@ -67,7 +67,7 @@ const createProduct = async (req, res) => {
       supplier: info?.Suppliers[0].name,
       category: info?.Categories[0].name,
     };
-    console.log('response:', response);
+    //console.log('response:', response);
     return res.status(201).json(response);
   } catch (error) {
     res
