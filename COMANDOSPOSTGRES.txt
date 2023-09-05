@@ -2,11 +2,60 @@
 \c
 \all
 \c negocio
-\copy "SoldServices" FROM 'C:\Users\elgra\Desktop\HENRY\PROYECTO FINAL\SoldServices.csv' DELIMITER ',' CSV HEADER;
-\copy "Sales" FROM 'C:\Users\elgra\Desktop\HENRY\PROYECTO FINAL\Sales.csv' DELIMITER ',' CSV HEADER;
-\copy "TypesOfService" FROM 'C:\Users\elgra\Desktop\HENRY\PROYECTO FINAL\TypesOfService.csv' DELIMITER ',' CSV HEADER;
-\copy "Services" FROM 'C:\Users\elgra\Desktop\HENRY\PROYECTO FINAL\Services.csv' DELIMITER ',' CSV HEADER;
- \copy "Users" FROM 'C:\Users\elgra\Documents\01-PROYECTO-GESTIONADOR\Users.csv' DELIMITER ',' CSV HEADER;
+
+******************COMANDOS PARA PODER COMPLETAR LA BASE DE DATOS*******************************
+
+\copy "Suppliers" FROM 'C:\Users\elgra\Documents\01-PROYECTO-GESTIONADOR\Back\Suppliers.csv' DELIMITER ',' CSV HEADER;
+ALTER SEQUENCE "Suppliers_id_seq" RESTART WITH 5;
+
+
+\copy "Categories" FROM 'C:\Users\elgra\Documents\01-PROYECTO-GESTIONADOR\Back\Categories.csv' DELIMITER ',' CSV HEADER;
+ALTER SEQUENCE "Categories_id_seq" RESTART WITH 4;
+
+
+\copy "Products" FROM 'C:\Users\elgra\Documents\01-PROYECTO-GESTIONADOR\Back\Products.csv' DELIMITER ',' CSV HEADER;
+ALTER SEQUENCE "Products_id_seq" RESTART WITH 8;
+
+ \copy "Users" FROM 'C:\Users\elgra\Documents\01-PROYECTO-GESTIONADOR\Back\Users.csv' DELIMITER ',' CSV HEADER;
+ALTER SEQUENCE "Users_id_seq" RESTART WITH 2;
+
+
+
+INSERT INTO public."CategorySupplier" ("CategoryId", "SupplierId", "createdAt", "updatedAt")
+VALUES 
+  (1, 1, now(), now()),
+  (2, 2, now(), now()),
+  (3, 3, now(), now()),
+  (1, 4, now(), now()),
+  (2, 3, now(), now()),
+  (3, 2, now(), now()),
+  (1, 2, now(), now());
+
+
+INSERT INTO public."CategoryProduct" ("CategoryId", "ProductId", "createdAt", "updatedAt")
+VALUES 
+  (1, 1, now(), now()),
+  (1, 2, now(), now()),
+  (3, 3, now(), now()),
+  (2, 4, now(), now()),
+  (2, 5, now(), now()),
+  (2, 6, now(), now()),
+  (2, 7, now(), now());
+
+
+INSERT INTO public."ProductSupplier" ("ProductId", "SupplierId", "createdAt", "updatedAt")
+VALUES 
+  (1, 1, now(), now()),
+  (2, 2, now(), now()),
+  (3, 3, now(), now()),
+  (4, 4, now(), now()),
+  (5, 4, now(), now()),
+  (6, 3, now(), now()),
+  (7, 2, now(), now());
+
+
+
+
 
 **********************************compu de los viejos******************************************************
  \copy "Users" FROM 'C:\Users\Martin\Desktop\GESTIONADOR-BACK\Users.csv' DELIMITER ',' CSV HEADER;
@@ -21,19 +70,16 @@ SELECT c.relname FROM pg_class c WHERE c.relkind = 'S';
 Esto mostrará una lista de todas las secuencias existentes en la base de datos.
 
 
+       relname
+---------------------
  Users_id_seq
- SoldServices_id_seq
- Services_id_seq
- Reviews_id_seq
+ Categories_id_seq
+ Products_id_seq
  Sales_id_seq
- TypeServices_id_seq
+ SoldProducts_id_seq
+ Suppliers_id_seq
 (6 filas)
 
-ALTER SEQUENCE "Users_id_seq" RESTART WITH 7;
-ALTER SEQUENCE "Services_id_seq" RESTART WITH 41;
-ALTER SEQUENCE "TypeServices_id_seq" RESTART WITH 41;
-ALTER SEQUENCE "SoldServices_id_seq" RESTART WITH 9;
-ALTER SEQUENCE "Sales_id_seq" RESTART WITH 4;
 
 <img src="https://gcdn.emol.cl/humor/files/2016/11/memes-de-perros-1.jpg" alt="Imagen de usuario creado">
 

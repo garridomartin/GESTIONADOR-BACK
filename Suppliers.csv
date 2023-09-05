@@ -1,3 +1,6 @@
-"id","name","email","description","files","cellphone"
-1,"mayorista carlitox","mayorista.carlitox@gmail.com","zona sur, pago a 60 dias
-",NULL,1155559999
+id,name,email,description,files,cellphone
+1,mayorista carlitox,mayorista.carlitox@gmail.com,"zona sur, pago a 60 dias
+",,1155559999
+2,mayorista tu hermana,tuhermana@gmail.com,zona norte,,2214445555
+3,te vendo todo,vendotodo@hotmail.com,zona oeste,,1166669999
+4,importadora tu vieja,importadora@live.com,quien sabe,,3514562233

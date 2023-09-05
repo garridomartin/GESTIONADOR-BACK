@@ -15,9 +15,11 @@ const getAllUsersInfo = require('../handlers/getAllUsersInfo.handler');
 const getAllSellers = require('../handlers/getAllSellers.handler');
 const manageLogicalDeleteUser = require('../handlers/manageLogicalDeleteUser.handler');
 const changeSellerPrivileges = require('../handlers/changeSellerPrivileges.handler');
-const newProductrouter = require('./newProduct.router');
+const newProductRouter = require('./newProduct.router');
 const getProductById = require('../handlers/getProductById.handler');
 const getAllProducts = require('../handlers/getAllProducts.handler');
+const getProducts = require('../handlers/getProducts.handler');
+const editProductRouter = require('./editProductRouter.router');
 const {
   logInGoogleHandler,
   authenticateHandler,
@@ -38,16 +40,19 @@ require('../middleware/passport');
 /*
 router.use('/getSellsBySeller', verifyToken, SellsBySeller); */
 
+//!REFERIDO A CONSULTAS A LA BASE DE DATOS
+
 //!REFERIDO A PRODUCTOS Y COMPRAS
-router.use('/newProduct', verifyToken, newProductrouter);
+router.use('/newProduct', verifyToken, newProductRouter);
 router.use('/getProductById/:id', verifyToken, getProductById);
-router.use('/getAllProducts', verifyToken, getAllProducts);
+router.use('/getAllProducts', verifyToken, getAllProducts); //! SOLO USAR EN DASHBOARD DE ADMIN
+router.use('/getProducts', verifyToken, getProducts); //! SOLO TRAE PRODUCTOS CON STOCK Y SIN DELETEAR
+router.use('/editProduct', verifyToken, editProductRouter);
 
 /*router.use('/deleteProduct', verifyToken, deleteProduct);
-router.use('/editProduct', verifyToken, editProduct);
+
 router.use('/createCategory', verifyToken, createCategory);
 router.use('/editCategory', verifyToken, editCategory)
-router.use('/createSupplier', verifyToken, createSupplier);
 router.use('/editSupplier', verifyToken, editSupplier)
 router.use('/batchNewCost', verifyToken, batchNewCost);
 

@@ -14,36 +14,44 @@ const createProductController = async (
   category,
   files
 ) => {
-  const uploadPicture = await firebaseUploader(files);
-  const findCategory = await Category.findAll({
-    where: { name: category },
-  });
-  const findSupplier = await Supplier.findAll({
-    where: { name: supplier },
-  });
-  const newProduct = await Product.create({
-    name: name,
-    shortDescription: shortDescription,
-    files: uploadPicture,
-    longDescription: longDescription,
-    cost: cost,
-    priceML: priceML,
-    priceEComm: priceEComm,
-    priceLocal: priceLocal,
-    quantity: quantity,
-  });
+  try {
+    const uploadPicture = await firebaseUploader(files);
+    const findCategory = await Category.findAll({
+      where: { name: category },
+    });
+    const findSupplier = await Supplier.findAll({
+      where: { name: supplier },
+    });
+    const newProduct = await Product.create({
+      name: name,
+      shortDescription: shortDescription,
+      files: uploadPicture,
+      longDescription: longDescription,
+      cost: cost,
+      priceML: priceML,
+      priceEComm: priceEComm,
+      priceLocal: priceLocal,
+      quantity: quantity,
+    });
 
-  await newProduct.save();
+    await newProduct.save();
 
-  const linkProductSupplier = (supplier, newProduct) =>
-    newProduct.addSupplier(supplier);
-  const linkProductCategory = (category, newProduct) =>
-    newProduct.addCategory(category);
+    // Asocio el producto con la categoría y el proveedor
+    await newProduct.addCategory(findCategory);
+    await newProduct.addSupplier(findSupplier);
+    /*
+    const linkProductSupplier = (supplier, newProduct) =>
+      newProduct.addSupplier(supplier);
+    const linkProductCategory = (category, newProduct) =>
+      newProduct.addCategory(category);
 
-  await linkProductSupplier(findSupplier, newProduct);
-  await linkProductCategory(findCategory, newProduct);
-
-  return newProduct;
+    await linkProductSupplier(findSupplier, newProduct);
+    await linkProductCategory(findCategory, newProduct);
+*/
+    return newProduct;
+  } catch (error) {
+    console.log(error.message);
+  }
 };
 
 module.exports = createProductController;

@@ -18,9 +18,6 @@ module.exports = (sequelize) => {
       shortDescription: {
         type: DataTypes.STRING,
       },
-      files: {
-        type: DataTypes.STRING,
-      },
       longDescription: {
         type: DataTypes.TEXT,
       },
@@ -52,7 +49,7 @@ module.exports = (sequelize) => {
         type: DataTypes.INTEGER,
         defaultValue: 0,
       },
-      quantity: {
+      stock: {
         type: DataTypes.INTEGER,
         allowNull: true,
         defaultValue: 0,
@@ -66,6 +63,9 @@ module.exports = (sequelize) => {
       isDeleted: {
         type: DataTypes.BOOLEAN,
         defaultValue: false,
+      },
+      files: {
+        type: DataTypes.STRING,
       },
     },
     { timestamps: false }
