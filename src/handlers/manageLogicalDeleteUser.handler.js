@@ -3,17 +3,6 @@ const manageLogicalDeleteUserControler = require('../controllers/manageLogicalDe
 
 const manageLogicalDeleteUser = async (req, res) => {
   try {
-    const admincheck = await findUserById(req.id);
-    console.log('existUser:', admincheck);
-
-    if (!admincheck)
-      return res.status(404).json({ message: 'El usuario no existe' });
-
-    if (!admincheck?.isAdmin)
-      return res.status(404).json({
-        message: 'No tenes la autoridad para acceder a esta informacion',
-      });
-
     const { id } = req.body;
     const userToDelete = await findUserById(id);
 

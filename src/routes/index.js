@@ -1,6 +1,7 @@
 const { Router } = require('express');
 const router = Router();
 const verifyToken = require('../middleware/verifyToken');
+const admincheck = require('../middleware/admincheck');
 
 const signUpRouter = require('./signUp.router');
 const emailConfirmation = require('../handlers/emailConfirmation.handler');
@@ -20,6 +21,11 @@ const getProductById = require('../handlers/getProductById.handler');
 const getAllProducts = require('../handlers/getAllProducts.handler');
 const getProducts = require('../handlers/getProducts.handler');
 const editProductRouter = require('./editProductRouter.router');
+const deleteProduct = require('../handlers/deleteProduct.handler');
+const createCategory = require('../handlers/createCategory.handler');
+const editCategory = require('../handlers/editCategory.handler');
+const createSupplier = require('../handlers/createSupplier.handler');
+const editSupplier = require('../handlers/editSupplier.handler');
 const {
   logInGoogleHandler,
   authenticateHandler,
@@ -43,28 +49,32 @@ router.use('/getSellsBySeller', verifyToken, SellsBySeller); */
 //!REFERIDO A CONSULTAS A LA BASE DE DATOS
 
 //!REFERIDO A PRODUCTOS Y COMPRAS
-router.use('/newProduct', verifyToken, newProductRouter);
-router.use('/getProductById/:id', verifyToken, getProductById);
-router.use('/getAllProducts', verifyToken, getAllProducts); //! SOLO USAR EN DASHBOARD DE ADMIN
-router.use('/getProducts', verifyToken, getProducts); //! SOLO TRAE PRODUCTOS CON STOCK Y SIN DELETEAR
-router.use('/editProduct', verifyToken, editProductRouter);
-
-/*router.use('/deleteProduct', verifyToken, deleteProduct);
-
-router.use('/createCategory', verifyToken, createCategory);
-router.use('/editCategory', verifyToken, editCategory)
-router.use('/editSupplier', verifyToken, editSupplier)
-router.use('/batchNewCost', verifyToken, batchNewCost);
+router.use('/newProduct', verifyToken, admincheck, newProductRouter);
+router.get('/getProductById/:id', verifyToken, getProductById);
+router.get('/getAllProducts', verifyToken, admincheck, getAllProducts); //! SOLO USAR EN DASHBOARD DE ADMIN
+router.get('/getProducts', verifyToken, getProducts); //! SOLO TRAE PRODUCTOS CON STOCK Y SIN DELETEAR
+router.use('/editProduct', verifyToken, admincheck, editProductRouter);
+router.get('/deleteProduct/:id', verifyToken, admincheck, deleteProduct);
+router.post('/createCategory', verifyToken, admincheck, createCategory);
+router.put('/editCategory', verifyToken, admincheck, editCategory);
+router.post('/createSupplier', verifyToken, admincheck, createSupplier);
+router.put('/editSupplier', verifyToken, admincheck, editSupplier);
+/* router.use('/batchNewCostandPrice', verifyToken, admincheck,batchNewCost);
 
 */
 
 //!REFERIDO A USUARIOS
-router.use('/editUser', verifyToken, editUserRouter);
-router.use('/getUserById', verifyToken, getUserById);
-router.use('/allUsers', verifyToken, getAllUsersInfo);
-router.use('/getSellers', verifyToken, getAllSellers);
-router.use('/deleteUser', verifyToken, manageLogicalDeleteUser);
-router.use('/changeUserToSeller', verifyToken, changeSellerPrivileges);
+router.use('/editUser', verifyToken, admincheck, editUserRouter);
+router.get('/getUserById', verifyToken, admincheck, getUserById);
+router.get('/allUsers', verifyToken, admincheck, getAllUsersInfo);
+router.get('/getSellers', verifyToken, admincheck, getAllSellers);
+router.get('/deleteUser', verifyToken, admincheck, manageLogicalDeleteUser);
+router.get(
+  '/changeUserToSeller',
+  verifyToken,
+  admincheck,
+  changeSellerPrivileges
+);
 
 //!REFERIDO A LOGIN PROPIO
 router.use('/currentUser', verifyToken, currentUserRouter); // ------> added by Enok Lima

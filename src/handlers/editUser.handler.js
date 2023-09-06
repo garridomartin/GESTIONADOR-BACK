@@ -1,6 +1,5 @@
 const updateUser = require('../controllers/updateUser.controller');
 const findUserById = require('../controllers/findUserById.controller');
-const { log } = require('handlebars');
 
 const editUserHandler = async (req, res) => {
   try {

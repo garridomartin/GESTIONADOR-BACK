@@ -12,14 +12,12 @@ module.exports = (sequelize) => {
         allowNull: false,
         unique: true,
       },
-
       name: {
         type: DataTypes.STRING,
       },
       email: {
         type: DataTypes.STRING,
       },
-
       description: {
         type: DataTypes.STRING,
       },

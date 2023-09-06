@@ -1,21 +1,9 @@
-const findUserById = require('../controllers/findUserById.controller');
 const getAllSellersController = require('../controllers/getAllUsers.controller');
 
 const getAllSellers = async (req, res) => {
   try {
-    const admincheck = await findUserById(req.id);
-    console.log('existUser:', admincheck);
-
-    if (!admincheck)
-      return res.status(404).json({ message: 'El usuario no existe' });
-
-    if (!admincheck?.isAdmin)
-      return res.status(404).json({
-        message: 'No tenes la autoridad para acceder a esta informacion',
-      });
-
     const sellers = await getAllSellersController();
-    console.log('sellers:', sellers);
+    // console.log('sellers:', sellers);
     const response = sellers.map((seller) => {
       const newseller = {
         id: seller?.id,

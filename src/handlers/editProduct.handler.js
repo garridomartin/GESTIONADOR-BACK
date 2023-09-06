@@ -5,17 +5,6 @@ const { validationResult } = require('express-validator');
 
 const editProduct = async (req, res) => {
   try {
-    const admincheck = await findUserById(req.id);
-    // console.log('existUser:', admincheck);
-
-    if (!admincheck)
-      return res.status(404).json({ message: 'El usuario no existe' });
-
-    if (!admincheck?.isAdmin)
-      return res.status(404).json({
-        message: 'No tenes la autoridad para acceder a esta informacion',
-      });
-
     const errors = validationResult(req.body);
 
     if (!errors.isEmpty()) throw new Error(errors.array());
