@@ -24,8 +24,10 @@ const editProductRouter = require('./editProductRouter.router');
 const deleteProduct = require('../handlers/deleteProduct.handler');
 const createCategory = require('../handlers/createCategory.handler');
 const editCategory = require('../handlers/editCategory.handler');
+const getAllCategories = require('../handlers/getAllCategories.handler');
 const createSupplier = require('../handlers/createSupplier.handler');
 const editSupplier = require('../handlers/editSupplier.handler');
+const getAllSuppliers = require('../handlers/getAllSuppliers.handler');
 const {
   logInGoogleHandler,
   authenticateHandler,
@@ -57,11 +59,11 @@ router.use('/editProduct', verifyToken, admincheck, editProductRouter);
 router.get('/deleteProduct/:id', verifyToken, admincheck, deleteProduct);
 router.post('/createCategory', verifyToken, admincheck, createCategory);
 router.put('/editCategory', verifyToken, admincheck, editCategory);
+router.get('/getAllCategories', verifyToken, admincheck, getAllCategories);
 router.post('/createSupplier', verifyToken, admincheck, createSupplier);
 router.put('/editSupplier', verifyToken, admincheck, editSupplier);
-/* router.use('/batchNewCostandPrice', verifyToken, admincheck,batchNewCost);
-
-*/
+router.get('/getAllSuppliers', verifyToken, admincheck, getAllSuppliers);
+/* router.use('/batchNewCostandPrice', verifyToken, admincheck,batchNewCost);*/
 
 //!REFERIDO A USUARIOS
 router.use('/editUser', verifyToken, admincheck, editUserRouter);

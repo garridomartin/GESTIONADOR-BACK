@@ -1,5 +1,4 @@
 const getAllProductsController = require('../controllers/getAllProducts.controller');
-const findUserById = require('../controllers/findUserById.controller');
 
 const getAllProducts = async (req, res) => {
   try {
