@@ -20,7 +20,7 @@ const newProductRouter = require('./newProduct.router');
 const getProductById = require('../handlers/getProductById.handler');
 const getAllProducts = require('../handlers/getAllProducts.handler');
 const getProducts = require('../handlers/getProducts.handler');
-const editProductRouter = require('./editProductRouter.router');
+const editProductRouter = require('./editProduct.router');
 const deleteProduct = require('../handlers/deleteProduct.handler');
 const createCategory = require('../handlers/createCategory.handler');
 const editCategory = require('../handlers/editCategory.handler');
@@ -28,6 +28,7 @@ const getAllCategories = require('../handlers/getAllCategories.handler');
 const createSupplier = require('../handlers/createSupplier.handler');
 const editSupplier = require('../handlers/editSupplier.handler');
 const getAllSuppliers = require('../handlers/getAllSuppliers.handler');
+const batchNewCostRouter = require('./batchNewCost.router');
 const {
   logInGoogleHandler,
   authenticateHandler,
@@ -63,7 +64,7 @@ router.get('/getAllCategories', verifyToken, admincheck, getAllCategories);
 router.post('/createSupplier', verifyToken, admincheck, createSupplier);
 router.put('/editSupplier', verifyToken, admincheck, editSupplier);
 router.get('/getAllSuppliers', verifyToken, admincheck, getAllSuppliers);
-/* router.use('/batchNewCostandPrice', verifyToken, admincheck,batchNewCost);*/
+router.use('/batchNewCost', verifyToken, admincheck, batchNewCostRouter);
 
 //!REFERIDO A USUARIOS
 router.use('/editUser', verifyToken, admincheck, editUserRouter);

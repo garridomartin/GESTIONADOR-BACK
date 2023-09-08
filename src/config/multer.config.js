@@ -9,4 +9,8 @@ const uploadCreateProduct = multer({ storage: multer.memoryStorage() }).single(
   'files'
 );
 
-module.exports = { upLoadSignUp, uploadCreateProduct };
+const uploadBatchNewCost = multer({ storage: multer.memoryStorage() }).single(
+  'newCost'
+);
+
+module.exports = { upLoadSignUp, uploadCreateProduct, uploadBatchNewCost };

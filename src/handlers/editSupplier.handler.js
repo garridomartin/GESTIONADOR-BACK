@@ -1,6 +1,5 @@
 const { Supplier, Category } = require('../db');
 const editSupplierController = require('../controllers/editSupplier.controller');
-const deleteCategoriesFromSupplierController = require('../controllers/deleteCategoriesFromSupplier.controller');
 
 const editSupplier = async (req, res) => {
   try {
