@@ -1,75 +1,34 @@
-const editProductController = require('../controllers/editProduct.controller');
-const findUserById = require('../controllers/findUserById.controller');
-const findProductById = require('../controllers/findProductById.controller');
+const batchNewCostController = require('../controllers/batchNewCost.controller');
 const { validationResult } = require('express-validator');
 
 const batchNewCost = async (req, res) => {
   try {
-    const errors = validationResult(req.body);
+    console.log('Iniciando batchNewCost handler...');
+    const errors = validationResult(req);
 
-    if (!errors.isEmpty()) throw new Error(errors.array());
+    if (!errors.isEmpty()) {
+      console.log('Errores de validación:', errors.array());
+      return res.status(400).json({ errors: errors.array() });
+    }
 
-    const {
-      id,
-      name,
-      shortDescription,
-      longDescription,
-      cost,
-      priceML,
-      priceEComm,
-      priceLocal,
-      quantity,
-      supplier,
-      category,
-    } = req.body;
-    //console.log('a ver que viene por body', req.body);
-    const archivo = req.file;
-    const isDeleted = req.body.isDeleted;
-    //console.log('req.body.isDeleted:', req.body.isDeleted);
-    //  console.log('req.files:', req.file);
-    // console.log('req.body:', req.body);
-    // console.log('deleted;', isDeleted);
-    const updatedProduct = await batchNewCostController(
-      id,
-      name,
-      shortDescription,
-      longDescription,
-      cost,
-      priceML,
-      priceEComm,
-      priceLocal,
-      quantity,
-      supplier,
-      category,
-      isDeleted,
-      archivo
-    );
+    const csvData = req.file.buffer.toString('utf8');
+    // console.log('Datos CSV recibidos:', csvData);
 
-    const editedProduct = await findProductById(updatedProduct.id);
+    // Procesa el contenido CSV
+    const updatedProduct = await batchNewCostController(csvData);
 
-    //console.log('editedProduct:', editedProduct);
+    console.log('Resultado de batchNewCostController:', updatedProduct);
 
-    const response = {
-      id: editedProduct?.id,
-      name: editedProduct?.name,
-      files: editedProduct?.files,
-      shortDescription: editedProduct?.shortDescription,
-      longDescription: editedProduct?.longDescription,
-      cost: editedProduct?.cost,
-      priceML: editedProduct?.priceML,
-      priceEComm: editedProduct?.priceEComm,
-      priceLocal: editedProduct?.priceLocal,
-      quantity: editedProduct?.quantity,
-      supplier: editedProduct?.Suppliers[0].name,
-      category: editedProduct?.Categories[0].name,
-      isDeleted: editedProduct?.isDeleted,
-    };
-    //console.log('response:', response);
-    return res.status(201).json(response);
+    if (updatedProduct.error) {
+      console.error('Error en batchNewCost controller:', updatedProduct.error);
+      return res.status(500).json({ error: 'Error interno del servidor.' });
+    }
+
+    console.log('Proceso de actualización finalizado.');
+    res.status(200).json({ message: 'Proceso de actualización finalizado.' });
   } catch (error) {
-    res
-      .status(400)
-      .json({ error: 'Hubo un error en la solicitud', details: error.message });
+    console.error('Error en batchNewCost handler:', error);
+    res.status(500).json({ error: 'Error interno del servidor.' });
   }
 };
 

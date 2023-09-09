@@ -15,12 +15,6 @@ module.exports = (sequelize) => {
       name: {
         type: DataTypes.STRING,
       },
-      shortDescription: {
-        type: DataTypes.STRING,
-      },
-      longDescription: {
-        type: DataTypes.TEXT,
-      },
       cost: {
         type: DataTypes.INTEGER,
         allowNull: true,
@@ -59,6 +53,12 @@ module.exports = (sequelize) => {
       },
       soldToDistribute: {
         type: DataTypes.INTEGER,
+      },
+      shortDescription: {
+        type: DataTypes.STRING,
+      },
+      longDescription: {
+        type: DataTypes.TEXT,
       },
       isDeleted: {
         type: DataTypes.BOOLEAN,

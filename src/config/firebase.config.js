@@ -12,6 +12,7 @@ const {
 } = process.env;
 
 //Se incializa Firebase
+
 const firebaseConfig = {
   apiKey: API_KEY_FB,
   authDomain: AUTH_DOMAIN_FB,
@@ -19,7 +20,6 @@ const firebaseConfig = {
   storageBucket: STORAGE_BUCKET_FB,
   messagingSenderId: MESSAGING_SENDER_ID_FB,
   appId: APP_ID_FB,
-  measurementId: MEASUREMENT_ID,
 };
 
 // Initialize Firebase

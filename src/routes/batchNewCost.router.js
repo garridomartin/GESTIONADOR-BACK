@@ -4,6 +4,6 @@ const batchNewCost = require('../handlers/batchNewCost.handler');
 const validateCSVUpload = require('../middleware/validateCSVUpload');
 const { uploadBatchNewCost } = require('../config/multer.config');
 
-router.post('/', uploadBatchNewCost, validateCSVUpload, batchNewCost);
+router.put('/', uploadBatchNewCost, validateCSVUpload, batchNewCost);
 
 module.exports = router;

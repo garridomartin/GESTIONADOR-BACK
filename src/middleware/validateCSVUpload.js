@@ -1,39 +1,51 @@
 const { body } = require('express-validator');
+const csv = require('csv-parser');
+const { Readable } = require('stream');
 
 const validateCSVUpload = [
-  body('csv').custom((value, { req }) => {
-    if (!value) {
-      throw new Error('No se ha proporcionado un archivo CSV.');
+  (req, res, next) => {
+    if (req.file && req.file.mimetype === 'text/csv') {
+      const expectedColumns = [
+        'id',
+        'name',
+        'cost',
+        'priceML',
+        'priceEComm',
+        'priceLocal',
+        'shortDescription',
+        'longDescription',
+      ];
+
+      const csvData = [];
+
+      // Convierte la cadena de texto en un flujo de datos
+      const fileStream = Readable.from([req.file.buffer.toString('utf8')]);
+
+      // Utiliza csv-parser para analizar el archivo CSV
+      fileStream
+        .pipe(csv({ separator: ',' })) // Configura el separador como coma
+        .on('data', (row) => {
+          csvData.push(row);
+        })
+        .on('end', () => {
+          // Verifica las columnas en cada fila del CSV
+          for (const row of csvData) {
+            for (const column of expectedColumns) {
+              if (!(column in row)) {
+                return res.status(400).json({
+                  error: `La columna '${column}' está ausente en el archivo CSV.`,
+                });
+              }
+            }
+          }
+
+          // Si llegas a este punto, el archivo es un CSV válido
+          next();
+        });
+    } else {
+      return res.status(400).json({ error: 'El archivo no es un CSV válido.' });
     }
-
-    // Verifica que el archivo sea un archivo CSV válido
-    if (!value.buffer.toString().includes('csv')) {
-      throw new Error('El archivo no es un archivo CSV válido.');
-    }
-
-    // Verifica que las columnas estén en el orden y con los nombres correctos
-    const expectedColumns = [
-      'id',
-      'name',
-      'shortDescription',
-      'longDescription',
-      'cost',
-      'priceML',
-      'priceEComm',
-      'priceLocal',
-    ];
-    const csvColumns = value.buffer.toString('utf8').split('\n')[0].split(',');
-
-    for (let i = 0; i < expectedColumns.length; i++) {
-      if (csvColumns[i] !== expectedColumns[i]) {
-        throw new Error(
-          'Las columnas en el archivo CSV no coinciden con el formato esperado.'
-        );
-      }
-    }
-
-    return true;
-  }),
+  },
 ];
 
 module.exports = validateCSVUpload;
