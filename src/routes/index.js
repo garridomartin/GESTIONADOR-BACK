@@ -2,6 +2,7 @@ const { Router } = require('express');
 const router = Router();
 const verifyToken = require('../middleware/verifyToken');
 const admincheck = require('../middleware/admincheck');
+const sellerCheck = require('../middleware/sellerCheck');
 
 const signUpRouter = require('./signUp.router');
 const emailConfirmation = require('../handlers/emailConfirmation.handler');
@@ -45,12 +46,22 @@ require('../middleware/passport');
 
 //!REFERIDO A FACTURACION
 
-//!REFERIDO A VENTAS
-/*
-router.use('/getSellsBySeller', verifyToken, SellsBySeller); */
-
 //!REFERIDO A CONSULTAS A LA BASE DE DATOS
 
+//!REFERIDO A VENTAS
+
+//router.use('/sellByEcomm', verifyToken, sellByEcomm);
+/*
+
+router.use('/sellBySellerCash', verifyToken, sellerCheck, sellBySellerCash); 
+router.use('/sellBySellerMP', verifyToken, sellerCheck, sellBySellerMP); 
+router.use('/getSellsBySeller', verifyToken, admincheck, sellsBySeller); 
+router.use('/getSellsByEcomm', verifyToken, admincheck, sellsByEcomm); 
+router.use('/getSellsBySeller', verifyToken, SellsBySeller); 
+router.use('/getSellsBySeller', verifyToken, SellsBySeller); 
+router.use('/getSellsBySeller', verifyToken, SellsBySeller); 
+router.use('/getSellsBySeller', verifyToken, SellsBySeller); 
+*/
 //!REFERIDO A PRODUCTOS Y COMPRAS
 router.use('/newProduct', verifyToken, admincheck, newProductRouter);
 router.get('/getProductById/:id', verifyToken, getProductById);

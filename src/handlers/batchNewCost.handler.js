@@ -17,7 +17,7 @@ const batchNewCost = async (req, res) => {
     // Procesa el contenido CSV
     const updatedProduct = await batchNewCostController(csvData);
 
-    console.log('Resultado de batchNewCostController:', updatedProduct);
+    //console.log('Resultado de batchNewCostController:', updatedProduct);
 
     if (updatedProduct.error) {
       console.error('Error en batchNewCost controller:', updatedProduct.error);

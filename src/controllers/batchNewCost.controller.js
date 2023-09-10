@@ -80,3 +80,56 @@ const batchNewCostController = async (csvData) => {
 };
 
 module.exports = batchNewCostController;
+/*
+const { Product } = require('../db');
+
+const batchNewCostController = async (csvData) => {
+  try {
+    const data = csvData.split('\n');
+    //console.log('data:', data);
+    for (let i = 1; i < data.length; i++) {
+      const row = data[i].trim(); //saco espacios en blanco del principio y final.
+      if (row) {
+        const columns = row.split(','); // Dividir las columnas
+        const id = columns[0]; // Obtener el ID
+        const cost = parseFloat(columns[2]); // Obtener y convertir el valor de cost a numérico
+        const priceML = parseFloat(columns[3]);
+        const priceEComm = parseFloat(columns[4]);
+        const priceLocal = parseFloat(columns[5]);
+
+        // Agregar registros de depuración
+
+        console.log(`Row: ${row}`);
+        console.log(`Columns: ${columns}`);
+        console.log(`ID: ${id}`);
+        console.log(`Cost: ${cost}`);
+        console.log(`PriceML: ${priceML}`);
+        console.log(`PriceEComm: ${priceEComm}`);
+        console.log(`PriceLocal: ${priceLocal}`);
+
+        // Verificar si el valor de cost es un número válido
+        if (!isNaN(cost)) {
+          await Product.update(
+            { cost, priceML, priceEComm, priceLocal },
+            { where: { id } }
+          );
+          console.log(
+            `Se actualizaron el costo y los diferentes precios para el registro con ID ${id}.`
+          );
+        } else {
+          console.log(
+            `Los valores de costo y precios para el registro con ID ${id} no es válido.`
+          );
+        }
+      }
+    }
+    console.log('batchNewCostController finalizado.');
+    return { success: true, message: 'Proceso de actualización finalizado.' };
+  } catch (error) {
+    console.error('Error en batchNewCostController:', error);
+    return { success: false, error: 'Error interno del servidor.' };
+  }
+};
+
+module.exports = batchNewCostController;
+*/

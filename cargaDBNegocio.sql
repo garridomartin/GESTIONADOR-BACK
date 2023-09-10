@@ -1,15 +1,3 @@
-\dt
-\c
-\all
-\c negocio
-
-******************COMANDOS PARA PODER COMPLETAR LA BASE DE DATOS*******************************
-desde el directorio raiz, con el shell de windows:
-
-cd "Program Files"
-cd postgresql\14\bin>
-psql -U postgres -d negocio -a -f "C:\Users\elgra\Documents\01-PROYECTO-GESTIONADOR\BACK\cargaDBNegocio.sql"
-
 \copy "Suppliers" FROM 'C:\Users\elgra\Documents\01-PROYECTO-GESTIONADOR\Back\Suppliers.csv' DELIMITER ',' CSV HEADER;
 ALTER SEQUENCE "Suppliers_id_seq" RESTART WITH 5;
 
@@ -58,36 +46,3 @@ VALUES
   (5, 4, now(), now()),
   (6, 3, now(), now()),
   (7, 2, now(), now());
-
-
-
-
-
-**********************************compu de los viejos******************************************************
- \copy "Users" FROM 'C:\Users\Martin\Desktop\GESTIONADOR-BACK\Users.csv' DELIMITER ',' CSV HEADER;
-\copy "SoldServices" FROM 'C:\Users\Martin\Desktop\GESTIONADOR-BACK\SoldServices.csv' DELIMITER ',' CSV HEADER;
-\copy "Sales" FROM 'C:\Users\Martin\Desktop\GESTIONADOR-BACK\Sales.csv' DELIMITER ',' CSV HEADER;
-\copy "TypesOfService" FROM 'C:\Users\Martin\Desktop\GESTIONADOR-BACK\TypesOfService.csv' DELIMITER ',' CSV HEADER;
-\copy "Services" FROM 'C:\Users\Martin\Desktop\GESTIONADOR-BACK\Services.csv' DELIMITER ',' CSV HEADER;
-
-asesoria=# SELECT MAX("id") FROM "Users";
-
-SELECT c.relname FROM pg_class c WHERE c.relkind = 'S';
-Esto mostrará una lista de todas las secuencias existentes en la base de datos.
-
-
-       relname
----------------------
- Users_id_seq
- Categories_id_seq
- Products_id_seq
- Sales_id_seq
- SoldProducts_id_seq
- Suppliers_id_seq
-(6 filas)
-
-
-<img src="https://gcdn.emol.cl/humor/files/2016/11/memes-de-perros-1.jpg" alt="Imagen de usuario creado">
-
-
-		
