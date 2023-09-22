@@ -17,7 +17,7 @@ server.use(morgan('dev'));
 
 /******** modified for Enok Lima ********/
 server.use(cookieParser()); //------------------ added for Enok Lima
-server.use(cors({origin: 'http://localhost:3000', credentials: true})); 
+server.use(cors({ origin: 'http://localhost:3000', credentials: true }));
 /****************************************/
 //    👇👇👇👇👇👇
 //server.use(cors());

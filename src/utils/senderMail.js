@@ -48,6 +48,13 @@ const sendEmailNotification = async (
         subject: 'Usuario Creado en APP FACTURACION',
         html: compiledTemplate,
       };
+    } else if (typeNotification === 'Ecomm') {
+      message = {
+        from: EMAIL_USER,
+        to: emailToSend,
+        subject: 'Notificación de Compra',
+        html: compiledTemplate,
+      };
     } else if (typeNotification === 'compra/venta') {
       message = {
         from: EMAIL_USER,

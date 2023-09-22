@@ -30,7 +30,8 @@ const createSupplier = require('../handlers/createSupplier.handler');
 const editSupplier = require('../handlers/editSupplier.handler');
 const getAllSuppliers = require('../handlers/getAllSuppliers.handler');
 const batchNewCostRouter = require('./batchNewCost.router');
-const sellByEcomm = require('../handlers/sellByEcomm.handler');
+const sellByEcommRouter = require('./sellByEcomm.router');
+const { getFeedbackMP } = require('../handlers/sellByEcomm.handler');
 const {
   logInGoogleHandler,
   authenticateHandler,
@@ -51,7 +52,8 @@ require('../middleware/passport');
 
 //!REFERIDO A VENTAS
 
-router.use('/sellByEcomm', verifyToken, sellByEcomm);
+router.use('/sellByEcomm', verifyToken, sellByEcommRouter);
+router.get('/feedback', getFeedbackMP);
 /*
 
 router.use('/sellBySellerCash', verifyToken, sellerCheck, sellBySellerCash); 

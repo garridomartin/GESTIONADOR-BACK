@@ -7,6 +7,7 @@ mercadopago.configure({
 });
 
 function createPreference(description, price, quantity) {
+  // console.log('linea 10 controller:', description, price, quantity);
   return new Promise((resolve, reject) => {
     let preference = {
       items: [
@@ -21,15 +22,14 @@ function createPreference(description, price, quantity) {
         failure: `${URL_DEPLOY}/feedback`,
         pending: `${URL_DEPLOY}/feedback`,
       },
-      auto_return: 'approved',
     };
 
     mercadopago.preferences
       .create(preference)
       .then(function (response) {
-        resolve(response.body.init_point);
-        //resolve(response.body.id);
-        console.log(response);
+        //  resolve(response.body.init_point); //asi estaba en el tp final mandaba directo la pagina de pago
+        resolve(response.body.id);
+        //   console.log('linea 33  controller response mp preference:', response);
       })
       .catch(function (error) {
         reject(error);

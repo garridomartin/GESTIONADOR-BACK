@@ -14,7 +14,9 @@ const verifyToken = (req, res, next) => {
     } else if (req.cookies && req.cookies.token) {
       // Verificar token almacenado en las cookies
       token = req.cookies.token;
+      ///console.log('linea 17 verifyToken:', req.cookies.token);
     } else {
+      //  console.log('no pasa nada');
       // No se proporcionó ningún token
       return res.status(401).json({ error: 'Unauthorized access' });
     }

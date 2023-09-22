@@ -1,23 +1,35 @@
-const { User, Sale, SoldService } = require('../db');
 const sendEmailNotification = require('../utils/senderMail');
 const fs = require('fs');
 const path = require('path');
 const templateCreation = require('../utils/templateCreation');
 
 async function processSale(
-  items,
+  orderClientBackEnd,
   payment_id,
   status,
   merchant_order_id,
+  totalAmount,
   typeNotification
 ) {
-  try {
-    const { totalAmount, buyer_id } = items[0];
-    let user;
-    const sellerIds = items.map((item) => item.seller_id);
+  console.log('orderClientBackEnd: ' + orderClientBackEnd);
+  console.log('payment_id: ' + payment_id);
+  console.log('status: ' + status);
+  console.log('merchant_order_id: ' + merchant_order_id);
+  console.log('totalAmount: ' + totalAmount);
+  console.log('typeNotification:', typeNotification);
 
+  try {
+    const buyer_id =
+      filteredBuyerIds.length > 0 ? filteredBuyerIds[0] : undefined;
+
+    console.log('linea 16 items:', orderClientBackEnd, totalAmount, buyer_id);
+    let user;
+    const filteredBuyerIds = orderClientBackEnd
+      .filter((item) => item.buyer_id !== undefined)
+      .map((item) => item.buyer_id);
     try {
       user = await User.findByPk(buyer_id);
+      //  console.log('user:', user);
       if (!user) {
         throw new Error('Comprador no encontrado');
       }
@@ -26,20 +38,15 @@ async function processSale(
     }
 
     const buyerName = user.name;
-    const sellerEmails = [];
 
-    for (const sellerId of sellerIds) {
-      try {
-        const seller = await User.findByPk(sellerId);
-        if (seller && seller.email) {
-          sellerEmails.push(seller.email);
-        }
-      } catch (error) {
-        console.error(
-          'Error al buscar el vendedor en la base de datos:',
-          error
-        );
+    try {
+      totalAmountVerified = await Product.findAll();
+      console.log('totalAmountVerified:', totalAmountVerified);
+      if (!user) {
+        throw new Error('Comprador no encontrado');
       }
+    } catch (error) {
+      throw new Error('Error al buscar al comprador en la base de datos');
     }
 
     let newSale;

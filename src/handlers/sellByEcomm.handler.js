@@ -1,45 +1,54 @@
+const { User, Sale, SoldProduct, Product } = require('../db');
 const htmlContent = require('../utils/htmlContent');
 const { processSale } = require('../controllers/saleController');
-const mercadopago = require('mercadopago');
+const mercadopago = require('../controllers/mercadopago.controller');
 
-const typeNotification = 'compra/venta';
-let datosBody = [];
+let orderClientBackEnd = [];
 
-function sellByEcomm(req, res) {
-  console.log(`prueba 1 linea 7`);
-  datosBody = req.body.map((elem) => {
-    return { ...elem, buyer_id: req.id };
-  });
+async function sellByEcomm(req, res) {
+  try {
+    const selledItems = req.body.orderClient;
+    orderClientBackEnd = [...selledItems, { buyer_id: req.id }];
 
-  const body = req.body[0];
-  mercadopago
-    .createPreference('SERVICIOS VARIOS', body.totalAmount, body.quantity)
-    .then((preferenceId) => {
-      res.json({ id: preferenceId });
-    })
-    .catch((error) => {
-      res.status(500).json({ error: 'Failed to create preference' });
-    });
+    const body = req.body.orderData;
+    totalAmount = body.amount;
+
+    const preferenceId = await mercadopago.createPreference(
+      'PRODUCTOS VARIOS',
+      body.amount,
+      body.quantity
+    );
+
+    res.json({ id: preferenceId });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Failed to create preference to MP' });
+  }
 }
 
-async function getFeedback(req, res) {
+async function getFeedbackMP(req, res) {
   try {
     const { query } = req;
     const { payment_id, status, merchant_order_id } = query;
-    const items = datosBody;
+    const puntoDeCompra = orderClientBackEnd.find(
+      (item) => item.pointOfPurchase !== undefined
+    );
+    const typeNotification = puntoDeCompra
+      ? puntoDeCompra.pointOfPurchase
+      : undefined;
 
     await processSale(
-      items,
+      orderClientBackEnd,
       payment_id,
       status,
       merchant_order_id,
+      totalAmount,
       typeNotification
     );
-
     res.status(200).send(htmlContent);
   } catch (error) {
     res.status(500).json({ error: 'Error al registrar la venta linea 37' });
   }
 }
 
-module.exports = sellByEcomm;
+module.exports = { sellByEcomm, getFeedbackMP };
