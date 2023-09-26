@@ -20,6 +20,8 @@ const amountCheck = async (req, res, next) => {
       .filter((item) => item.product_id !== undefined)
       .map((item) => item.product_id);
 
+    //console.log('productIds', productIds);
+
     const products = await Product.findAll({
       where: {
         id: productIds,

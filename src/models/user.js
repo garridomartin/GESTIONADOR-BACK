@@ -38,6 +38,14 @@ module.exports = (sequelize) => {
       cuil: {
         type: DataTypes.BIGINT,
         allowNull: true,
+        validate: {
+          isNumeric: true, // Validamos que sea numérico
+          isCuilValid(value) {
+            if (value && value.length !== 11) {
+              throw new Error('El CUIL/CUIT debe tener exactamente 11 dígitos');
+            }
+          },
+        },
       },
       email: {
         type: DataTypes.STRING,

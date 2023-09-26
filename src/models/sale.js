@@ -14,13 +14,23 @@ module.exports = (sequelize) => {
     },
     seller_id: {
       type: DataTypes.INTEGER,
-      allowNull: false,
+      allowNull: true,
     },
     totalAmount: {
       type: DataTypes.INTEGER,
       allowNull: false,
       validate: {
         min: 0,
+      },
+    },
+    pointOfPurchase: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        isIn: {
+          args: [['Ecomm', 'Local', 'MP']],
+          msg: 'El valor de pointOfPurchase debe ser Ecomm, Local o MP',
+        },
       },
     },
     invoice: {

@@ -1,43 +1,47 @@
-const { User, Product, Sale, SoldProduct } = require('../db');
 const sendEmailNotification = require('../utils/senderMail');
 const fs = require('fs');
 const path = require('path');
 const templateCreation = require('../utils/templateCreation');
 
-async function processSale(
-  buyer_id,
+async function processSaleFail(
   orderClientBackEnd,
   payment_id,
   status,
   merchant_order_id,
-  pointOfPurchase
+  totalAmount,
+  typeNotification
 ) {
-  /*
-  console.log('buyer_id: ', buyer_id);
-  console.log('orderClientBackEnd: ', orderClientBackEnd);
+  console.log('orderClientBackEnd: ' + orderClientBackEnd);
   console.log('payment_id: ' + payment_id);
   console.log('status: ' + status);
   console.log('merchant_order_id: ' + merchant_order_id);
-  console.log('pointOfPurchase:', pointOfPurchase);
-*/
-  const productsId = orderClientBackEnd
-    .filter((item) => item.product_id !== undefined)
-    .map((item) => item.product_id);
-
-  const quantity = orderClientBackEnd
-    .filter((item) => item.cantidad !== undefined)
-    .map((item) => item.cantidad);
-
-  const totalAmount = orderClientBackEnd.filter(
-    (item) => item.totalAmount !== undefined
-  );
-
-  //console.log('linea 30 items:', productsId, totalAmount, buyer_id);
+  console.log('totalAmount: ' + totalAmount);
+  console.log('typeNotification:', typeNotification);
 
   try {
+    const buyer_id =
+      filteredBuyerIds.length > 0 ? filteredBuyerIds[0] : undefined;
+
+    console.log('linea 16 items:', orderClientBackEnd, totalAmount, buyer_id);
+    let user;
+    const filteredBuyerIds = orderClientBackEnd
+      .filter((item) => item.buyer_id !== undefined)
+      .map((item) => item.buyer_id);
     try {
-      user = await User.findByPk(buyer_id.buyer_id);
-      //console.log('user:', user);
+      user = await User.findByPk(buyer_id);
+      //  console.log('user:', user);
+      if (!user) {
+        throw new Error('Comprador no encontrado');
+      }
+    } catch (error) {
+      throw new Error('Error al buscar al comprador en la base de datos');
+    }
+
+    const buyerName = user.name;
+
+    try {
+      totalAmountVerified = await Product.findAll();
+      console.log('totalAmountVerified:', totalAmountVerified);
       if (!user) {
         throw new Error('Comprador no encontrado');
       }
@@ -49,50 +53,32 @@ async function processSale(
 
     try {
       newSale = await Sale.create({
-        buyer_id: buyer_id.buyer_id,
-        totalAmount: totalAmount[0].totalAmount,
+        buyer_id: buyer_id,
+        totalAmount: totalAmount,
         payment_id: payment_id,
         status: status,
         merchant_order_id: merchant_order_id,
-        seller_id: 2,
-        pointOfPurchase: pointOfPurchase.pointOfPurchase,
       });
     } catch (error) {
-      console.error('Error al crear la venta en la base de datos', error);
+      throw new Error('Error al crear la venta en la base de datos');
     }
 
-    for (const item of orderClientBackEnd) {
-      if (item.product_id !== undefined && item.cantidad !== undefined) {
-        try {
-          // Busca el producto en la base de datos
-          const product = await Product.findByPk(item.product_id);
-          if (!product) {
-            console.error('Producto no encontrado:', item.product_id);
-            continue; // Salta esta iteración y continúa con la siguiente
-          }
+    for (const item of items) {
+      try {
+        const { seller_id, item_id } = item;
 
-          // Crea el registro en SoldProduct
-          const soldProduct = await SoldProduct.create({
-            sale_id: newSale.id,
-            product_id: item.product_id,
-            quantity: item.cantidad,
-            seller_id: 2,
-          });
-
-          console.log('Antes de increment:', product.soldToDistribute);
-          product.soldToDistribute += item.cantidad;
-          await product.save();
-          console.log('Después de increment:', product.soldToDistribute);
-        } catch (error) {
-          console.error(
-            'Error al crear el registro de venta en la base de datos',
-            error
-          );
-        }
+        await SoldService.create({
+          sale_id: newSale.id,
+          service_id: item_id,
+          seller_id: seller_id,
+        });
+      } catch (error) {
+        throw new Error(
+          'Error al crear el registro de servicio vendido en la base de datos'
+        );
       }
     }
 
-    /*
     const filePathCompra = path.join(
       __dirname,
       '..',
@@ -147,11 +133,11 @@ async function processSale(
         error
       );
     }
-*/
+
     console.log('Venta registrada exitosamente');
   } catch (error) {
     console.error('Error al registrar la venta:', error);
   }
 }
 
-module.exports = processSale;
+module.exports = processSaleFail;
