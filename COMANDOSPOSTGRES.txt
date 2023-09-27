@@ -7,7 +7,9 @@
 desde el directorio raiz, con el shell de windows:
 
 cd "Program Files"
-cd postgresql\14\bin>
+cd postgresql
+cd 14
+cd bin
 .\psql -U postgres -d negocio -a -f "C:\Users\elgra\Documents\01-PROYECTO-GESTIONADOR\BACK\cargaDBNegocio.sql"
 
 \copy "Suppliers" FROM 'C:\Users\elgra\Documents\01-PROYECTO-GESTIONADOR\Back\Suppliers.csv' DELIMITER ',' CSV HEADER;

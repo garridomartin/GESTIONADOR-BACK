@@ -39,7 +39,7 @@ async function getFeedbackMP(req, res) {
     );
 
     if (status === 'approved') {
-      await processSale(
+      const saleResult = await processSale(
         buyer_id,
         orderClientBackEnd,
         payment_id,
@@ -60,10 +60,15 @@ async function getFeedbackMP(req, res) {
       );
 
       // El estado no es "approved", no procesar la venta
-      res.status(400).json({ error: 'Payment not approved' });
+      res
+        .status(400)
+        .json({ error: 'Payment not approved', details: error.message });
     }
   } catch (error) {
-    res.status(500).json({ error: 'Error al registrar la venta linea 37' });
+    res.status(500).json({
+      error: 'Error al registrar la venta linea 69',
+      details: error.message,
+    });
   }
 }
 

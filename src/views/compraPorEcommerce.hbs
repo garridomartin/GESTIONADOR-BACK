@@ -1,18 +1,21 @@
 <html>
-
   <body>
-
-    <h1>Hola!,
-      {{name}}! Felicitacines por tu compra de
-      {{productos}}
-    </h1>
-    <p>En 48 horas recibirá el producto en el domicilio informado. En el
-      siguiente link, encontrará la factura para descargar.
-    </p>
-    <p>
-      Saludos.
-    </p>
+    <h1>Hola, {{buyer_name}}! Felicitaciones por tu compra de</h1>
+    <ul>
+      {{#each productos}}
+        <li>{{this.name}}
+          - Cantidad:
+          {{this.cantidad}}
+          - Precio: ${{this.precio}}</li>
+      {{/each}}
+    </ul>
+    <ul>- Envio</ul>
+    <li>
+      - Total:{{totalAmount}}
+    </li>
+    <p>En 48 horas recibirás el producto en el domicilio informado. En el
+      siguiente link, adjuntamos un enlace con la factura para descargar.</p>
+    <p>Saludos.</p>
     <p>Link: {{emailConfirmationLink}}</p>
   </body>
-
 </html>

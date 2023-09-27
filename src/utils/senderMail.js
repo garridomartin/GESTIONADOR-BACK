@@ -1,10 +1,12 @@
 const nodemailer = require('nodemailer');
+
 const { EMAIL_HOST, EMAIL_PORT, EMAIL_USER, EMAIL_PASS } = process.env;
 
 const sendEmailNotification = async (
   typeNotification,
   emailToSend,
-  compiledTemplate
+  compiledTemplate,
+  numeroDeTransaccion
 ) => {
   try {
     const config = {
@@ -49,10 +51,11 @@ const sendEmailNotification = async (
         html: compiledTemplate,
       };
     } else if (typeNotification === 'Ecomm') {
+      const subjectWithTransaction = `Notificación de Compra - Número de Transacción: ${numeroDeTransaccion}`;
       message = {
         from: EMAIL_USER,
         to: emailToSend,
-        subject: 'Notificación de Compra',
+        subject: subjectWithTransaction,
         html: compiledTemplate,
       };
     } else if (typeNotification === 'compra/venta') {

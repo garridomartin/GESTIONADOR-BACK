@@ -12,28 +12,17 @@ async function processSale(
   merchant_order_id,
   pointOfPurchase
 ) {
-  /*
-  console.log('buyer_id: ', buyer_id);
-  console.log('orderClientBackEnd: ', orderClientBackEnd);
-  console.log('payment_id: ' + payment_id);
-  console.log('status: ' + status);
-  console.log('merchant_order_id: ' + merchant_order_id);
-  console.log('pointOfPurchase:', pointOfPurchase);
-*/
-  const productsId = orderClientBackEnd
-    .filter((item) => item.product_id !== undefined)
-    .map((item) => item.product_id);
-
-  const quantity = orderClientBackEnd
-    .filter((item) => item.cantidad !== undefined)
-    .map((item) => item.cantidad);
-
   const totalAmount = orderClientBackEnd.filter(
     (item) => item.totalAmount !== undefined
   );
 
+  let name;
+  let productos = [];
+  let typeNotification = pointOfPurchase.pointOfPurchase;
+  let user;
+  let numeroDeTransaccion = payment_id;
+  //Variables para completar el mail↑↑↑↑
   //console.log('linea 30 items:', productsId, totalAmount, buyer_id);
-
   try {
     try {
       user = await User.findByPk(buyer_id.buyer_id);
@@ -41,6 +30,7 @@ async function processSale(
       if (!user) {
         throw new Error('Comprador no encontrado');
       }
+      name = user.name;
     } catch (error) {
       throw new Error('Error al buscar al comprador en la base de datos');
     }
@@ -71,6 +61,23 @@ async function processSale(
             continue; // Salta esta iteración y continúa con la siguiente
           }
 
+          const priceMapping = {
+            ML: 'priceML',
+            Ecomm: 'priceEComm',
+            Local: 'priceLocal',
+          };
+
+          const precioKey = priceMapping[pointOfPurchase.pointOfPurchase];
+
+          const productObject = {
+            name: product.name,
+            cantidad: item.cantidad,
+            precio: product[precioKey],
+          };
+
+          // Agrega el objeto al array
+          productos.push(productObject);
+
           // Crea el registro en SoldProduct
           const soldProduct = await SoldProduct.create({
             sale_id: newSale.id,
@@ -79,10 +86,10 @@ async function processSale(
             seller_id: 2,
           });
 
-          console.log('Antes de increment:', product.soldToDistribute);
+          // console.log('Antes de increment:', product.soldToDistribute);
           product.soldToDistribute += item.cantidad;
           await product.save();
-          console.log('Después de increment:', product.soldToDistribute);
+          //  console.log('Después de increment:', product.soldToDistribute);
         } catch (error) {
           console.error(
             'Error al crear el registro de venta en la base de datos',
@@ -92,62 +99,42 @@ async function processSale(
       }
     }
 
-    /*
     const filePathCompra = path.join(
       __dirname,
       '..',
       'views',
-      'buyNotification.hbs'
-    );
-    const filePathVenta = path.join(
-      __dirname,
-      '..',
-      'views',
-      'saleNotification.hbs'
+      'compraPorEcommerce.hbs'
     );
 
     const templateCompra = fs.readFileSync(filePathCompra, 'utf-8');
-    const templateVenta = fs.readFileSync(filePathVenta, 'utf-8');
-
     const compiledTemplateCompra = templateCreation(templateCompra, {
       sale_id: newSale.id,
-      buyer_name: buyerName,
+      buyer_name: name,
       totalAmount: newSale.totalAmount,
       payment_id: newSale.payment_id,
       status: newSale.status,
-      sellerEmails: sellerEmails,
+      productos: productos,
     });
-
-    const compiledTemplateVenta = templateCreation(templateVenta, {
-      sale_id: newSale.id,
-      buyer_name: buyerName,
-      totalAmount: newSale.totalAmount,
-      sellerEmails: sellerEmails,
-    });
-
-    const uniqueSellerEmails = [...new Set(sellerEmails)];
 
     try {
-      await sendEmailNotification(
+      const emailResult = await sendEmailNotification(
         typeNotification,
         user.email,
-        compiledTemplateCompra
+        compiledTemplateCompra,
+        numeroDeTransaccion
       );
-      console.log(uniqueSellerEmails);
-      for (const sellerEmail of uniqueSellerEmails) {
-        await sendEmailNotification(
-          'vendedor', // Tipo de notificación para los vendedores
-          sellerEmail, // Correo electrónico del vendedor
-          compiledTemplateVenta // Puedes crear una plantilla diferente para los vendedores si es necesario
-        );
-      }
+      return {
+        success: true,
+        message: 'Mensaje de venta enviado con éxito',
+        emailResult: emailResult,
+      };
     } catch (error) {
       console.error(
         'Error al enviar el correo electrónico de notificación:',
         error
       );
     }
-*/
+
     console.log('Venta registrada exitosamente');
   } catch (error) {
     console.error('Error al registrar la venta:', error);
