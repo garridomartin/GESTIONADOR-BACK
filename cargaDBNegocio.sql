@@ -16,7 +16,7 @@ ALTER SEQUENCE "Users_id_seq" RESTART WITH 3;
 
 INSERT INTO public."CategorySupplier" ("CategoryId", "SupplierId", "createdAt", "updatedAt")
 VALUES 
-  (1, 1, now(), now()),
+  (1, 1, now(), now()), 
   (2, 2, now(), now()),
   (3, 3, now(), now()),
   (1, 4, now(), now()),
