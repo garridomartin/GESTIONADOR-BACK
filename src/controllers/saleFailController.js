@@ -1,50 +1,36 @@
+const { User, Product, Sale, SoldProduct } = require('../db');
 const sendEmailNotification = require('../utils/senderMail');
 const fs = require('fs');
 const path = require('path');
 const templateCreation = require('../utils/templateCreation');
 
-async function processSaleFail(
+async function processSale(
+  buyer_id,
   orderClientBackEnd,
   payment_id,
   status,
   merchant_order_id,
-  totalAmount,
-  typeNotification
+  pointOfPurchase
 ) {
-  console.log('orderClientBackEnd: ' + orderClientBackEnd);
-  console.log('payment_id: ' + payment_id);
-  console.log('status: ' + status);
-  console.log('merchant_order_id: ' + merchant_order_id);
-  console.log('totalAmount: ' + totalAmount);
-  console.log('typeNotification:', typeNotification);
+  const totalAmount = orderClientBackEnd.filter(
+    (item) => item.totalAmount !== undefined
+  );
 
+  let name;
+  let productos = [];
+  let typeNotification = pointOfPurchase.pointOfPurchase;
+  let user;
+  let numeroDeTransaccion = payment_id;
+  //Variables para completar el mail↑↑↑↑
+  //console.log('linea 30 items:', productsId, totalAmount, buyer_id);
   try {
-    const buyer_id =
-      filteredBuyerIds.length > 0 ? filteredBuyerIds[0] : undefined;
-
-    console.log('linea 16 items:', orderClientBackEnd, totalAmount, buyer_id);
-    let user;
-    const filteredBuyerIds = orderClientBackEnd
-      .filter((item) => item.buyer_id !== undefined)
-      .map((item) => item.buyer_id);
     try {
-      user = await User.findByPk(buyer_id);
-      //  console.log('user:', user);
+      user = await User.findByPk(buyer_id.buyer_id);
+      //console.log('user:', user);
       if (!user) {
         throw new Error('Comprador no encontrado');
       }
-    } catch (error) {
-      throw new Error('Error al buscar al comprador en la base de datos');
-    }
-
-    const buyerName = user.name;
-
-    try {
-      totalAmountVerified = await Product.findAll();
-      console.log('totalAmountVerified:', totalAmountVerified);
-      if (!user) {
-        throw new Error('Comprador no encontrado');
-      }
+      name = user.name;
     } catch (error) {
       throw new Error('Error al buscar al comprador en la base de datos');
     }
@@ -53,29 +39,63 @@ async function processSaleFail(
 
     try {
       newSale = await Sale.create({
-        buyer_id: buyer_id,
-        totalAmount: totalAmount,
+        buyer_id: buyer_id.buyer_id,
+        totalAmount: totalAmount[0].totalAmount,
         payment_id: payment_id,
         status: status,
         merchant_order_id: merchant_order_id,
+        seller_id: 2,
+        pointOfPurchase: pointOfPurchase.pointOfPurchase,
       });
     } catch (error) {
-      throw new Error('Error al crear la venta en la base de datos');
+      console.error('Error al crear la venta en la base de datos', error);
     }
 
-    for (const item of items) {
-      try {
-        const { seller_id, item_id } = item;
+    for (const item of orderClientBackEnd) {
+      if (item.product_id !== undefined && item.cantidad !== undefined) {
+        try {
+          // Busca el producto en la base de datos
+          const product = await Product.findByPk(item.product_id);
+          if (!product) {
+            console.error('Producto no encontrado:', item.product_id);
+            continue; // Salta esta iteración y continúa con la siguiente
+          }
 
-        await SoldService.create({
-          sale_id: newSale.id,
-          service_id: item_id,
-          seller_id: seller_id,
-        });
-      } catch (error) {
-        throw new Error(
-          'Error al crear el registro de servicio vendido en la base de datos'
-        );
+          const priceMapping = {
+            ML: 'priceML',
+            Ecomm: 'priceEComm',
+            Local: 'priceLocal',
+          };
+
+          const precioKey = priceMapping[pointOfPurchase.pointOfPurchase];
+
+          const productObject = {
+            name: product.name,
+            cantidad: item.cantidad,
+            precio: product[precioKey],
+          };
+
+          // Agrega el objeto al array
+          productos.push(productObject);
+
+          // Crea el registro en SoldProduct
+          const soldProduct = await SoldProduct.create({
+            sale_id: newSale.id,
+            product_id: item.product_id,
+            quantity: item.cantidad,
+            seller_id: 2,
+          });
+
+          // console.log('Antes de increment:', product.soldToDistribute);
+          product.soldToDistribute += item.cantidad;
+          await product.save();
+          //  console.log('Después de increment:', product.soldToDistribute);
+        } catch (error) {
+          console.error(
+            'Error al crear el registro de venta en la base de datos',
+            error
+          );
+        }
       }
     }
 
@@ -83,50 +103,31 @@ async function processSaleFail(
       __dirname,
       '..',
       'views',
-      'buyNotification.hbs'
-    );
-    const filePathVenta = path.join(
-      __dirname,
-      '..',
-      'views',
-      'saleNotification.hbs'
+      'compraPorEcommerce.hbs'
     );
 
     const templateCompra = fs.readFileSync(filePathCompra, 'utf-8');
-    const templateVenta = fs.readFileSync(filePathVenta, 'utf-8');
-
     const compiledTemplateCompra = templateCreation(templateCompra, {
       sale_id: newSale.id,
-      buyer_name: buyerName,
+      buyer_name: name,
       totalAmount: newSale.totalAmount,
       payment_id: newSale.payment_id,
       status: newSale.status,
-      sellerEmails: sellerEmails,
+      productos: productos,
     });
-
-    const compiledTemplateVenta = templateCreation(templateVenta, {
-      sale_id: newSale.id,
-      buyer_name: buyerName,
-      totalAmount: newSale.totalAmount,
-      sellerEmails: sellerEmails,
-    });
-
-    const uniqueSellerEmails = [...new Set(sellerEmails)];
 
     try {
-      await sendEmailNotification(
+      const emailResult = await sendEmailNotification(
         typeNotification,
         user.email,
-        compiledTemplateCompra
+        compiledTemplateCompra,
+        numeroDeTransaccion
       );
-      console.log(uniqueSellerEmails);
-      for (const sellerEmail of uniqueSellerEmails) {
-        await sendEmailNotification(
-          'vendedor', // Tipo de notificación para los vendedores
-          sellerEmail, // Correo electrónico del vendedor
-          compiledTemplateVenta // Puedes crear una plantilla diferente para los vendedores si es necesario
-        );
-      }
+      return {
+        success: true,
+        message: 'Mensaje de venta enviado con éxito',
+        emailResult: emailResult,
+      };
     } catch (error) {
       console.error(
         'Error al enviar el correo electrónico de notificación:',
@@ -140,4 +141,4 @@ async function processSaleFail(
   }
 }
 
-module.exports = processSaleFail;
+module.exports = processSale;
