@@ -44,8 +44,16 @@ let capsEntries = entries.map((entry) => [
 ]);
 sequelize.models = Object.fromEntries(capsEntries);
 
-const { User, Sale, Product, SoldProduct, Supplier, Category } =
-  sequelize.models;
+const {
+  User,
+  Sale,
+  Product,
+  SoldProduct,
+  Supplier,
+  Category,
+  MELIAccesCode,
+  MELIAccesToken,
+} = sequelize.models;
 
 // Relaciones entre Sale y User
 Sale.belongsTo(User, { as: 'buyer', foreignKey: 'buyer_id' });
@@ -84,6 +92,10 @@ Supplier.belongsToMany(Category, { through: 'CategorySupplier' });
 // Relación entre Category y Products
 Category.belongsToMany(Product, { through: 'CategoryProduct' });
 Product.belongsToMany(Category, { through: 'CategoryProduct' });
+
+//Relaicon entre MELIAccesCode y User
+MELIAccesCode.belongsTo(User, { as: 'user', foreignKey: 'UserId' });
+MELIAccesToken.belongsTo(User, { as: 'user', foreignKey: 'UserId' });
 
 module.exports = {
   ...sequelize.models,

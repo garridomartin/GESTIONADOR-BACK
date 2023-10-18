@@ -14,11 +14,14 @@ const verifyToken = (req, res, next) => {
     } else if (req.cookies && req.cookies.token) {
       // Verificar token almacenado en las cookies
       token = req.cookies.token;
-      ///console.log('linea 17 verifyToken:', req.cookies.token);
     } else {
-      //  console.log('no pasa nada');
       // No se proporcionó ningún token
-      return res.status(401).json({ error: 'Unauthorized access' });
+      console.error(
+        'Error al verificar el token: No se proporcionó ningún token'
+      );
+      return res
+        .status(401)
+        .json({ error: 'Acceso no autorizado. Por favor inicie sesión.' });
     }
 
     // Verificar el token utilizando la clave secreta
@@ -26,10 +29,12 @@ const verifyToken = (req, res, next) => {
     req.id = tokenized.id;
     req.email = tokenized.email;
     req.username = tokenized.username;
-    //console.log('este log es de la verificacion del token:', tokenized);
     next();
   } catch (error) {
-    return res.status(401).json({ error: 'Unauthorized access' });
+    console.error(`Error al verificar el token: ${error.message}`);
+    return res
+      .status(401)
+      .json({ error: 'Acceso no autorizado. Token inválido o expirado.' });
   }
 };
 

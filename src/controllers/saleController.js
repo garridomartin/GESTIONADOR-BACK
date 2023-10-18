@@ -20,7 +20,7 @@ async function processSale(
   let productos = [];
   let typeNotification = pointOfPurchase.pointOfPurchase;
   let user;
-  let numeroDeTransaccion = payment_id;
+  let numeroDeTransaccion = merchant_order_id;
   //Variables para completar el mail↑↑↑↑
   //console.log('linea 30 items:', productsId, totalAmount, buyer_id);
   try {

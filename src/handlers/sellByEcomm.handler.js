@@ -50,6 +50,7 @@ async function getFeedbackMP(req, res) {
 
       res.status(200).send(htmlContent);
     } else {
+      const error = new Error('Payment not approved');
       await processSaleFail(
         buyer_id,
         orderClientBackEnd,
@@ -59,9 +60,10 @@ async function getFeedbackMP(req, res) {
         pointOfPurchase
       );
 
-      // El estado no es "approved", no procesar la venta
+      // El estado no es "approved", no procesar la venta en soldProucts, si se anota la venta fallida en Sale
       res
         .status(400)
+        //.send(htmlContent)
         .json({ error: 'Payment not approved', details: error.message });
     }
   } catch (error) {

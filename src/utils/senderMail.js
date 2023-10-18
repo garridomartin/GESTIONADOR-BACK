@@ -58,6 +58,14 @@ const sendEmailNotification = async (
         subject: subjectWithTransaction,
         html: compiledTemplate,
       };
+    } else if (typeNotification === 'EcommFallido') {
+      const subjectWithTransaction = `Notificación de Compra Fallida - Número de Transacción: ${numeroDeTransaccion}`;
+      message = {
+        from: EMAIL_USER,
+        to: emailToSend,
+        subject: subjectWithTransaction,
+        html: compiledTemplate,
+      };
     } else if (typeNotification === 'compra/venta') {
       message = {
         from: EMAIL_USER,

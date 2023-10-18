@@ -1,0 +1,22 @@
+<html>
+  <body>
+    <h1>Hola,
+      {{buyer_name}}! Hemos tenido un problema con el pago de tu compra de</h1>
+    <ul>
+      {{#each productos}}
+        <li>{{this.name}}
+          - Cantidad:
+          {{this.cantidad}}
+          - Precio: ${{this.precio}}</li>
+      {{/each}}
+    </ul>
+    <ul>- Envio</ul>
+    <li>
+      - Total:{{totalAmount}}
+    </li>
+    <p>Si tienes el comprobante de pago, por favor envialo a info@compras.com.ar
+      y buscaremos el ingreso del pago.</p>
+    <p>Saludos.</p>
+
+  </body>
+</html>

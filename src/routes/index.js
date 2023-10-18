@@ -32,6 +32,9 @@ const getAllSuppliers = require('../handlers/getAllSuppliers.handler');
 const batchNewCostRouter = require('./batchNewCost.router');
 const sellByEcommRouter = require('./sellByEcomm.router');
 const { getFeedbackMP } = require('../handlers/sellByEcomm.handler');
+const getMELIToken = require('../handlers/getMELIAccesCode.handler');
+const refreshMELIToken = require('../handlers/refreshMELIToken.handler');
+const getMELIAccesCode = require('../handlers/getMELIAccesCode.handler');
 const {
   logInGoogleHandler,
   authenticateHandler,
@@ -50,6 +53,11 @@ require('../middleware/passport');
 
 //!REFERIDO A CONSULTAS A LA BASE DE DATOS
 
+//!REFERIDO A MELI
+router.get('/getmeliaccescode', verifyToken, admincheck, getMELIAccesCode); //obtiene la respuesta de MELI por primera autorizacion
+//https://auth.mercadolibre.com.ar/authorization?response_type=code&client_id=7484916274409054
+//↑↑↑↑↑ ESTE ES EL PEDIDO DE ACCESO
+//LUEGO SE GENERARA UN TOKEN Y SE GUARDARÁ EN LA DB. ESE TOKEN SE REFRESCARÁ A PEDIDO DEL CONTROLLER SI PASARON MAS DE 6 HORAS DESDE SU GENERACION
 //!REFERIDO A VENTAS
 
 router.use('/sellByEcomm', verifyToken, sellByEcommRouter);

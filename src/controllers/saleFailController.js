@@ -1,10 +1,10 @@
-const { User, Product, Sale, SoldProduct } = require('../db');
+const { User, Sale, Product } = require('../db');
 const sendEmailNotification = require('../utils/senderMail');
 const fs = require('fs');
 const path = require('path');
 const templateCreation = require('../utils/templateCreation');
 
-async function processSale(
+async function processSaleFail(
   buyer_id,
   orderClientBackEnd,
   payment_id,
@@ -18,11 +18,11 @@ async function processSale(
 
   let name;
   let productos = [];
-  let typeNotification = pointOfPurchase.pointOfPurchase;
+  let typeNotification = 'EcommFallido';
   let user;
-  let numeroDeTransaccion = payment_id;
+  let numeroDeTransaccion = merchant_order_id;
   //Variables para completar el mail↑↑↑↑
-  //console.log('linea 30 items:', productsId, totalAmount, buyer_id);
+  // console.log('linea 25 sailFail');
   try {
     try {
       user = await User.findByPk(buyer_id.buyer_id);
@@ -77,19 +77,6 @@ async function processSale(
 
           // Agrega el objeto al array
           productos.push(productObject);
-
-          // Crea el registro en SoldProduct
-          const soldProduct = await SoldProduct.create({
-            sale_id: newSale.id,
-            product_id: item.product_id,
-            quantity: item.cantidad,
-            seller_id: 2,
-          });
-
-          // console.log('Antes de increment:', product.soldToDistribute);
-          product.soldToDistribute += item.cantidad;
-          await product.save();
-          //  console.log('Después de increment:', product.soldToDistribute);
         } catch (error) {
           console.error(
             'Error al crear el registro de venta en la base de datos',
@@ -103,7 +90,7 @@ async function processSale(
       __dirname,
       '..',
       'views',
-      'compraPorEcommerce.hbs'
+      'compraPorEcommerceFallida.hbs'
     );
 
     const templateCompra = fs.readFileSync(filePathCompra, 'utf-8');
@@ -125,7 +112,7 @@ async function processSale(
       );
       return {
         success: true,
-        message: 'Mensaje de venta enviado con éxito',
+        message: 'Mensaje de venta fallida enviado con éxito',
         emailResult: emailResult,
       };
     } catch (error) {
@@ -135,10 +122,10 @@ async function processSale(
       );
     }
 
-    console.log('Venta registrada exitosamente');
+    console.log('Venta fallida registrada exitosamente');
   } catch (error) {
     console.error('Error al registrar la venta:', error);
   }
 }
 
-module.exports = processSale;
+module.exports = processSaleFail;
