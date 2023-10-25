@@ -51,8 +51,20 @@ module.exports = (sequelize) => {
           min: 0,
         },
       },
+      stockML: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
+        defaultValue: 0,
+        validate: {
+          min: 0,
+        },
+      },
       soldToDistribute: {
         type: DataTypes.INTEGER,
+      },
+      idMeli: {
+        type: DataTypes.STRING,
+        unique: true,
       },
       shortDescription: {
         type: DataTypes.STRING,

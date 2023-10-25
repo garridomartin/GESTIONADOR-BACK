@@ -1,15 +1,15 @@
 const { MELIAccesCode, MELIAccesToken } = require('../db');
-//const findUserById = require('./findUserById.controller');
+const findUserById = require('./findUserById.controller');
 const getToken = require('./getMELIToken.controller');
 
-const getMELIAccesCodeController = async (user_id, code) => {
-  // const user = await findUserById(user_id);
-  // if (!user) {
-  //   throw new Error('No hay usuario con ese id');
-  //  }
+const getMELIproductsController = async (user_id, code) => {
+  const user = await findUserById(user_id);
+  if (!user) {
+    throw new Error('No hay usuario con ese id');
+  }
 
   let existingCode = await MELIAccesCode.findOne({
-    where: { code: code, UserId: user_id },
+    where: { code: code, UserId: user.id },
   });
 
   if (existingCode) {
@@ -21,7 +21,7 @@ const getMELIAccesCodeController = async (user_id, code) => {
 
   existingCode = await MELIAccesCode.create({
     code: code,
-    UserId: user_id,
+    UserId: user.id,
   });
   console.log('el codigo para generar el token fue guardado');
   await existingCode.save();
@@ -38,11 +38,11 @@ const getMELIAccesCodeController = async (user_id, code) => {
     UserMeliID: firstToken.user_id,
     acces_token: firstToken.access_token,
     refresh_token: firstToken.refresh_token,
-    UserId: user_id,
+    UserId: user.id,
   });
   await newToken.save();
 
   return newToken;
 };
 
-module.exports = getMELIAccesCodeController;
+module.exports = getMELIproductsController;

@@ -3,6 +3,7 @@ const router = Router();
 const verifyToken = require('../middleware/verifyToken');
 const admincheck = require('../middleware/admincheck');
 const sellerCheck = require('../middleware/sellerCheck');
+const checkTokenMELIExpire = require('../middleware/checkTokenMELIExpire');
 
 const signUpRouter = require('./signUp.router');
 const emailConfirmation = require('../handlers/emailConfirmation.handler');
@@ -32,9 +33,10 @@ const getAllSuppliers = require('../handlers/getAllSuppliers.handler');
 const batchNewCostRouter = require('./batchNewCost.router');
 const sellByEcommRouter = require('./sellByEcomm.router');
 const { getFeedbackMP } = require('../handlers/sellByEcomm.handler');
-const getMELIToken = require('../handlers/getMELIAccesCode.handler');
-const refreshMELIToken = require('../handlers/refreshMELIToken.handler');
 const getMELIAccesCode = require('../handlers/getMELIAccesCode.handler');
+const meliSession = require('../handlers/setRefreshMELIToken.handler');
+const stopMELISession = require('../handlers/stopRefreshMELIToken.handler');
+const getMELIproducts = require('../handlers/getMELIproducts.handler');
 const {
   logInGoogleHandler,
   authenticateHandler,
@@ -58,10 +60,26 @@ router.get('/getmeliaccescode', verifyToken, admincheck, getMELIAccesCode); //ob
 //https://auth.mercadolibre.com.ar/authorization?response_type=code&client_id=7484916274409054
 //↑↑↑↑↑ ESTE ES EL PEDIDO DE ACCESO
 //LUEGO SE GENERARA UN TOKEN Y SE GUARDARÁ EN LA DB. ESE TOKEN SE REFRESCARÁ A PEDIDO DEL CONTROLLER SI PASARON MAS DE 6 HORAS DESDE SU GENERACION
+router.get(
+  '/iniciar-renovar-sesion-meli',
+  verifyToken,
+  admincheck,
+  meliSession
+); //!activa renovacion automatica del token de MELI
+router.get(
+  '/detener-renovar-sesion-meli',
+  verifyToken,
+  admincheck,
+  stopMELISession
+); //!DETIENE renovacion automatica del token de MELI
+router.get('/getMELIproducts', verifyToken, admincheck, getMELIproducts); //obtiene la respuesta de MELI por primera autorizacion
+//router.get('/getMELIStock', verifyToken, admincheck, getMELIStock); //obtiene la respuesta de MELI por primera autorizacion
+//router.put('/updateMELIprice', verifyToken, admincheck, updateMELIprice); //obtiene la respuesta de MELI por primera autorizacion
+
 //!REFERIDO A VENTAS
 
 router.use('/sellByEcomm', verifyToken, sellByEcommRouter);
-router.get('/feedback', getFeedbackMP);
+router.get('/feedback', getFeedbackMP); //RESPUESTA DE MP
 /*
 
 router.use('/sellBySellerCash', verifyToken, sellerCheck, sellBySellerCash); 
@@ -77,7 +95,13 @@ router.use('/getSellsBySeller', verifyToken, SellsBySeller);
 //!REFERIDO A PRODUCTOS Y COMPRAS
 router.use('/newProduct', verifyToken, admincheck, newProductRouter);
 router.get('/getProductById/:id', verifyToken, getProductById);
-router.get('/getAllProducts', verifyToken, admincheck, getAllProducts); //! SOLO USAR EN DASHBOARD DE ADMIN
+router.get(
+  '/getAllProducts',
+  verifyToken,
+  admincheck,
+  checkTokenMELIExpire,
+  getAllProducts
+); //! SOLO USAR EN DASHBOARD DE ADMIN
 router.get('/getProducts', verifyToken, getProducts); //! SOLO TRAE PRODUCTOS CON STOCK Y SIN DELETEAR
 router.use('/editProduct', verifyToken, admincheck, editProductRouter);
 router.get('/deleteProduct/:id', verifyToken, admincheck, deleteProduct);

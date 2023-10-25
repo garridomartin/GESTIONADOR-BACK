@@ -35,6 +35,11 @@ const batchNewCostController = async (csvData) => {
       'priceEComm',
       'priceLocal',
       'shortDescription',
+      'stock',
+      'stockML',
+      'soldToDistribute',
+      'idMeli',
+      'shortDescription',
       'longDescription',
     ];
 

@@ -12,10 +12,14 @@ module.exports = (sequelize) => {
         allowNull: false,
         unique: true,
       },
-      token: {
+      UserMeliID: {
         type: DataTypes.STRING,
-        allowNull: false,
-        unique: true,
+      },
+      acces_token: {
+        type: DataTypes.STRING,
+      },
+      refresh_token: {
+        type: DataTypes.STRING,
       },
       UserId: {
         type: DataTypes.INTEGER, // Tipo de datos debe coincidir con el tipo en la tabla User

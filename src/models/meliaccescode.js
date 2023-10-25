@@ -17,6 +17,7 @@ module.exports = (sequelize) => {
         allowNull: false,
         unique: true,
       },
+
       UserId: {
         type: DataTypes.INTEGER, // Tipo de datos debe coincidir con el tipo en la tabla User
         allowNull: false,

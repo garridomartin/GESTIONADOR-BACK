@@ -18,7 +18,7 @@ const getToken = async (serverAuthorizationCode) => {
     redirect_uri: REDIRECT_URI,
   };
 
-  console.log('esto trae data, para el reques a meli:', data);
+  console.log('este es el request a meli:', data);
 
   try {
     const response = await axios.post(apiUrl, data, {

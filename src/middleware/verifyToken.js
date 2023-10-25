@@ -31,7 +31,7 @@ const verifyToken = (req, res, next) => {
     req.username = tokenized.username;
     next();
   } catch (error) {
-    console.error(`Error al verificar el token: ${error.message}`);
+    console.error(`Error al verificar el token de usuario: ${error.message}`);
     return res
       .status(401)
       .json({ error: 'Acceso no autorizado. Token inválido o expirado.' });

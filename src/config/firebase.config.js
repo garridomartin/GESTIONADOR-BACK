@@ -1,3 +1,4 @@
+require('dotenv').config();
 const { initializeApp } = require('firebase/app');
 const { getStorage } = require('firebase/storage');
 
@@ -8,10 +9,7 @@ const {
   STORAGE_BUCKET_FB,
   MESSAGING_SENDER_ID_FB,
   APP_ID_FB,
-  MEASUREMENT_ID,
 } = process.env;
-
-//Se incializa Firebase
 
 const firebaseConfig = {
   apiKey: API_KEY_FB,
