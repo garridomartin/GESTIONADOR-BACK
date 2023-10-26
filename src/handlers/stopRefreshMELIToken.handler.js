@@ -1,16 +1,18 @@
+// stopMELISession.handler.js
+
 const {
-  setUserId,
-  meliSessionController,
+  isIntervalActive,
+  stopInterval,
 } = require('../controllers/setRefreshMELIToken.controller');
 
 const stopMELISession = async (req, res) => {
-  if (intervalId) {
-    clearInterval(intervalId);
-    console.log('Intervalo detenido.');
-    res.send('Intervalo detenido.');
+  if (isIntervalActive) {
+    stopInterval();
+    console.log('Intervalo detenido');
+    res.send('Intervalo detenido');
   } else {
-    console.log('Intervalo no está en funcionamiento.');
-    res.send('Intervalo no está en funcionamiento.');
+    console.log('Intervalo no está en funcionamiento');
+    res.send('Intervalo no está en funcionamiento');
   }
 };
 

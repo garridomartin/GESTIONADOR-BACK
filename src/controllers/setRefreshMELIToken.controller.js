@@ -12,7 +12,7 @@ const setUserId = (id) => {
 
 const meliSessionController = async (id) => {
   try {
-    if (!UserId) {
+    if (!id) {
       throw new Error('No se proporcionó UserId');
     }
     const latestToken = await MELIAccesToken.findOne({
@@ -40,7 +40,7 @@ const meliSessionController = async (id) => {
             'content-type': 'application/x-www-form-urlencoded',
           },
         });
-        const tokenData = response.data.refresh_token; // Asegúrate de acceder a la propiedad 'refresh_token' en 'data'
+        const tokenData = response.data.refresh_token;
         console.log('Refresh Token Response:', tokenData);
 
         latestToken.refresh_token = tokenData;
@@ -51,10 +51,11 @@ const meliSessionController = async (id) => {
       }
     }
   } catch (error) {
-    console.error(error.message);
+    console.error('Error en meliSessionController:', error);
     throw error;
   }
 };
+
 const refreshTokenHandler = () => {
   if (UserId) {
     meliSessionController(UserId);
@@ -69,6 +70,27 @@ const refreshTokenHandler = () => {
   }
 };
 
-intervalId = setInterval(refreshTokenHandler, refreshTokenInterval);
+let isIntervalActive = false;
+let intervalId = null;
 
-module.exports = { meliSessionController, setUserId, intervalId };
+const startInterval = () => {
+  if (!isIntervalActive) {
+    intervalId = setInterval(refreshTokenHandler, refreshTokenInterval);
+    isIntervalActive = true;
+  }
+};
+
+const stopInterval = () => {
+  if (isIntervalActive) {
+    clearInterval(intervalId);
+    isIntervalActive = false;
+  }
+};
+
+module.exports = {
+  meliSessionController,
+  setUserId,
+  isIntervalActive,
+  startInterval,
+  stopInterval,
+};

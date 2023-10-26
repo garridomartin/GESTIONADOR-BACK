@@ -36,6 +36,13 @@ async function processSale(
     }
 
     let newSale;
+    let seller;
+
+    if (pointOfPurchase === 'EComm') {
+      seller = 'EComm';
+    } else if (pointOfPurchase === 'Local') {
+      seller = buyer_id;
+    }
 
     try {
       newSale = await Sale.create({
@@ -44,7 +51,7 @@ async function processSale(
         payment_id: payment_id,
         status: status,
         merchant_order_id: merchant_order_id,
-        seller_id: 2,
+        seller_id: seller,
         pointOfPurchase: pointOfPurchase.pointOfPurchase,
       });
     } catch (error) {

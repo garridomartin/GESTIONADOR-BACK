@@ -22,7 +22,7 @@ async function processSaleFail(
   let user;
   let numeroDeTransaccion = merchant_order_id;
   //Variables para completar el mail↑↑↑↑
-  // console.log('linea 25 sailFail');
+  console.log('linea 25 sailFail:', numeroDeTransaccion);
   try {
     try {
       user = await User.findByPk(buyer_id.buyer_id);
@@ -36,6 +36,13 @@ async function processSaleFail(
     }
 
     let newSale;
+    let seller;
+
+    if (pointOfPurchase === 'EComm') {
+      seller = 'EComm';
+    } else if (pointOfPurchase === 'Local') {
+      seller = buyer_id;
+    }
 
     try {
       newSale = await Sale.create({
@@ -44,7 +51,7 @@ async function processSaleFail(
         payment_id: payment_id,
         status: status,
         merchant_order_id: merchant_order_id,
-        seller_id: 2,
+        seller_id: seller,
         pointOfPurchase: pointOfPurchase.pointOfPurchase,
       });
     } catch (error) {

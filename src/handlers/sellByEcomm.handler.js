@@ -39,7 +39,7 @@ async function getFeedbackMP(req, res) {
     );
 
     if (status === 'approved') {
-      const saleResult = await processSale(
+      await processSale(
         buyer_id,
         orderClientBackEnd,
         payment_id,
@@ -68,7 +68,7 @@ async function getFeedbackMP(req, res) {
     }
   } catch (error) {
     res.status(500).json({
-      error: 'Error al registrar la venta linea 69',
+      error: 'Error al registrar la venta linea 71',
       details: error.message,
     });
   }

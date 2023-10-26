@@ -13,7 +13,7 @@ module.exports = (sequelize) => {
       allowNull: false,
     },
     seller_id: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.STRING,
       allowNull: true,
     },
     totalAmount: {
