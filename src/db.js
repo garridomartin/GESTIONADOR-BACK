@@ -53,11 +53,12 @@ const {
   Category,
   MELIAccesCode,
   MELIAccesToken,
+  IntervalStatus,
 } = sequelize.models;
 
 // Relaciones entre Sale y User
 Sale.belongsTo(User, { as: 'buyer', foreignKey: 'buyer_id' });
-Sale.belongsTo(User, { as: 'seller', foreignKey: 'seller_id' });
+//Sale.belongsTo(User, { as: 'seller', foreignKey: 'seller_id' });
 
 // Relación entre Sale y Product a través de SoldProduct
 Sale.belongsToMany(Product, {
