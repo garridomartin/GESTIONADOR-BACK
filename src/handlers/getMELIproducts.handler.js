@@ -1,9 +1,11 @@
-const getMELIproductsController = require('../controllers/findProductById.controller');
+//getMELIproducts.handler
+const getMELIproductsController = require('../controllers/getMELIproducts.controller');
 
 const getMELIproducts = async (req, res) => {
   try {
-    const { id } = req.params;
-    const productFound = await getMELIproductsController(id);
+    const UserId = req.id;
+
+    const productFound = await getMELIproductsController(UserId);
 
     if (!productFound) {
       return res.status(404).json({

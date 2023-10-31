@@ -34,7 +34,7 @@ const checkTokenMELIExpire = async (req, res, next) => {
         refresh_token: latestToken.refresh_token,
       };
       try {
-        const response = await axios.post(apiUrl, data, {
+        const response = await axios.post(`${apiUrl}/oauth/token`, data, {
           headers: {
             accept: 'application/json',
             'content-type': 'application/x-www-form-urlencoded',

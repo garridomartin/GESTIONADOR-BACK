@@ -3,7 +3,7 @@ const { MELIAccesToken, IntervalStatus } = require('../db');
 const axios = require('axios');
 require('dotenv').config();
 const { APP_ID, SECRET_KEY, apiUrl } = process.env;
-const refreshTokenInterval = 5.9 * 60 * 60 * 1000;
+const refreshTokenInterval = 1 * 60 * 60 * 1000;
 
 //let isIntervalActive = false;
 let intervalId = null;
@@ -67,7 +67,7 @@ const meliSessionController = async (id) => {
         refresh_token: latestToken.refresh_token,
       };
       try {
-        const response = await axios.post(apiUrl, data, {
+        const response = await axios.post(`${apiUrl}/oauth/token`, data, {
           headers: {
             accept: 'application/json',
             'content-type': 'application/x-www-form-urlencoded',

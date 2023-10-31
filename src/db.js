@@ -14,6 +14,7 @@ const sequelize = new Sequelize(DB_DEPLOY, {
 });
 */
 //DESCOMENTAR PARA USAR LOCAL
+/*
 const sequelize = new Sequelize(
   `postgres://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_TABLE}`,
   {
@@ -21,7 +22,19 @@ const sequelize = new Sequelize(
     native: false,
   }
 );
+*/
 
+const sequelize = new Sequelize(DB_TABLE, DB_USER, DB_PASSWORD, {
+  host: DB_HOST,
+  dialect: 'postgres',
+  // ! Connecting with CloudDatabase
+  dialectOptions: {
+    ssl: {
+      rejectUnauthorized: false,
+    },
+  },
+  logging: false,
+});
 const basename = path.basename(__filename);
 
 const modelDefiners = [];

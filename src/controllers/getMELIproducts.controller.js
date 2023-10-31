@@ -1,48 +1,54 @@
-const { MELIAccesCode, MELIAccesToken } = require('../db');
-const findUserById = require('./findUserById.controller');
-const getToken = require('./getMELIToken.controller');
+//getMELIproducts.controller
+const { MELIAccesToken } = require('../db');
+const axios = require('axios');
+require('dotenv').config();
+const { apiUrl } = process.env;
+const cleanArray = require('./cleanArray');
 
-const getMELIproductsController = async (user_id, code) => {
-  const user = await findUserById(user_id);
-  if (!user) {
-    throw new Error('No hay usuario con ese id');
-  }
-
-  let existingCode = await MELIAccesCode.findOne({
-    where: { code: code, UserId: user.id },
+let items;
+const getMELIproductsController = async (user_id) => {
+  const acces_token = await MELIAccesToken.findOne({
+    where: { UserId: user_id },
+    order: [['createdAt', 'DESC']],
   });
 
-  if (existingCode) {
-    console.log(
-      'El código ya está registrado, contacte al administrador del sistema.'
+  if (!acces_token) {
+    throw new Error('No hay token asociado para ese usuario');
+  }
+  let token = acces_token.acces_token;
+  let meliUser = acces_token.UserMeliID;
+
+  try {
+    const response = await axios.get(
+      `${apiUrl}/users/${meliUser}/items/search`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
     );
-    return;
+
+    let itemsArry = response.data.results;
+
+    items = itemsArry.join(',');
+  } catch (error) {
+    console.error('Error al obtener el token:', error);
+    throw error;
   }
+  try {
+    const meliItems = await axios.get(`${apiUrl}/items?ids=${items}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
 
-  existingCode = await MELIAccesCode.create({
-    code: code,
-    UserId: user.id,
-  });
-  console.log('el codigo para generar el token fue guardado');
-  await existingCode.save();
-  console.log('intentando generar el primer token temporal');
-  const firstToken = await getToken(code);
+    const itemsMeli = cleanArray(meliItems.data);
 
-  console.log('esto paso por firstToken:', firstToken);
-  console.log(
-    'esto paso por firstToken.access_token:',
-    firstToken.access_token
-  );
-
-  const newToken = await MELIAccesToken.create({
-    UserMeliID: firstToken.user_id,
-    acces_token: firstToken.access_token,
-    refresh_token: firstToken.refresh_token,
-    UserId: user.id,
-  });
-  await newToken.save();
-
-  return newToken;
+    return itemsMeli;
+  } catch (error) {
+    console.error('Error al obtener el token:', error);
+    throw error;
+  }
 };
 
 module.exports = getMELIproductsController;

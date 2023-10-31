@@ -21,7 +21,7 @@ const getToken = async (serverAuthorizationCode) => {
   console.log('este es el request a meli:', data);
 
   try {
-    const response = await axios.post(apiUrl, data, {
+    const response = await axios.post(`${apiUrl}/oauth/token`, data, {
       headers: {
         accept: 'application/json',
         'content-type': 'application/x-www-form-urlencoded',
