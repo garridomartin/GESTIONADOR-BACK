@@ -43,7 +43,7 @@ module.exports = (sequelize) => {
         type: DataTypes.INTEGER,
         defaultValue: 0,
       },
-      stock: {
+      quantity: {
         type: DataTypes.INTEGER,
         allowNull: true,
         defaultValue: 0,
@@ -51,7 +51,7 @@ module.exports = (sequelize) => {
           min: 0,
         },
       },
-      stockML: {
+      quantityML: {
         type: DataTypes.INTEGER,
         allowNull: true,
         defaultValue: 0,
@@ -80,6 +80,6 @@ module.exports = (sequelize) => {
         type: DataTypes.STRING,
       },
     },
-    { timestamps: false }
+    { timestamps: true }
   );
 };

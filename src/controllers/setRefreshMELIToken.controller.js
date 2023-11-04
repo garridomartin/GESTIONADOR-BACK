@@ -3,15 +3,14 @@ const { MELIAccesToken, IntervalStatus } = require('../db');
 const axios = require('axios');
 require('dotenv').config();
 const { APP_ID, SECRET_KEY, apiUrl } = process.env;
-const refreshTokenInterval = 1 * 60 * 60 * 1000;
+const refreshTokenInterval = 2 * 60 * 60 * 1000;
 
-//let isIntervalActive = false;
 let intervalId = null;
 
 const startInterval = async (UserId) => {
   const isIntervalActive = await IntervalStatus.findOne({ where: { id: 1 } });
   console.log(
-    'asi esta seteado isIntervalActive en la base de datos',
+    'asi estaba seteado isIntervalActive en la base de datos',
     isIntervalActive.is_active
   );
   if (!isIntervalActive.is_active) {
@@ -74,7 +73,8 @@ const meliSessionController = async (id) => {
           },
         });
         const tokenData = response.data.refresh_token;
-        console.log('Refresh Token Response:', tokenData);
+        const currentTime = new Date();
+        console.log('Refresh Token Response:', tokenData, currentTime);
 
         latestToken.refresh_token = tokenData;
         await latestToken.save();
@@ -97,6 +97,5 @@ const meliSessionController = async (id) => {
 module.exports = {
   startInterval,
   stopInterval,
-  meliSessionController,
   meliSessionController,
 };

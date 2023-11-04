@@ -21,10 +21,13 @@ ALTER SEQUENCE "Categories_id_seq" RESTART WITH 4;
 
 
 \copy "Products" FROM 'C:\Users\elgra\Documents\01-PROYECTO-GESTIONADOR\Back\Products.csv' DELIMITER ',' CSV HEADER;
-ALTER SEQUENCE "Products_id_seq" RESTART WITH 8;
+ALTER SEQUENCE "Products_id_seq" RESTART WITH 9;
 
  \copy "Users" FROM 'C:\Users\elgra\Documents\01-PROYECTO-GESTIONADOR\Back\Users.csv' DELIMITER ',' CSV HEADER;
 ALTER SEQUENCE "Users_id_seq" RESTART WITH 3;
+
+\copy "IntervalStatuses" FROM 'C:\Users\elgra\Documents\01-PROYECTO-GESTIONADOR\Back\IntervalStatuses.csv' DELIMITER ',' CSV HEADER;
+ALTER SEQUENCE "Categories_id_seq" RESTART WITH 1;
 
 
 
@@ -78,15 +81,17 @@ SELECT c.relname FROM pg_class c WHERE c.relkind = 'S';
 Esto mostrará una lista de todas las secuencias existentes en la base de datos.
 
 
-       relname
----------------------
- Users_id_seq
- Categories_id_seq
- Products_id_seq
+        relname
+------------------------
+ MELIAccesCodes_id_seq
+ MELIAccesTokens_id_seq
  Sales_id_seq
  SoldProducts_id_seq
  Suppliers_id_seq
-(6 filas)
+ Categories_id_seq
+ Products_id_seq
+ Users_id_seq
+(8 filas)
 
 
 <img src="https://gcdn.emol.cl/humor/files/2016/11/memes-de-perros-1.jpg" alt="Imagen de usuario creado">
