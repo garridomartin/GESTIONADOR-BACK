@@ -17,9 +17,10 @@ const getMELIproducts = async (req, res) => {
     console.log('productFound:', productFound);
     return res.status(200).json(productFound);
   } catch (error) {
-    res.status(400).json({
-      error: 'Hubo un error en la busqueda de productos en MercadoLibre',
-      details: error.message,
+    const errorMessage = error.message || 'Error desconocido';
+    return res.status(400).json({
+      error: 'Hubo un error en la búsqueda de productos en MercadoLibre',
+      details: errorMessage,
     });
   }
 };

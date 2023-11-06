@@ -60,6 +60,7 @@ const createProductController = async (productData) => {
     return newProduct;
   } catch (error) {
     console.log(error.message);
+    throw error;
   }
 };
 
