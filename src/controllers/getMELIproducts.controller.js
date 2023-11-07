@@ -4,9 +4,8 @@ const axios = require('axios');
 require('dotenv').config();
 const { apiUrl } = process.env;
 const cleanArray = require('./cleanArray');
-const createProductController = require('./createProduct.Controller');
+const copyMELIProductController = require('./copyMELIProduct.Controller');
 
-let items;
 let token;
 let meliUser;
 
@@ -17,7 +16,6 @@ const chunkArray = (array, chunkSize) => {
   }
   return chunks;
 };
-
 const getMELIproductsController = async (user_id) => {
   try {
     const acces_token = await MELIAccesToken.findOne({
@@ -42,23 +40,30 @@ const getMELIproductsController = async (user_id) => {
     const itemChunks = chunkArray(idMeliArry, 20);
 
     const itemsPromises = itemChunks.map(async (chunk) => {
+      let params = chunk.join(',');
+
       try {
-        const meliItems = await axios.get(
-          `${apiUrl}/items?ids=${chunk.join(',')}`,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
+        const meliItems = await axios.get(`${apiUrl}/items?ids=${params}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
         const result = cleanArray(meliItems.data);
-        const meliProductToDB = createProductController(result);
-        return meliProductToDB;
+        try {
+          await copyMELIProductController(result);
+        } catch (error) {
+          console.error(
+            'Error al copiar los elementos de MELI a la base de datos:',
+            error
+          );
+        }
       } catch (error) {
         console.error('Error al obtener los elementos de MELI:', error);
-        throw error;
       }
     });
+
+    return 'PROCESO DE COPIA TERMINADO';
   } catch (error) {
     console.error('Error al obtener el token:', error);
     throw error;

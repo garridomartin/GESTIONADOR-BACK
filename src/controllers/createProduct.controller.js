@@ -5,8 +5,6 @@ const createProductController = async (productData) => {
   try {
     const {
       name,
-      shortDescription,
-      longDescription,
       cost,
       priceML,
       priceEComm,
@@ -14,6 +12,8 @@ const createProductController = async (productData) => {
       quantity,
       quantityML,
       idMeli,
+      shortDescription,
+      longDescription,
       supplier,
       category,
       files,
