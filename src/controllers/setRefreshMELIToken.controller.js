@@ -3,16 +3,13 @@ const { MELIAccesToken, IntervalStatus } = require('../db');
 const axios = require('axios');
 require('dotenv').config();
 const { APP_ID, SECRET_KEY, apiUrl } = process.env;
-const refreshTokenInterval = 2 * 60 * 60 * 1000;
+const refreshTokenInterval = 5 * 60 * 60 * 1000;
 
 let intervalId = null;
 
 const startInterval = async (UserId) => {
   const isIntervalActive = await IntervalStatus.findOne({ where: { id: 1 } });
-  console.log(
-    'asi estaba seteado isIntervalActive en la base de datos',
-    isIntervalActive.is_active
-  );
+
   if (!isIntervalActive.is_active) {
     await IntervalStatus.update({ is_active: true }, { where: { id: 1 } });
     intervalId = setInterval(() => {

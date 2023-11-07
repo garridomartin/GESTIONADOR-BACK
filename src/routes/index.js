@@ -36,7 +36,7 @@ const { getFeedbackMP } = require('../handlers/sellByEcomm.handler');
 const getMELIAccesCode = require('../handlers/getMELIAccesCode.handler');
 const meliSession = require('../handlers/setRefreshMELIToken.handler');
 const stopMELISession = require('../handlers/stopRefreshMELIToken.handler');
-const getMELIproducts = require('../handlers/getMELIproducts.handler');
+const getMELIproducts = require('./getMELIproducts.router');
 
 const {
   logInGoogleHandler,
@@ -73,7 +73,7 @@ router.get(
   admincheck,
   stopMELISession
 ); //!DETIENE renovacion automatica del token de MELI
-router.get('/getMELIproducts', verifyToken, admincheck, getMELIproducts); //obtiene los productos y los guarda en DB
+router.use('/getMELIproducts', verifyToken, admincheck, getMELIproducts); //obtiene los productos y los guarda en DB
 //router.get('/getMELIStock', verifyToken, admincheck, getMELIStock); //obtiene la respuesta de MELI por los productos publicados
 //router.put('/updateMELIprice', verifyToken, admincheck, updateMELIprice); //obtiene la respuesta de MELI por primera autorizacion
 
