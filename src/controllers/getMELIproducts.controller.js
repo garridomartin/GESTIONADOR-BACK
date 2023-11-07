@@ -17,6 +17,7 @@ const chunkArray = (array, chunkSize) => {
   return chunks;
 };
 const getMELIproductsController = async (user_id) => {
+  console.log('INICIO PEDIDO DE PRODUCTOS A MELI CON IDs DE MELI');
   try {
     const acces_token = await MELIAccesToken.findOne({
       where: { UserId: user_id },
@@ -30,13 +31,15 @@ const getMELIproductsController = async (user_id) => {
     meliUser = acces_token.UserMeliID;
 
     const idMeli = await Product.findAll({
-      attributes: ['idMeli'],
+      attributes: ['idMeli', 'name'],
     });
-
     const idMeliArry = idMeli
-      .map((elem) => elem.idMeli)
-      .filter((el) => el !== null);
-
+      .filter((elem) => {
+        // Filtra los elementos que tienen 'name' igual a null y 'idMeli' diferente de null
+        return elem.name === null && elem.idMeli !== null;
+      })
+      .map((elem) => elem.idMeli);
+    // console.log('request fail:', idMeliArry);
     const itemChunks = chunkArray(idMeliArry, 20);
 
     const itemsPromises = itemChunks.map(async (chunk) => {
@@ -48,7 +51,7 @@ const getMELIproductsController = async (user_id) => {
             Authorization: `Bearer ${token}`,
           },
         });
-
+        // console.log('URL:', `${apiUrl}/items?ids=${params}`);
         const result = cleanArray(meliItems.data);
         try {
           await copyMELIProductController(result);
@@ -62,7 +65,9 @@ const getMELIproductsController = async (user_id) => {
         console.error('Error al obtener los elementos de MELI:', error);
       }
     });
-
+    console.log(
+      'FINALIZO PEDIDO DE PRODUCTOS A MELI CON IDs DE MELI Y SU REGISTRO EN DB'
+    );
     return 'PROCESO DE COPIA TERMINADO';
   } catch (error) {
     console.error('Error al obtener el token:', error);

@@ -7,10 +7,11 @@ const { apiUrl } = process.env;
 
 let scroll_id;
 let idArr;
-let arrayResponses = []; // Array para acumular las respuestas de la API
+let arrayResponses = [];
 let response;
 
 const getMELIproductsIDController = async (user_id) => {
+  console.log('INICIO PEDIDO DE IDs A MELI');
   try {
     const acces_token = await MELIAccesToken.findOne({
       where: { UserId: user_id },
@@ -49,6 +50,7 @@ const getMELIproductsIDController = async (user_id) => {
         }
       );
       arrayResponses.push(...response.data.results);
+      scroll_id = response.data.scroll_id;
     }
 
     idArr = await arrayToProductObject(arrayResponses);
@@ -56,8 +58,8 @@ const getMELIproductsIDController = async (user_id) => {
     for (const idMeli of idArr) {
       await createProductController(idMeli);
     }
-
-    return 'Proceso completado';
+    console.log('FINALIZADO PEDIDO DE IDs A MELI');
+    return 'FINALIZADO PEDIDO DE IDs A MELI';
   } catch (error) {
     console.error('Error en getMELIproductsIDController:', error);
     throw error;

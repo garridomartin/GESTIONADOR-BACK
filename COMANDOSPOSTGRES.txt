@@ -97,4 +97,5 @@ Esto mostrará una lista de todas las secuencias existentes en la base de datos.
 <img src="https://gcdn.emol.cl/humor/files/2016/11/memes-de-perros-1.jpg" alt="Imagen de usuario creado">
 
 
-		
+		TRUNCATE "public"."Products" CASCADE;
+para borrar la tabla product

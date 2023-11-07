@@ -3,7 +3,7 @@ const { MELIAccesToken, IntervalStatus } = require('../db');
 const axios = require('axios');
 require('dotenv').config();
 const { APP_ID, SECRET_KEY, apiUrl } = process.env;
-const refreshTokenInterval = 4 * 60 * 60 * 1000;
+const refreshTokenInterval = 2 * 60 * 60 * 1000;
 
 let intervalId = null;
 

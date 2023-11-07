@@ -10,6 +10,7 @@ const getMELIproductsIDs = async (req, res, next) => {
         error: 'No hay productos en MercadoLibre para obtener sus IDs',
       });
     }
+
     next();
   } catch (error) {
     const errorMessage = error.message || 'Error desconocido';

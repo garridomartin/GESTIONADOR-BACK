@@ -1,7 +1,7 @@
 const { DataTypes } = require('sequelize');
 
 module.exports = (sequelize) => {
-  // defino el modelo
+  // Defino el modelo
   sequelize.define(
     'Product',
     {
@@ -16,7 +16,7 @@ module.exports = (sequelize) => {
         type: DataTypes.TEXT,
       },
       cost: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.DECIMAL(10, 2), // Tipo DECIMAL con 10 dígitos en total y 2 decimales
         allowNull: true,
         defaultValue: 0,
         validate: {
@@ -24,7 +24,7 @@ module.exports = (sequelize) => {
         },
       },
       priceML: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.DECIMAL(10, 2), // Tipo DECIMAL con 10 dígitos en total y 2 decimales
         allowNull: true,
         defaultValue: 0,
         validate: {
@@ -32,7 +32,7 @@ module.exports = (sequelize) => {
         },
       },
       priceEComm: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.DECIMAL(10, 2), // Tipo DECIMAL con 10 dígitos en total y 2 decimales
         allowNull: true,
         defaultValue: 0,
         validate: {
@@ -40,7 +40,7 @@ module.exports = (sequelize) => {
         },
       },
       priceLocal: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.DECIMAL(10, 2), // Tipo DECIMAL con 10 dígitos en total y 2 decimales
         defaultValue: 0,
       },
       quantity: {
@@ -77,7 +77,7 @@ module.exports = (sequelize) => {
         defaultValue: false,
       },
       files: {
-        type: DataTypes.STRING,
+        type: DataTypes.JSON,
       },
     },
     { timestamps: true }
