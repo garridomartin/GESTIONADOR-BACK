@@ -5,6 +5,7 @@ require('dotenv').config();
 const { apiUrl } = process.env;
 const cleanArray = require('./cleanArray');
 const copyMELIProductController = require('./copyMELIProduct.Controller');
+const getMELIproductsDescription = require('./getMELIproductsDescription.controller');
 
 let token;
 let meliUser;
@@ -31,15 +32,20 @@ const getMELIproductsController = async (user_id) => {
     meliUser = acces_token.UserMeliID;
 
     const idMeli = await Product.findAll({
-      attributes: ['idMeli', 'name'],
+      attributes: ['idMeli', 'name', 'longDescription'],
     });
     const idMeliArry = idMeli
       .filter((elem) => {
         // Filtra los elementos que tienen 'name' igual a null y 'idMeli' diferente de null
-        return elem.name === null && elem.idMeli !== null;
+        return (
+          elem.name === null && elem.idMeli !== null /* &&
+          elem.longDescription === null*/
+        );
       })
       .map((elem) => elem.idMeli);
-    // console.log('request fail:', idMeliArry);
+
+    //await getMELIproductsDescription(token, idMeliArry); SOLO SE UTILIZA PARA OBTENER LAS DESCRIPCIONES LARGAS DE PRODUCTOS
+
     const itemChunks = chunkArray(idMeliArry, 20);
 
     const itemsPromises = itemChunks.map(async (chunk) => {
@@ -51,9 +57,10 @@ const getMELIproductsController = async (user_id) => {
             Authorization: `Bearer ${token}`,
           },
         });
-        // console.log('URL:', `${apiUrl}/items?ids=${params}`);
+
         const result = cleanArray(meliItems.data);
         try {
+          console.log('request fail:', idMeliArry);
           await copyMELIProductController(result);
         } catch (error) {
           console.error(
