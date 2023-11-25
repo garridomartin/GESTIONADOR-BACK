@@ -16,7 +16,9 @@ const signInController = async (req) => {
       return { error: 'Este usuario fue baneado o eliminado' };
 
     const passCompare = await bcrypt.compare(password, user.password);
-    if (!passCompare) return { error: 'Password erroneo' };
+    if (!passCompare) {
+      throw new Error('Contraseña incorrecta');
+    }
 
     const token = tokenCreated(user, SECRET_KEY);
 
@@ -37,7 +39,8 @@ const signInController = async (req) => {
       expireIn: token.expiresIn,
     };
   } catch (error) {
-    console.log(error);
+    console.log('Error en signInController:', error);
+    throw error;
   }
 };
 
