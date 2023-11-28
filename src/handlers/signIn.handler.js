@@ -22,11 +22,13 @@ const signInHandler = async (req, res) => {
         message: tokenReceived.error,
       });
     } else {
+      const cookieDuration = tokenReceived.isAdmin ? 1 * 60 * 60 : 24 * 60 * 60; //8 horas ò 24
       /********** modified by 🥑🌌🔥 Enok Lima ************/
       return res
         .status(200)
         .cookie('token', tokenReceived.token, {
-          expires: new Date(Date.now() + tokenReceived.expireIn * 1000),
+          expires: new Date(Date.now() + cookieDuration * 1000),
+          //expires: new Date(Date.now() + tokenReceived.expireIn * 1000),
           httpOnly: true,
           sameSite: 'strict', //'none',
           // secure: true, // Agrega esta línea si estás usando HTTPS

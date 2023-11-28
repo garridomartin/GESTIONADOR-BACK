@@ -1,16 +1,13 @@
 const passport = require('passport');
 require('../middleware/passport');
 const loginController = require('../controllers/logInGoogle.controller');
-const dotenv = require('dotenv');
-dotenv.config();
-//const { URL_DEPLOY_FRONT } = process.env;
-const URL_DEPLOY_FRONT = 'http://localhost:3000';
+const { URL_DEPLOY_FRONT } = process.env;
+//const URL_DEPLOY_FRONT = 'http://localhost:3000';
 /*'https://front-5w36mp77c-garridomartin.vercel.app/';*/
 
 const logInGoogleHandler = (req, res) => {
-  res.send(
-    "<button><a href='/loginGoogle/auth'>Login With Google</a></button>"
-  );
+  //res.send("<button><a href='/loginGoogle/auth'>Login With Google</a></button>");
+  res.send("<button><a href='loginGoogle/auth'>Login With Google</a></button>");
 };
 
 const authenticateHandler = passport.authenticate('google', {
@@ -40,25 +37,33 @@ const loginSuccessHandler = async (req, res) => {
       //User_id: newUser.updatedDataUser.User_id,
       //idGoogle: newUser.updatedDataUser.id,
       isAuthenticated: true,
-      username: newUser.userName,
-      name: newUser.updatedDataUser.displayName,
+      username: newUser.updatedDataUser.username,
+      name: newUser.updatedDataUser.name,
       email: newUser.updatedDataUser.email,
       profilePict: newUser.updatedDataUser.picture,
       isAdmin: newUser.updatedDataUser.isAdmin,
       isSeller: newUser.updatedDataUser.isSeller,
       // token: newUser.token.token,
     };
-    console.log(updatedFrontUser);
+    //console.log('asdfsadfasdfsad', updatedFrontUser);
     //res.cookie('user', JSON.stringify(updatedFrontUser));
-    res.cookie('token', newUser.token.token);
-    res.json(updatedFrontUser);
-    /*res.status(200).send(`
+    //res.cookie('token', newUser.token.token);
+    //res.json(updatedFrontUser);
+
+    const cookieDuration = newUser.updatedDataUser.isAdmin
+      ? 1 * 60 * 60
+      : 24 * 60 * 60; //8 horas ò 24
+    res.status(200).cookie('token', newUser.token.token, {
+      expires: new Date(Date.now() + cookieDuration * 1000),
+      httpOnly: true,
+      sameSite: 'strict', //'none',
+      // secure: true, // Agrega esta línea si estás usando HTTPS
+    }).send(`
       <script>
         window.opener.postMessage(${JSON.stringify(updatedFrontUser)}, 
-        '${URL_DEPLOY_FRONT}');
-        window.close();
+        '${URL_DEPLOY_FRONT}');        
       </script>
-    `);*/
+    `);
   } catch (error) {
     console.error('ALERTA:', error);
     // Respondo si el usuario existe.

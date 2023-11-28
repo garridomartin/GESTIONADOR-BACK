@@ -22,6 +22,8 @@ const loginController = async (dataUser) => {
         User_id: existingUser.id,
         isAdmin: existingUser.isAdmin,
         isSeller: existingUser.isSeller,
+        username: existingUser.username,
+        name: existingUser.name,
       };
 
       const token = tokenCreated(existingUser, SECRET_KEY);
