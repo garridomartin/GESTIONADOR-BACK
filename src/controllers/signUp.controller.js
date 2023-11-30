@@ -1,5 +1,4 @@
 const { User } = require('../db.js');
-const subirAFirebase = require('../utils/firebaseUploader');
 const encriptarContraseña = require('../utils/hashPassword.js');
 const createUser = require('../utils/createUser.js');
 const crearPlantilla = require('../utils/templateCreation.js');
@@ -9,18 +8,8 @@ const path = require('path');
 const { tokenCreated } = require('../utils/createToken.js');
 const { SECRET_KEY, URL_DEPLOY_FRONT } = process.env;
 
-const controladorRegistro = async (
-  nombre,
-  contraseña,
-  celular,
-  fechaNacimiento,
-  cuil,
-  correoElectronico,
-  archivos
-) => {
+const controladorRegistro = async (nombre, contraseña, correoElectronico) => {
   try {
-    const archivoSubido = await subirAFirebase(archivos);
-
     const usuarioExistente = await User.findOne({
       where: { email: correoElectronico },
     });
@@ -37,11 +26,9 @@ const controladorRegistro = async (
       username: userName, //-----> added by Enok Lima for set username
       name: nombre,
       password: contraseñaEncriptada,
-      cellPhone: celular,
-      birthDay: fechaNacimiento,
-      cuil: cuil,
       email: correoElectronico,
-      profilePict: archivoSubido,
+      profilePict:
+        'https://w7.pngwing.com/pngs/802/786/png-transparent-google-account-google-search-customer-service-google-logo-login-button-blue-sphere-car-rental-thumbnail.png',
     });
 
     await nuevoUsuario.save();

@@ -4,19 +4,14 @@ const { validationResult } = require('express-validator');
 
 const signUp = async (req, res) => {
   try {
-    const errors = validationResult(req.body);
-    if (!errors.isEmpty()) throw new Error(errors.array());
-    const { name, password, cellPhone, birthDay, cuil, email } = req.body;
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(422).json({ errors: errors.array() });
+    }
 
-    const signInUp = await signUpController(
-      name,
-      password,
-      cellPhone,
-      birthDay,
-      cuil,
-      email,
-      req.file
-    );
+    const { name, password, email } = req.body;
+
+    const signInUp = await signUpController(name, password, email);
 
     if (signInUp?.error) {
       return res.status(401).json(signInUp);
@@ -30,8 +25,8 @@ const signUp = async (req, res) => {
     });
   } catch (error) {
     console.log(error);
-    return res.status(401).json({
-      error: 'campos incompletos o su tipo no coincide con el indicado',
+    return res.status(500).json({
+      error: 'Error interno del servidor',
     });
   }
 };

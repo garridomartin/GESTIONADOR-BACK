@@ -1,8 +1,13 @@
 const updateUser = require('../controllers/updateUser.controller');
 const findUserById = require('../controllers/findUserById.controller');
+const { validationResult } = require('express-validator');
 
 const editUserHandler = async (req, res) => {
   try {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(422).json({ errors: errors.array() });
+    }
     const { name, password, cellPhone, birthDay, cuil } = req.body;
     console.log('body:', req.body);
     await updateUser(

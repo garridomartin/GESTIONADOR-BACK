@@ -58,7 +58,7 @@ const signInHandler = async (req, res) => {
     console.log('Error en signInController:', error.message);
     return res.status(401).json({
       error: 'Error en la autenticación',
-      details: error.message,
+      message: error.message,
     });
   }
 };
