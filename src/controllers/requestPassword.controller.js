@@ -2,9 +2,8 @@ const { User } = require('../db.js');
 const sendEmailNotification = require('../utils/senderMail.js');
 const fs = require('fs');
 const path = require('path');
-const { tokenCreated } = require('../utils/createToken.js');
+const { tokenCreated } = require('../utils/changePassToken.js');
 const template = require('../utils/templateCreation.js');
-const { log } = require('handlebars');
 const { URL_DEPLOY_FRONT, SECRET_KEY } = process.env;
 
 const requestPasswordController = async (user) => {
@@ -16,7 +15,7 @@ const requestPasswordController = async (user) => {
     const valorToken = resetToken.token;
 
     //Enlace para rehacer contraseña, Enok debe implementar esta ruta
-    const resetLink = `${URL_DEPLOY_FRONT}/reset-password/${valorToken}`;
+    const resetLink = `${URL_DEPLOY_FRONT}/login/recover?token=${valorToken}`;
 
     const filePath = path.join(
       __dirname,

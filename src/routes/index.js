@@ -1,6 +1,9 @@
 const { Router } = require('express');
 const router = Router();
-const verifyToken = require('../middleware/verifyToken');
+const {
+  verifyToken,
+  verifyTokenChangePass,
+} = require('../middleware/verifyToken');
 const admincheck = require('../middleware/admincheck');
 const sellerCheck = require('../middleware/sellerCheck');
 const checkTokenMELIExpire = require('../middleware/checkTokenMELIExpire');
@@ -8,8 +11,8 @@ const checkTokenMELIExpire = require('../middleware/checkTokenMELIExpire');
 const signUpRouter = require('./signUp.router');
 const emailConfirmation = require('../handlers/emailConfirmation.handler');
 const signInRouter = require('./signIn.router');
-const resetPassword = require('./resetPassword.router');
-const requestPasswordReset = require('./requestPasswordReset.router');
+const resetPassword = require('../handlers/resetPassword.handler');
+const requestPasswordReset = require('../handlers/requestPasswordReset.handler');
 const logoutRouter = require('./logout.router'); // ------> added by Enok Lima
 const currentUserRouter = require('./currentUser.router'); //------> added by Enok Lima
 const editUserRouter = require('./editUser.router');
@@ -132,8 +135,8 @@ router.use('/currentUser', verifyToken, currentUserRouter); // ------> added by 
 router.use('/signUp', signUpRouter);
 router.get('/confirmEmail/:token', verifyToken, emailConfirmation);
 router.use('/signIn', signInRouter);
-router.use('/requestPasswordReset', requestPasswordReset);
-router.use('/resetPassword', verifyToken, resetPassword);
+router.post('/requestPasswordReset', requestPasswordReset);
+router.post('/resetPassword', verifyTokenChangePass, resetPassword);
 router.use('/logout', verifyToken, logoutRouter); // ------> added by Enok Lima
 
 //!REFERIDO A LOGIN GOOGLE

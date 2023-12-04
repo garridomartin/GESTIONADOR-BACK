@@ -13,12 +13,12 @@ const resetPassController = async (email, newPassword) => {
       return { error: 'El usuario no está registrado' };
     }
 
-    // Actualizar la contraseña del usuario
+    // Actualizo la contraseña del usuario
     const passwordHash = await hashPassword(newPassword);
     user.password = passwordHash;
     await user.save();
 
-    // Enviar notificación por correo electrónico
+    //Notifico por correo electrónico
     const filePath = path.join(
       __dirname,
       '..',

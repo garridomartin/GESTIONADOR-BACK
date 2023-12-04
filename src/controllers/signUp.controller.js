@@ -54,6 +54,7 @@ const controladorRegistro = async (nombre, contraseña, correoElectronico) => {
       const plantillaCompilada = crearPlantilla(plantillaCreacionUsuario, {
         name: nombre,
         emailConfirmationLink: enlaceConfirmacionEmail,
+        cupon: userName,
       });
 
       try {

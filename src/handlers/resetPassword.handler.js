@@ -1,13 +1,9 @@
-//const { log } = require('handlebars');
 const resetPassController = require('../controllers/resetPass.controller');
-const { validationResult } = require('express-validator');
 
 const resetPassword = async (req, res) => {
   try {
-    const errors = validationResult(req.body);
-
-    if (!errors.isEmpty()) throw new Error(errors.array());
-    const { email, newPassword } = req.body;
+    const email = req.email;
+    const { newPassword } = req.body;
 
     const resetPass = await resetPassController(email, newPassword);
 
@@ -15,7 +11,7 @@ const resetPassword = async (req, res) => {
       return res.status(401).json(resetPass);
     }
 
-    // Verifica si resetPass tiene una propiedad 'name' antes de usarla
+    // Verifico si resetPass tiene una propiedad 'name' antes de usarla
     const notificationName = resetPass?.email || 'Usuario';
 
     return res.status(200).json({

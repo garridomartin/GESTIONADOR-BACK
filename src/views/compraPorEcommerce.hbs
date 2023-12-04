@@ -1,21 +1,41 @@
 <html>
+
+  <head>
+    <style>
+      body { margin: 0; padding: 0; font-family: Arial, sans-serif; } .container
+      { background-color: #a8a29e; padding: 20px; border-radius: 10px; margin:
+      20px; max-width: 600px; } h1, p { color: #ffffff; } .logo { max-width:
+      50%; height: auto; border-radius: 50%; display: block; margin-bottom:
+      10px; }
+
+    </style>
+  </head>
+
   <body>
-    <h1>Hola, {{buyer_name}}! Felicitaciones por tu compra de</h1>
-    <ul>
-      {{#each productos}}
-        <li>{{this.name}}
-          - Cantidad:
-          {{this.cantidad}}
-          - Precio: ${{this.precio}}</li>
-      {{/each}}
-    </ul>
-    <ul>- Envio</ul>
-    <li>
-      - Total:{{totalAmount}}
-    </li>
-    <p>En 48 horas recibirás el producto en el domicilio informado. En el
-      siguiente link, adjuntamos un enlace con la factura para descargar.</p>
-    <p>Saludos.</p>
-    <p>Link: {{emailConfirmationLink}}</p>
+    <div class='container'>
+      <img
+        src='https://firebasestorage.googleapis.com/v0/b/facturador-ml.appspot.com/o/log-mascotero.jpeg?alt=media&token=ce8ce381-4906-4ab7-93c3-caf2fad12ce8'
+        alt='Logo'
+        class='logo'
+      />
+      <h1>Hola, {{buyer_name}}!Felicitaciones por tu compra de</h1>
+      <ul>
+        {{#each productos}}
+          <li>{{this.name}}
+            - Cantidad:
+            {{this.cantidad}}
+            - Precio: ${{this.precio}}</li>
+        {{/each}}
+      </ul>
+      <ul>- Envio</ul>
+      <li>
+        - Total:{{totalAmount}}
+      </li>
+      <p>En 48 horas recibirás el producto en el domicilio informado. En el
+        siguiente link, adjuntamos un enlace con la factura para descargar.</p>
+      <p>Saludos.</p>
+      <p>Link: {{emailConfirmationLink}}</p>
+    </div>
   </body>
+
 </html>

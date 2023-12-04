@@ -67,6 +67,7 @@ const {
   MELIAccesCode,
   MELIAccesToken,
   IntervalStatus,
+  Cupon,
 } = sequelize.models;
 
 // Relaciones entre Sale y User
@@ -110,6 +111,8 @@ Product.belongsToMany(Category, { through: 'CategoryProduct' });
 //Relaicon entre MELIAccesCode y User
 MELIAccesCode.belongsTo(User, { as: 'user', foreignKey: 'UserId' });
 MELIAccesToken.belongsTo(User, { as: 'user', foreignKey: 'UserId' });
+
+Cupon.belongsTo(User, { foreignKey: 'user_id' });
 
 module.exports = {
   ...sequelize.models,

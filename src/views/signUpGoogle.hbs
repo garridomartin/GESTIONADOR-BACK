@@ -1,15 +1,37 @@
 <html>
 
-  <body>
+<head>
+  <style>
+      body { margin: 0; padding: 0; font-family: Arial, sans-serif; } .container
+      { background-color: #a8a29e; padding: 20px; border-radius: 10px; margin:
+      20px; max-width: 600px; } h1, p { color: #ffffff; } .logo { max-width:
+      50%; height: auto; border-radius: 50%; display: block; margin-bottom:
+      10px; }
 
-    <h1>Hello,
-      {{name}}! Bienvenido a nuestra gran plataforma de compra de productos
-      varios.
-    </h1>
-    <p>Por favor, haga clic en el enlace para completar el proceso de registro,
-      o cópielo y péguelo en la barra de navegación de su navegador.
-    </p>
-    <p>Link: {{enlaceSugerenciaUser}}</p>
+    </style>
+</head>
+
+  <body>
+    <div class='container'>
+      <img
+        src='https://firebasestorage.googleapis.com/v0/b/facturador-ml.appspot.com/o/log-mascotero.jpeg?alt=media&token=ce8ce381-4906-4ab7-93c3-caf2fad12ce8'
+        alt='Logo'
+        class='logo'
+      />
+    </div>
+    <div>
+      <h3>Hola,
+        {{name}}! Bienvenido a nuestra tienda virtual. Aqui encontraras todos
+        nuestros productos.</h3>
+      <p>Completa el proceso de alta para recibir un cupón de descuento de
+        regalo!</p>
+      <p>Por favor, haga click en el enlace para completar el proceso de
+        registro, o cópielo y péguelo en la barra de navegación de su navegador.</p>
+      <p>{{enlaceSugerenciaUser}}</p>
+      </div>
+    </div>
   </body>
 
 </html>
+
+

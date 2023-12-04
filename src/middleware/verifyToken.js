@@ -37,5 +37,34 @@ const verifyToken = (req, res, next) => {
       .json({ error: 'Acceso no autorizado. Token inválido o expirado.' });
   }
 };
+//este token, solo pasa el email
+const verifyTokenChangePass = (req, res, next) => {
+  let token = '';
+  try {
+    if (req.headers.authorization) {
+      token = req.headers.authorization.split('Bearer').pop().trim();
+    } else {
+      console.error(
+        'Error al verificar el token: No se proporcionó ningún token'
+      );
+      return res
+        .status(401)
+        .json({ error: `Error al verificar el token: ${error.message}` });
+    }
 
-module.exports = verifyToken;
+    const tokenized = jwt.verify(token, SECRET_KEY);
+
+    req.email = tokenized.email;
+
+    next();
+  } catch (error) {
+    console.error(`Error al verificar el token de usuario: ${error.message}`);
+    return res
+      .status(401)
+      .json({
+        error: `Error al verificar el token de usuario: ${error.message}`,
+      });
+  }
+};
+
+module.exports = { verifyToken, verifyTokenChangePass };
