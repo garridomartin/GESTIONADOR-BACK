@@ -59,11 +59,9 @@ const verifyTokenChangePass = (req, res, next) => {
     next();
   } catch (error) {
     console.error(`Error al verificar el token de usuario: ${error.message}`);
-    return res
-      .status(401)
-      .json({
-        error: `Error al verificar el token de usuario: ${error.message}`,
-      });
+    return res.status(401).json({
+      error: `Error al verificar el token de usuario: ${error.message}`,
+    });
   }
 };
 

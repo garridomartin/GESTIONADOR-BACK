@@ -9,7 +9,7 @@ const editUserHandler = async (req, res) => {
       return res.status(422).json({ errors: errors.array() });
     }
     const { name, password, cellPhone, birthDay, cuil } = req.body;
-    console.log('body:', req.body);
+    //console.log('body:', req.body);
     await updateUser(
       req.id,
       name,

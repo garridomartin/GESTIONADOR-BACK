@@ -118,7 +118,7 @@ router.get('/getAllSuppliers', verifyToken, admincheck, getAllSuppliers);
 router.use('/batchNewCost', verifyToken, admincheck, batchNewCostRouter);
 
 //!REFERIDO A USUARIOS
-router.use('/editUser', verifyToken, admincheck, editUserRouter);
+router.use('/editUser', verifyToken, editUserRouter);
 router.get('/getUserById', verifyToken, admincheck, getUserById);
 router.get('/allUsers', verifyToken, admincheck, getAllUsersInfo);
 router.get('/getSellers', verifyToken, admincheck, getAllSellers);
