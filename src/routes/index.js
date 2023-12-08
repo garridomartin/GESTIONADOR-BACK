@@ -3,6 +3,7 @@ const router = Router();
 const {
   verifyToken,
   verifyTokenChangePass,
+  verifyTokenConfirmMail,
 } = require('../middleware/verifyToken');
 const admincheck = require('../middleware/admincheck');
 const sellerCheck = require('../middleware/sellerCheck');
@@ -133,7 +134,7 @@ router.get(
 //!REFERIDO A LOGIN PROPIO
 router.use('/currentUser', verifyToken, currentUserRouter); // ------> added by Enok Lima
 router.use('/signUp', signUpRouter);
-router.get('/confirmEmail/:token', verifyToken, emailConfirmation);
+router.post('/confirmEmail', verifyTokenChangePass, emailConfirmation);
 router.use('/signIn', signInRouter);
 router.post('/requestPasswordReset', requestPasswordReset);
 router.post('/resetPassword', verifyTokenChangePass, resetPassword);

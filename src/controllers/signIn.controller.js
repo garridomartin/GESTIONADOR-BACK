@@ -33,6 +33,9 @@ const signInController = async (req) => {
       userName: user.username, //--------> added by Enok Lima
       nameUser,
       Email,
+      cellPhone: user.cellPhone,
+      birthDay: user.birthDay,
+      cuil: user.cuil,
       profilePict,
       isAdmin,
       isSeller,

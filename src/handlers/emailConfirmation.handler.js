@@ -10,7 +10,7 @@ const emailConfirmation = async (req, res) => {
     //const decodedToken = jwt.verify(token, SECRET_KEY);
     //const userId = decodedToken.user.id;
 
-    const result = await confirmEmailController(req.id);
+    const result = await confirmEmailController(req.email);
     res.status(200).json(result);
   } catch (error) {
     console.error('Error during email confirmation:', error);

@@ -39,7 +39,7 @@ const controladorRegistro = async (nombre, contraseña, correoElectronico) => {
       });
       const tokenConfirmacionEmail = await tokenCreated(usuario, SECRET_KEY);
       const valorToken = tokenConfirmacionEmail.token;
-      const enlaceConfirmacionEmail = `${URL_DEPLOY_FRONT}/email-confirm/${valorToken}`;
+      const enlaceConfirmacionEmail = `${URL_DEPLOY_FRONT}/login/email-confirm?token=${valorToken}`;
       //console.log('valorToken:', valorToken);
       const rutaArchivoPlantilla = path.join(
         __dirname,

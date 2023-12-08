@@ -40,9 +40,13 @@ const loginSuccessHandler = async (req, res) => {
       username: newUser.updatedDataUser.username,
       name: newUser.updatedDataUser.name,
       email: newUser.updatedDataUser.email,
+      cellPhone: newUser.updatedDataUser.cellPhone,
+      birthDay: newUser.updatedDataUser.birthDay,
+      cuil: newUser.updatedDataUser.cuil,
       profilePict: newUser.updatedDataUser.picture,
       isAdmin: newUser.updatedDataUser.isAdmin,
       isSeller: newUser.updatedDataUser.isSeller,
+
       // token: newUser.token.token,
     };
     //console.log('asdfsadfasdfsad', updatedFrontUser);

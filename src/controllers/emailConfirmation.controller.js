@@ -1,8 +1,8 @@
 const { User } = require('../db.js');
 
-const confirmEmailController = async (userId) => {
+const confirmEmailController = async (email) => {
   try {
-    const user = await User.findByPk(userId);
+    const user = await User.findOne({ where: { email } });
     if (!user) {
       throw new Error('Usuario no encontrado');
     }
