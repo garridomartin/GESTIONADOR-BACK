@@ -10,6 +10,7 @@ const passport = require('passport');
 const session = require('express-session');
 const cookieParser = require('cookie-parser'); //------------------ added for Enok Lima
 const server = express();
+const { URL_DEPLOY_FRONT } = process.env;
 
 server.name = 'API';
 server.use(express.json());
@@ -19,7 +20,7 @@ server.use(morgan('dev'));
 server.use(cookieParser()); //------------------ added for Enok Lima
 server.use(
   cors({
-    origin: 'http://localhost:3000',
+    origin: URL_DEPLOY_FRONT, //'http://localhost:3000',
     credentials: true,
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     optionsSuccessStatus: 204,

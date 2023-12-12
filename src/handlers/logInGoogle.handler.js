@@ -57,11 +57,12 @@ const loginSuccessHandler = async (req, res) => {
     const cookieDuration = newUser.updatedDataUser.isAdmin
       ? 1 * 60 * 60
       : 24 * 60 * 60; //8 horas ò 24
-    res.status(200).cookie('token', newUser.token.token, {
+    return res.status(200).cookie('token', newUser.token.token, {
       expires: new Date(Date.now() + cookieDuration * 1000),
       httpOnly: true,
-      sameSite: 'strict', //'none',
-      // secure: true, // Agrega esta línea si estás usando HTTPS
+      sameSite: /*'strict',*/ 'None',
+      secure: true, // Agrega esta línea si estás usando HTTPS
+      path: '/',
     }).send(`
       <script>
         window.opener.postMessage(${JSON.stringify(updatedFrontUser)}, 

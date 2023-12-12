@@ -30,8 +30,10 @@ const signInHandler = async (req, res) => {
           expires: new Date(Date.now() + cookieDuration * 1000),
           //expires: new Date(Date.now() + tokenReceived.expireIn * 1000),
           httpOnly: true,
-          sameSite: 'strict', //'none',
-          // secure: true, // Agrega esta línea si estás usando HTTPS
+          sameSite: 'none', //'none',
+          secure: true, // Agrega esta línea si estás usando HTTPS
+          //domain: 'https://g712tp5p-3001.brs.devtunnels.ms/',
+          path: 'https://mascotero-client-garridomartin.vercel.app',
         })
         .json({
           isAuthenticated: true,

@@ -7,7 +7,10 @@ ALTER SEQUENCE "Categories_id_seq" RESTART WITH 4;
 
 
 \copy "Products" FROM 'C:\Users\elgra\Documents\01-PROYECTO-GESTIONADOR\Back\Products.csv' DELIMITER ',' CSV HEADER;
-ALTER SEQUENCE "Products_id_seq" RESTART WITH 9;
+ALTER SEQUENCE "Products_id_seq" RESTART WITH 777;
+
+\copy "Descriptions" FROM 'C:\Users\elgra\Documents\01-PROYECTO-GESTIONADOR\Back\Descriptions.csv' DELIMITER ',' CSV HEADER;
+ALTER SEQUENCE "Descriptions_id_seq" RESTART WITH 777;
 
  \copy "Users" FROM 'C:\Users\elgra\Documents\01-PROYECTO-GESTIONADOR\Back\Users.csv' DELIMITER ',' CSV HEADER;
 ALTER SEQUENCE "Users_id_seq" RESTART WITH 4;

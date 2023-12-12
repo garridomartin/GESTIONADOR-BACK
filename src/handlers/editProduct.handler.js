@@ -12,27 +12,6 @@ const editProduct = async (req, res) => {
     const {
       id,
       name,
-      shortDescription,
-      longDescription,
-      cost,
-      priceML,
-      priceEComm,
-      priceLocal,
-      quantity,
-      supplier,
-      category,
-    } = req.body;
-    //console.log('a ver que viene por body', req.body);
-    const archivo = req.file;
-    const isDeleted = req.body.isDeleted;
-    //console.log('req.body.isDeleted:', req.body.isDeleted);
-    //  console.log('req.files:', req.file);
-    // console.log('req.body:', req.body);
-    // console.log('deleted;', isDeleted);
-    const updatedProduct = await editProductController(
-      id,
-      name,
-      shortDescription,
       longDescription,
       cost,
       priceML,
@@ -42,18 +21,33 @@ const editProduct = async (req, res) => {
       supplier,
       category,
       isDeleted,
-      archivo
-    );
+    } = req.body;
+
+    const archivo = req.file;
+
+    const data = {
+      id,
+      name,
+      longDescription,
+      cost,
+      priceML,
+      priceEComm,
+      priceLocal,
+      quantity,
+      supplier,
+      category,
+      isDeleted,
+      files: archivo,
+    };
+
+    const updatedProduct = await editProductController(id, data);
 
     const editedProduct = await findProductById(updatedProduct.id);
-
-    //console.log('editedProduct:', editedProduct);
 
     const response = {
       id: editedProduct?.id,
       name: editedProduct?.name,
       files: editedProduct?.files,
-      shortDescription: editedProduct?.shortDescription,
       longDescription: editedProduct?.longDescription,
       cost: editedProduct?.cost,
       priceML: editedProduct?.priceML,
@@ -64,7 +58,7 @@ const editProduct = async (req, res) => {
       category: editedProduct?.Categories[0].name,
       isDeleted: editedProduct?.isDeleted,
     };
-    //console.log('response:', response);
+
     return res.status(201).json(response);
   } catch (error) {
     res

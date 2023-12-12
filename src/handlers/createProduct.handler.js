@@ -10,7 +10,7 @@ const createProduct = async (req, res) => {
 
     const {
       name,
-      shortDescription,
+
       longDescription,
       cost,
       priceML,
@@ -25,7 +25,7 @@ const createProduct = async (req, res) => {
 
     const productData = {
       name,
-      shortDescription,
+
       longDescription,
       cost,
       priceML,
@@ -45,7 +45,7 @@ const createProduct = async (req, res) => {
       id: info?.id,
       name: info?.name,
       files: info?.files,
-      shortDescription: info?.shortDescription,
+
       longDescription: info?.longDescription,
       cost: info?.cost,
       priceML: info?.priceML,

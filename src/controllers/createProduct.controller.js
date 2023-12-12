@@ -1,4 +1,4 @@
-const { Product, Category, Supplier } = require('../db');
+const { Product, Category, Supplier, Description } = require('../db');
 const firebaseUploader = require('../utils/firebaseUploader');
 
 const createProductController = async (productData) => {
@@ -12,7 +12,6 @@ const createProductController = async (productData) => {
       quantity,
       quantityML,
       idMeli,
-      shortDescription,
       longDescription,
       supplier,
       category,
@@ -28,14 +27,15 @@ const createProductController = async (productData) => {
     const findCategory = await Category.findAll({
       where: { name: category },
     });
+
     const findSupplier = await Supplier.findAll({
       where: { name: supplier },
     });
+
+    // Crear el producto
     const newProduct = await Product.create({
       name,
-      shortDescription,
       files: uploadPicture,
-      longDescription,
       cost,
       priceML,
       priceEComm,
@@ -45,11 +45,26 @@ const createProductController = async (productData) => {
       idMeli,
     });
 
-    await newProduct.save();
-
     // Asociar el producto con la categoría y el proveedor
     await newProduct.addCategory(findCategory);
     await newProduct.addSupplier(findSupplier);
+
+    // Crear o actualizar la descripción asociada al producto
+    const productDescription = await Description.findOne({
+      where: { product_id: newProduct.id },
+    });
+
+    if (!productDescription) {
+      // Si no hay descripción, la crea
+      await Description.create({
+        product_id: newProduct.id,
+        longDescription,
+      });
+    } else {
+      // Si ya existe la descripción, la actualiza
+      productDescription.longDescription = longDescription;
+      await productDescription.save();
+    }
 
     if (!files) {
       console.log(

@@ -14,6 +14,7 @@ const verifyToken = (req, res, next) => {
     } else if (req.cookies && req.cookies.token) {
       // Verificar token almacenado en las cookies
       token = req.cookies.token;
+      console.log('token: ' + token);
     } else {
       // No se proporcionó ningún token
       console.error(

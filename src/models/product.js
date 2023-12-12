@@ -66,18 +66,12 @@ module.exports = (sequelize) => {
         type: DataTypes.STRING,
         unique: true,
       },
-      shortDescription: {
-        type: DataTypes.STRING,
-      },
-      longDescription: {
-        type: DataTypes.TEXT,
-      },
       isDeleted: {
         type: DataTypes.BOOLEAN,
         defaultValue: false,
       },
       files: {
-        type: DataTypes.JSON,
+        type: DataTypes.TEXT,
       },
     },
     { timestamps: true }
