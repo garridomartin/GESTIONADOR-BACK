@@ -10,7 +10,6 @@ const editProduct = async (req, res) => {
     if (!errors.isEmpty()) throw new Error(errors.array());
 
     const {
-      id,
       name,
       longDescription,
       cost,
@@ -20,13 +19,13 @@ const editProduct = async (req, res) => {
       quantity,
       supplier,
       category,
+      id,
       isDeleted,
     } = req.body;
 
     const archivo = req.file;
 
     const data = {
-      id,
       name,
       longDescription,
       cost,

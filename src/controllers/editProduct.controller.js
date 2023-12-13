@@ -1,71 +1,92 @@
-const editProductController = require('../controllers/editProduct.controller');
-const findUserById = require('../controllers/findUserById.controller');
-const findProductById = require('../controllers/findProductById.controller');
-const { validationResult } = require('express-validator');
+const { Product, Category, Supplier, Description } = require('../db');
+const firebaseUploader = require('../utils/firebaseUploader');
 
-const editProduct = async (req, res) => {
+const editProductController = async (
+  id,
+  data // Object que contiene los datos a actualizar
+) => {
   try {
-    const errors = validationResult(req.body);
+    let uploadPicture;
+    if (data.files && data.files.originalname) {
+      uploadPicture = await firebaseUploader(data.files);
+    }
 
-    if (!errors.isEmpty()) throw new Error(errors.array());
+    // Busca el producto por su ID
+    const updatedProduct = await Product.findByPk(id);
 
-    const {
-      id,
-      name,
-      longDescription,
-      cost,
-      priceML,
-      priceEComm,
-      priceLocal,
-      quantity,
-      supplier,
-      category,
-      isDeleted,
-    } = req.body;
+    if (!updatedProduct) {
+      throw new Error('El producto no existe');
+    }
 
-    const archivo = req.file;
+    // Actualiza los campos del producto si están presentes en los datos
+    const fieldsToUpdate = [
+      'name',
+      'longDescription',
+      'cost',
+      'priceML',
+      'priceEComm',
+      'priceLocal',
+      'quantity',
+      'isDeleted',
+    ];
 
-    const data = {
-      id,
-      name,
-      longDescription,
-      cost,
-      priceML,
-      priceEComm,
-      priceLocal,
-      quantity,
-      supplier,
-      category,
-      isDeleted,
-      files: archivo,
-    };
+    fieldsToUpdate.forEach((field) => {
+      if (data[field] !== undefined) {
+        updatedProduct[field] = data[field];
+      }
+    });
 
-    const updatedProduct = await editProductController(id, data);
+    // Actualiza la imagen si está presente en los datos
+    if (uploadPicture) {
+      updatedProduct.files = uploadPicture;
+    }
 
-    const editedProduct = await findProductById(updatedProduct.id);
+    // Guarda el producto actualizado
+    await updatedProduct.save();
 
-    const response = {
-      id: editedProduct?.id,
-      name: editedProduct?.name,
-      files: editedProduct?.files,
-      shortDescription: editedProduct?.shortDescription,
-      longDescription: editedProduct?.longDescription,
-      cost: editedProduct?.cost,
-      priceML: editedProduct?.priceML,
-      priceEComm: editedProduct?.priceEComm,
-      priceLocal: editedProduct?.priceLocal,
-      quantity: editedProduct?.quantity,
-      supplier: editedProduct?.Suppliers[0].name,
-      category: editedProduct?.Categories[0].name,
-      isDeleted: editedProduct?.isDeleted,
-    };
+    // Busca la descripción asociada al producto
+    const productDescription = await Description.findOne({
+      where: { product_id: id },
+    });
 
-    return res.status(201).json(response);
+    // Actualiza la descripción si está presente en los datos
+    if (data.longDescription !== undefined) {
+      if (!productDescription) {
+        // Si no hay descripción, la crea
+        await Description.create({
+          product_id: id,
+          longDescription: data.longDescription,
+        });
+      } else {
+        // Si ya existe la descripción, la actualiza
+        productDescription.longDescription = data.longDescription;
+        await productDescription.save();
+      }
+    }
+
+    // Busca la categoría y el proveedor asociados al producto
+    const findCategory = await Category.findAll({
+      where: { name: data.category },
+    });
+
+    const findSupplier = await Supplier.findAll({
+      where: { name: data.supplier },
+    });
+
+    // Asocia el producto con la categoría y el proveedor
+    if (findCategory.length > 0) {
+      await updatedProduct.setCategories(findCategory);
+    }
+
+    if (findSupplier.length > 0) {
+      await updatedProduct.setSuppliers(findSupplier);
+    }
+
+    return updatedProduct;
   } catch (error) {
-    res
-      .status(400)
-      .json({ error: 'Hubo un error en la solicitud', details: error.message });
+    console.error(error.message);
+    throw error;
   }
 };
 
-module.exports = editProduct;
+module.exports = editProductController;

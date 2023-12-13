@@ -120,6 +120,10 @@ Description.belongsTo(Product, {
   targetKey: 'id',
   as: 'product',
 });
+Product.hasOne(Description, {
+  foreignKey: 'product_id',
+  as: 'product',
+});
 
 module.exports = {
   ...sequelize.models,

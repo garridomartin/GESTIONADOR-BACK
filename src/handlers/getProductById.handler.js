@@ -3,6 +3,7 @@ const findProductByIdController = require('../controllers/findProductById.contro
 const getProductById = async (req, res) => {
   try {
     const { id } = req.params;
+
     const productFound = await findProductByIdController(id);
 
     if (!productFound) {
