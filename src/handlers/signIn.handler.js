@@ -33,7 +33,7 @@ const signInHandler = async (req, res) => {
           sameSite: 'none', //'none',
           secure: true, // Agrega esta línea si estás usando HTTPS
           //domain: 'https://g712tp5p-3001.brs.devtunnels.ms/',
-          path: 'https://mascotero-client-garridomartin.vercel.app',
+          path: '/',
         })
         .json({
           isAuthenticated: true,
