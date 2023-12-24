@@ -104,7 +104,7 @@ router.get(
   '/getAllProducts',
   verifyToken,
   admincheck,
-  checkTokenMELIExpire,
+  /*checkTokenMELIExpire,*/
   getAllProducts
 ); //! SOLO USAR EN DASHBOARD DE ADMIN
 router.get('/getProducts', verifyToken, getProducts); //! SOLO TRAE PRODUCTOS CON STOCK Y SIN DELETEAR
