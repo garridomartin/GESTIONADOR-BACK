@@ -5,7 +5,7 @@ const getProductsController = () =>
   Product.findAll({
     where: {
       isDeleted: false,
-      stock: {
+      quantity: {
         [Op.gt]: 0, // Stock mayor que cero
       },
     },
