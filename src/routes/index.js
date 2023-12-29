@@ -106,8 +106,8 @@ router.get(
   admincheck,
   /*checkTokenMELIExpire,*/
   getAllProducts
-); //! SOLO USAR EN DASHBOARD DE ADMIN
-router.get('/getProducts', verifyToken, getProducts); //! SOLO TRAE PRODUCTOS CON STOCK Y SIN DELETEAR
+); //! SOLO USAR EN DASHBOARD DE ADMmin
+router.get('/getProducts', getProducts); //! SOLO TRAE PRODUCTOS CON STOCK Y SIN DELETEAR
 router.use('/editProduct', verifyToken, admincheck, editProductRouter);
 router.get('/deleteProduct/:id', verifyToken, admincheck, deleteProduct);
 router.post('/createCategory', verifyToken, admincheck, createCategory);
