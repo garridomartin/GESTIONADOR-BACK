@@ -1,8 +1,11 @@
+// getProducts.handler.js
 const getProductsController = require('../controllers/getProducts.controller');
 
 const getProducts = async (req, res) => {
   try {
-    const productsFound = await getProductsController(req);
+    const { page = 1, pageSize = 10 } = req.query;
+
+    const productsFound = await getProductsController({ page, pageSize });
 
     if (!productsFound) {
       return res.status(404).json({
@@ -10,11 +13,10 @@ const getProducts = async (req, res) => {
       });
     }
 
-    // console.log('productsFound:', productsFound);
     return res.status(200).json(productsFound);
   } catch (error) {
     res.status(400).json({
-      error: 'Hubo un error en la busqueda de los productos',
+      error: 'Hubo un error en la búsqueda de los productos',
       details: error.message,
     });
   }
