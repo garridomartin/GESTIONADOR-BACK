@@ -3,13 +3,28 @@ const getProductsController = require('../controllers/getProducts.controller');
 
 const getProducts = async (req, res) => {
   try {
-    const { page, pageSize } = req.query;
+    const { page, pageSize, filtro1, filtro2, orderByPrice, orden } = req.query;
+    console.log(
+      'page, pageSize, filtro1, filtro2, orderByPrice, orden:',
+      page,
+      pageSize,
+      filtro1,
+      filtro2,
+      orderByPrice,
+      orden
+    );
+    const productsFound = await getProductsController({
+      page,
+      pageSize,
+      filtro1,
+      filtro2,
+      orderByPrice,
+      orden,
+    });
 
-    const productsFound = await getProductsController({ page, pageSize });
-
-    if (!productsFound) {
+    if (!productsFound || productsFound.length === 0) {
       return res.status(404).json({
-        error: 'No hay productos en la base de datos',
+        error: 'No hay productos que coincidan con los criterios de búsqueda',
       });
     }
 
