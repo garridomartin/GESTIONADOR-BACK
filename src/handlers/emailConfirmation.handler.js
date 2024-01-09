@@ -5,12 +5,13 @@ const { SECRET_KEY } = process.env;
 const confirmEmailController = require('../controllers/emailConfirmation.controller.js');
 
 const emailConfirmation = async (req, res) => {
-  // const token = req.params.token;
+  //  const token = req.params.token;
   try {
-    //const decodedToken = jwt.verify(token, SECRET_KEY);
+    // const decodedToken = jwt.verify(token, SECRET_KEY);
     //const userId = decodedToken.user.id;
 
     const result = await confirmEmailController(req.email);
+    //console.log('result: ' + result);
     res.status(200).json(result);
   } catch (error) {
     console.error('Error during email confirmation:', error);

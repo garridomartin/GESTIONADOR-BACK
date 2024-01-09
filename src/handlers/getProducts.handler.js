@@ -13,6 +13,7 @@ const getProducts = async (req, res) => {
       orderByPrice,
       orden
     );
+
     const productsFound = await getProductsController({
       page,
       pageSize,

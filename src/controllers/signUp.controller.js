@@ -28,7 +28,7 @@ const controladorRegistro = async (nombre, contraseña, correoElectronico) => {
       password: contraseñaEncriptada,
       email: correoElectronico,
       profilePict:
-        'https://w7.pngwing.com/pngs/802/786/png-transparent-google-account-google-search-customer-service-google-logo-login-button-blue-sphere-car-rental-thumbnail.png',
+        'https://firebasestorage.googleapis.com/v0/b/facturador-ml.appspot.com/o/sinfoto.png?alt=media&token=cad667c9-5bf7-4283-a831-baecf54dabe0',
     });
 
     await nuevoUsuario.save();

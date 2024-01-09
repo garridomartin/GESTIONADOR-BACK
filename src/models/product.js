@@ -66,6 +66,12 @@ module.exports = (sequelize) => {
         type: DataTypes.STRING,
         unique: true,
       },
+      filtroAnimal: {
+        type: DataTypes.STRING,
+      },
+      filtroProducto: {
+        type: DataTypes.STRING,
+      },
       isDeleted: {
         type: DataTypes.BOOLEAN,
         defaultValue: false,

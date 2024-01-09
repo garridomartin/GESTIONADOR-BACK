@@ -22,12 +22,12 @@ const getProductsController = async ({
     };
 
     // Aplicar filtros según sea necesario
-    if (filtro1 !== undefined) {
-      whereClause.campo1 = filtro1;
+    if (filtro1 !== undefined && filtro1 !== '') {
+      whereClause.filtroAnimal = filtro1;
     }
 
-    if (filtro2 !== undefined) {
-      whereClause.campo2 = filtro2;
+    if (filtro2 !== undefined && filtro2 !== '') {
+      whereClause.filtroProducto = filtro2;
     }
 
     const opcionesConsulta = {
@@ -36,7 +36,7 @@ const getProductsController = async ({
       limit: pageSize,
       order: [
         // Aplicar ordenamiento según sea necesario
-        [orderByPrice || 'name', orden || 'ASC'], // Usar 'name' como predeterminado si ordenarPor es undefined
+        [orderByPrice || 'name', orden || 'ASC'], // Usar 'name' como predeterminado si orderByPrice es undefined
       ],
     };
 
