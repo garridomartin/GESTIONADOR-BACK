@@ -26,6 +26,8 @@ const newProductRouter = require('./newProduct.router');
 const getProductById = require('../handlers/getProductById.handler');
 const getAllProducts = require('../handlers/getAllProducts.handler');
 const getProducts = require('../handlers/getProducts.handler');
+const getProductsByName = require('../handlers/getProductsByName.handler');
+const getProductsList = require('../handlers/getProductsList.handler.js');
 const editProductRouter = require('./editProduct.router');
 const deleteProduct = require('../handlers/deleteProduct.handler');
 const createCategory = require('../handlers/createCategory.handler');
@@ -53,8 +55,6 @@ const {
 require('../middleware/passport');
 
 //!REFERIDO A PAQAR
-
-//!REFERIDO A MERCADOLIBRE
 
 //!REFERIDO A FACTURACION
 
@@ -108,6 +108,8 @@ router.get(
   getAllProducts
 ); //! SOLO USAR EN DASHBOARD DE ADMmin
 router.get('/getProducts', getProducts); //! SOLO TRAE PRODUCTOS CON STOCK Y SIN DELETEAR
+router.get('/getProductsByName', getProductsByName);
+router.get('/getProductsList', getProductsList);
 router.use('/editProduct', verifyToken, admincheck, editProductRouter);
 router.get('/deleteProduct/:id', verifyToken, admincheck, deleteProduct);
 router.post('/createCategory', verifyToken, admincheck, createCategory);

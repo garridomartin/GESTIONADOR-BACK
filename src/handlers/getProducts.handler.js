@@ -3,9 +3,11 @@ const getProductsController = require('../controllers/getProducts.controller');
 
 const getProducts = async (req, res) => {
   try {
-    const { page, pageSize, filtro1, filtro2, orderByPrice, orden } = req.query;
+    const { name, page, pageSize, filtro1, filtro2, orderByPrice, orden } =
+      req.query;
     console.log(
-      'page, pageSize, filtro1, filtro2, orderByPrice, orden:',
+      'name, page, pageSize, filtro1, filtro2, orderByPrice, orden:',
+      name,
       page,
       pageSize,
       filtro1,
@@ -15,6 +17,7 @@ const getProducts = async (req, res) => {
     );
 
     const productsFound = await getProductsController({
+      name,
       page,
       pageSize,
       filtro1,
