@@ -1,4 +1,5 @@
 // getProducts.controller.js
+const { Op } = require('sequelize');
 const { Product } = require('../db');
 
 const getProductsListController = async () => {
@@ -6,6 +7,11 @@ const getProductsListController = async () => {
     const productsListFound = await Product.findAll({
       attributes: ['name'],
       order: [['name', 'ASC']],
+      where: {
+        quantity: {
+          [Op.gt]: 0,
+        },
+      },
     });
 
     const productNames = productsListFound.map((product) => product.name);
