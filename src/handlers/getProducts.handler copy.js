@@ -1,12 +1,12 @@
-// getProductsByName.handler.js
-const getProductsByNameController = require('../controllers/getProductsByName.controller');
+// getProducts.handler.js
+const getProductsController = require('../controllers/getProducts.controller');
 
-const getProductsByName = async (req, res) => {
+const getProducts = async (req, res) => {
   try {
     const { name, page, pageSize, filtro1, filtro2, orderByPrice, orden } =
       req.query;
     console.log(
-      'name, page, pageSize, filtro1, filtro2, orderByPrice, orden:',
+      ' name, page, pageSize, filtro1, filtro2, orderByPrice, orden:',
       name,
       page,
       pageSize,
@@ -16,7 +16,7 @@ const getProductsByName = async (req, res) => {
       orden
     );
 
-    const productsFound = await getProductsByNameController({
+    const productsFound = await getProductsController({
       name,
       page,
       pageSize,
@@ -41,4 +41,4 @@ const getProductsByName = async (req, res) => {
   }
 };
 
-module.exports = getProductsByName;
+module.exports = getProducts;

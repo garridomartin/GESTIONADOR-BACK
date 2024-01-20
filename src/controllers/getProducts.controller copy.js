@@ -2,7 +2,6 @@
 const { Product, Supplier, Category, sequelize } = require('../db');
 const { Op } = require('sequelize');
 const getProductsController = async ({
-  name,
   page,
   pageSize,
   filtro1,
@@ -29,13 +28,6 @@ const getProductsController = async ({
 
     if (filtro2 !== undefined && filtro2 !== '') {
       whereClause.filtroProducto = filtro2;
-    }
-
-    // Aplicar búsqueda por aproximación en el nombre
-    if (name !== undefined && name !== '') {
-      whereClause.name = {
-        [Op.iLike]: `%${name}%`,
-      };
     }
 
     const opcionesConsulta = {
