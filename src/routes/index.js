@@ -26,6 +26,7 @@ const newProductRouter = require('./newProduct.router');
 const getProductById = require('../handlers/getProductById.handler');
 const getAllProducts = require('../handlers/getAllProducts.handler');
 const getProducts = require('../handlers/getProducts.handler');
+const getDescription = require('../handlers/getDescription.handler');
 const getProductsByName = require('../handlers/getProductsByName.handler');
 const getProductsList = require('../handlers/getProductsList.handler.js');
 const editProductRouter = require('./editProduct.router');
@@ -108,6 +109,7 @@ router.get(
   getAllProducts
 ); //! SOLO USAR EN DASHBOARD DE ADMmin
 router.get('/getProducts', getProducts); //! SOLO TRAE PRODUCTOS CON STOCK Y SIN DELETEAR
+router.get('/getDescription', getDescription);
 router.get('/getProductsByName', getProductsByName);
 router.get('/getProductsList', getProductsList);
 router.use('/editProduct', verifyToken, admincheck, editProductRouter);
