@@ -14,7 +14,7 @@ const getProductsController = async ({
     const startIndex = (page - 1) * pageSize;
     const endIndex = page * pageSize;
 
-    // Construir objeto de opciones para la consulta a la base de datos
+    // Aca van las opciones para la consulta a la base de datos
     const whereClause = {
       isDeleted: false,
       quantity: {
@@ -22,7 +22,7 @@ const getProductsController = async ({
       },
     };
 
-    // Aplicar filtros según sea necesario
+    // Aplico filtros
     if (filtro1 !== undefined && filtro1 !== '') {
       whereClause.filtroAnimal = filtro1;
     }
@@ -31,7 +31,7 @@ const getProductsController = async ({
       whereClause.filtroProducto = filtro2;
     }
 
-    // Aplicar búsqueda por aproximación en el nombre
+    // Aplico búsqueda por aproximación en el nombre
     if (name !== undefined && name !== '') {
       whereClause.name = {
         [Op.iLike]: `%${name}%`,
