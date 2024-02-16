@@ -14,7 +14,7 @@ const getProductsController = async ({
     const startIndex = (page - 1) * pageSize;
     const endIndex = page * pageSize;
 
-    // Aca van las opciones para la consulta a la base de datos
+    // Lógica para obtener productos de la base de datos
     const whereClause = {
       isDeleted: false,
       quantity: {
@@ -22,7 +22,6 @@ const getProductsController = async ({
       },
     };
 
-    // Aplico filtros
     if (filtro1 !== undefined && filtro1 !== '') {
       whereClause.filtroAnimal = filtro1;
     }
@@ -31,27 +30,31 @@ const getProductsController = async ({
       whereClause.filtroProducto = filtro2;
     }
 
-    // Aplico búsqueda por aproximación en el nombre
     if (name !== undefined && name !== '') {
       whereClause.name = {
         [Op.iLike]: `%${name}%`,
       };
     }
 
-    const opcionesConsulta = {
+    const options = {
       where: whereClause,
       offset: startIndex,
-      limit: pageSize,
-      order: [
-        // Aplicar ordenamiento según sea necesario
-        [orderByPrice || 'name', orden || 'ASC'], // Usar 'name' como predeterminado si orderByPrice es undefined
-      ],
+      limit: pageSize + 1, // Consultar un producto adicional
+      order: [[orderByPrice || 'name', orden || 'ASC']],
     };
 
     // Realizar la consulta a la base de datos usando Sequelize
-    const productsFound = await Product.findAll(opcionesConsulta);
+    const productsFound = await Product.findAll(options);
 
-    return productsFound;
+    // Verificar si hay más productos disponibles después de la página actual
+    const hasNextPage = productsFound.length > pageSize;
+
+    // Eliminar el producto adicional de la respuesta
+    const productsForPage = hasNextPage
+      ? productsFound.slice(0, pageSize)
+      : productsFound;
+
+    return { productsFound: productsForPage, hasNextPage };
   } catch (error) {
     console.error('Error en la búsqueda de productos:', error);
     throw new Error('Error en la búsqueda de productos', error);
