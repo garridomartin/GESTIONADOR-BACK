@@ -2,6 +2,7 @@ const passport = require('passport');
 require('../middleware/passport');
 const loginController = require('../controllers/logInGoogle.controller');
 const { URL_DEPLOY_FRONT } = process.env;
+
 //const URL_DEPLOY_FRONT = 'http://localhost:3000';
 /*'https://front-5w36mp77c-garridomartin.vercel.app/';*/
 
@@ -49,7 +50,7 @@ const loginSuccessHandler = async (req, res) => {
 
       // token: newUser.token.token,
     };
-    //console.log('asdfsadfasdfsad', updatedFrontUser);
+    //console.log('updatedFrontUser', updatedFrontUser);
     //res.cookie('user', JSON.stringify(updatedFrontUser));
     //res.cookie('token', newUser.token.token);
     //res.json(updatedFrontUser);
@@ -60,8 +61,9 @@ const loginSuccessHandler = async (req, res) => {
     return res.status(200).cookie('token', newUser.token.token, {
       expires: new Date(Date.now() + cookieDuration * 1000),
       httpOnly: true,
-      sameSite: /*'strict',*/ 'None',
+      sameSite: /*'strict',*/ 'none',
       secure: true, // Agrega esta línea si estás usando HTTPS
+
       path: '/',
     }).send(`
       <script>

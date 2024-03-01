@@ -1,5 +1,6 @@
 const { validationResult } = require('express-validator');
 const signInController = require('../controllers/signIn.controller');
+const isProduction = process.env.NODE_ENV === 'production';
 
 const signInHandler = async (req, res) => {
   //console.log(req.body);
@@ -33,6 +34,7 @@ const signInHandler = async (req, res) => {
           sameSite: 'none', //'none',
           secure: true, // Agrega esta línea si estás usando HTTPS
           //domain: 'https://g712tp5p-3001.brs.devtunnels.ms/',
+          secure: isProduction,
           path: '/',
         })
         .json({
