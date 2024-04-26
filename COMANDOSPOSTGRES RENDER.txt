@@ -1,0 +1,108 @@
+\dt
+\c
+\all
+\c negocio
+
+******************COMANDOS PARA PODER COMPLETAR LA BASE DE DATOS*******************************
+desde el directorio raiz, con el shell de windows:
+
+cd "Program Files"
+cd postgresql
+cd 16
+cd bin
+.\psql -U dpg-cok3ismv3ddc739r1v6g-a.oregon-postgres.render.com -d lacasadelmascotero -a -f "C:\Users\elgra\Documents\01-PROYECTO-GESTIONADOR\BACK\cargaDBNegocio.sql"
+
+\copy "Suppliers" FROM 'C:\Users\elgra\Documents\01-PROYECTO-GESTIONADOR\Back\Suppliers.csv' DELIMITER ',' CSV HEADER;
+ALTER SEQUENCE "Suppliers_id_seq" RESTART WITH 5;
+
+
+.\psql -h dpg-cok3ismv3ddc739r1v6g-a.oregon-postgres.render.com -U lacasadelmascotero_user -d lacasadelmascotero -c "COPY Suppliers FROM 'C:\Users\elgra\Documents\01-PROYECTO-GESTIONADOR\Back\Suppliers.csv' DELIMITER ',' CSV HEADER;"
+
+zj6mj7ZwmtgvqnNsNTfailpkCNO9hX6Q
+
+\copy "Categories" FROM 'C:\Users\elgra\Documents\01-PROYECTO-GESTIONADOR\Back\Categories.csv' DELIMITER ',' CSV HEADER;
+ALTER SEQUENCE "Categories_id_seq" RESTART WITH 4;
+
+
+\copy "Products" FROM 'C:\Users\elgra\Documents\01-PROYECTO-GESTIONADOR\Back\Products.csv' DELIMITER ',' CSV HEADER;
+ALTER SEQUENCE "Products_id_seq" RESTART WITH 777;
+
+\copy "Descriptions" FROM 'C:\Users\elgra\Documents\01-PROYECTO-GESTIONADOR\Back\Descriptions.csv' DELIMITER ',' CSV HEADER;
+ALTER SEQUENCE "Descriptions_id_seq" RESTART WITH 777;
+
+ \copy "Users" FROM 'C:\Users\elgra\Documents\01-PROYECTO-GESTIONADOR\Back\Users.csv' DELIMITER ',' CSV HEADER;
+ALTER SEQUENCE "Users_id_seq" RESTART WITH 3;
+
+\copy "IntervalStatuses" FROM 'C:\Users\elgra\Documents\01-PROYECTO-GESTIONADOR\Back\IntervalStatuses.csv' DELIMITER ',' CSV HEADER;
+ALTER SEQUENCE "Categories_id_seq" RESTART WITH 1;
+
+
+
+INSERT INTO public."CategorySupplier" ("CategoryId", "SupplierId", "createdAt", "updatedAt")
+VALUES 
+  (1, 1, now(), now()),
+  (2, 2, now(), now()),
+  (3, 3, now(), now()),
+  (1, 4, now(), now()),
+  (2, 3, now(), now()),
+  (3, 2, now(), now()),
+  (1, 2, now(), now());
+
+
+INSERT INTO public."CategoryProduct" ("CategoryId", "ProductId", "createdAt", "updatedAt")
+VALUES 
+  (1, 1, now(), now()),
+  (1, 2, now(), now()),
+  (3, 3, now(), now()),
+  (2, 4, now(), now()),
+  (2, 5, now(), now()),
+  (2, 6, now(), now()),
+  (2, 7, now(), now()),
+  (3, 8, now(), now());
+
+
+INSERT INTO public."ProductSupplier" ("ProductId", "SupplierId", "createdAt", "updatedAt")
+VALUES 
+  (1, 1, now(), now()),
+  (2, 2, now(), now()),
+  (3, 3, now(), now()),
+  (4, 4, now(), now()),
+  (5, 4, now(), now()),
+  (6, 3, now(), now()),
+  (7, 2, now(), now());
+
+
+
+
+
+**********************************compu de los viejos******************************************************
+ \copy "Users" FROM 'C:\Users\Martin\Desktop\GESTIONADOR-BACK\Users.csv' DELIMITER ',' CSV HEADER;
+\copy "SoldServices" FROM 'C:\Users\Martin\Desktop\GESTIONADOR-BACK\SoldServices.csv' DELIMITER ',' CSV HEADER;
+\copy "Sales" FROM 'C:\Users\Martin\Desktop\GESTIONADOR-BACK\Sales.csv' DELIMITER ',' CSV HEADER;
+\copy "TypesOfService" FROM 'C:\Users\Martin\Desktop\GESTIONADOR-BACK\TypesOfService.csv' DELIMITER ',' CSV HEADER;
+\copy "Services" FROM 'C:\Users\Martin\Desktop\GESTIONADOR-BACK\Services.csv' DELIMITER ',' CSV HEADER;
+
+asesoria=# SELECT MAX("id") FROM "Users";
+
+SELECT c.relname FROM pg_class c WHERE c.relkind = 'S';
+Esto mostrará una lista de todas las secuencias existentes en la base de datos.
+
+
+        relname
+------------------------
+ MELIAccesCodes_id_seq
+ MELIAccesTokens_id_seq
+ Sales_id_seq
+ SoldProducts_id_seq
+ Suppliers_id_seq
+ Categories_id_seq
+ Products_id_seq
+ Users_id_seq
+(8 filas)
+
+
+<img src="https://gcdn.emol.cl/humor/files/2016/11/memes-de-perros-1.jpg" alt="Imagen de usuario creado">
+
+
+		TRUNCATE "public"."Products" CASCADE;
+para borrar la tabla product

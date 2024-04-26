@@ -27,6 +27,7 @@ server.use(
     exposedHeaders: ['Content-Type', 'Authorization'],
   })
 );
+
 /****************************************/
 //    👇👇👇👇👇👇
 //server.use(cors());
@@ -41,7 +42,6 @@ server.use((req, res, next) => {
   res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, DELETE');
   next();
 });*/
-
 //!CODIGO AUTENTICACION DE GOOGLE
 server.use(
   session({

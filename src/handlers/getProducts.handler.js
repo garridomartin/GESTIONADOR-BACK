@@ -32,6 +32,8 @@ const getProducts = async (req, res) => {
       });
     }
 
+    console.log('productsFound', productsFound.productsFound[0]);
+
     return res.status(200).json(productsFound);
   } catch (error) {
     res.status(400).json({
