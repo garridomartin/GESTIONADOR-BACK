@@ -29,12 +29,11 @@ const signInHandler = async (req, res) => {
         .status(200)
         .cookie('token', tokenReceived.token, {
           expires: new Date(Date.now() + cookieDuration * 1000),
-          //expires: new Date(Date.now() + tokenReceived.expireIn * 1000),
           httpOnly: true,
-          sameSite: 'none', //'none',
+          sameSite: 'strict', //'none',
           secure: true, // Agrega esta línea si estás usando HTTPS
           //domain: 'https://g712tp5p-3001.brs.devtunnels.ms/',
-          secure: isProduction,
+          //secure: isProduction,
           path: '/',
         })
         .json({
