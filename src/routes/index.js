@@ -5,7 +5,7 @@ const {
   verifyTokenChangePass,
   verifyTokenConfirmMail,
 } = require('../middleware/verifyToken');
-const admincheck = require('../middleware/admincheck');
+const admincheck = require('../middleware/adminCheck');
 const sellerCheck = require('../middleware/sellerCheck');
 const checkTokenMELIExpire = require('../middleware/checkTokenMELIExpire');
 
