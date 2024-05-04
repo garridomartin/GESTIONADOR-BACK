@@ -3,7 +3,7 @@ dotenv.config();
 const { Sequelize } = require('sequelize');
 const fs = require('fs');
 const path = require('path');
-const { DB_USER, DB_PASSWORD, DB_HOST, DB_PORT, DB_TABLE, DB_DEPLOY } =
+const { DB_USER, DB_PASSWORD, DB_HOST, DB_PORT, DB_TABLE, DB_DEPLOY, DB_DEPLOY_RENDER } =
   process.env;
 
 //↓↓↓COMENTAR PARA USA LA BASE DE DATOS LOCAL, ESTO ES LA DB DEPLOYADA EN RAILWAY
@@ -24,6 +24,21 @@ const sequelize = new Sequelize(
 );
 */
 
+//↓↓↓COMENTAR PARA USA LA BASE DE DATOS LOCAL, ESTO ES LA DB DEPLOYADA EN RENDER
+
+const sequelize = new Sequelize(DB_DEPLOY_RENDER, {    
+    logging: false,
+    native: false,
+    dialectOptions: {
+      ssl: {
+        rejectUnauthorized: false // Esto desactiva la verificación del certificado SSL
+      }
+    }
+  }
+);
+
+
+/*
 const sequelize = new Sequelize(DB_TABLE, DB_USER, DB_PASSWORD, {
   host: DB_HOST,
   dialect: 'postgres',
@@ -34,7 +49,9 @@ const sequelize = new Sequelize(DB_TABLE, DB_USER, DB_PASSWORD, {
     },
   },
   logging: false,
-}); 
+}); */
+
+
 const basename = path.basename(__filename);
 
 const modelDefiners = [];
