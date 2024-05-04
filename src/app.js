@@ -20,7 +20,7 @@ server.use(morgan('dev'));
 server.use(cookieParser()); //------------------ added for Enok Lima
 server.use(
   cors({
-    origin: [URL_DEPLOY_FRONT, URL_LOCAL_FRONT, (*)],
+    origin: [URL_DEPLOY_FRONT, URL_LOCAL_FRONT],
     credentials: true,
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     optionsSuccessStatus: 204,
