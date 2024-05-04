@@ -31,7 +31,8 @@ const sequelize = new Sequelize(DB_DEPLOY_RENDER, {
     native: false,
     dialectOptions: {
       ssl: {
-        rejectUnauthorized: false // Esto desactiva la verificación del certificado SSL
+        require: true 
+
       }
     }
   }
